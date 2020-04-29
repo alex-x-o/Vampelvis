@@ -27,9 +27,6 @@
     <ClInclude Include="src\Entities\PlayerController.h">
       <Filter>src\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\Entities\BallController.h">
-      <Filter>src\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="src\Entities\GameComponents.h">
       <Filter>src\Entities</Filter>
     </ClInclude>
@@ -51,9 +48,6 @@
       <Filter>src\Entities</Filter>
     </ClCompile>
     <ClCompile Include="src\Entities\PlayerController.cpp">
-      <Filter>src\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Entities\BallController.cpp">
       <Filter>src\Entities</Filter>
     </ClCompile>
     <ClCompile Include="src\Entities\LevelController.cpp">

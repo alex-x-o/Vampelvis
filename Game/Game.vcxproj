@@ -158,7 +158,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\GameApp.h" />
-    <ClInclude Include="src\Entities\BallController.h" />
     <ClInclude Include="src\Entities\CameraController.h" />
     <ClInclude Include="src\Entities\GameComponents.h" />
     <ClInclude Include="src\Entities\PlayerController.h" />
@@ -168,7 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\GameApp.cpp" />
-    <ClCompile Include="src\Entities\BallController.cpp" />
     <ClCompile Include="src\Entities\CameraController.cpp" />
     <ClCompile Include="src\Entities\PlayerController.cpp" />
     <ClCompile Include="src\Entities\LevelController.cpp" />
