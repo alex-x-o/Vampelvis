@@ -16,7 +16,7 @@ namespace Game
         camera->AddComponent<Engine::MoverComponent>();
 
         auto transformComp = camera->GetComponent<Engine::TransformComponent>();
-        transformComp->m_Size = { 1280.f, 720.f };
+        transformComp->m_Size = { 800.f, 600.f };
 
         auto inputComp = camera->GetComponent<Engine::InputComponent>();
 
@@ -45,8 +45,8 @@ namespace Game
             bool moveLeftInput = Engine::InputManager::IsActionActive(input, "PanCameraLeft");
             bool moveRightInput = Engine::InputManager::IsActionActive(input, "PanCameraRight");
 
-            move->m_TranslationSpeed.x = speed * ((moveLeftInput ? -1.0f : 0.0f) + (moveRightInput ? 1.0f : 0.0f));
-            move->m_TranslationSpeed.y = speed * ((moveUpInput ? -1.0f : 0.0f) + (moveDownInput ? 1.0f : 0.0f));
+
+            move->m_TranslationSpeed.x = 100.f;
         }
     }
 }
