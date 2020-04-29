@@ -27,6 +27,13 @@ namespace Engine
 
             transform->m_Position += mover->m_TranslationSpeed * dt;
             transform->m_Rotation += mover->m_RotationSpeed * dt;
+
+            // Player is forced to stay in window
+            if (entity->HasComponent<PlayerComponent>())
+            {   
+                transform->m_Position.y = transform->m_Position.y < -300? -300 : transform->m_Position.y;
+                transform->m_Position.y = transform->m_Position.y > 300 ? 300 : transform->m_Position.y;
+            }
         }
 
         // Collide
