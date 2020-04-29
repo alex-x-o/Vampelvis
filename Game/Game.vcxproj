@@ -95,7 +95,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src\;$(SolutionDir)Engine\;$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
@@ -143,7 +143,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src\;$(SolutionDir)Engine\;$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -162,7 +162,7 @@
     <ClInclude Include="src\Entities\CameraController.h" />
     <ClInclude Include="src\Entities\GameComponents.h" />
     <ClInclude Include="src\Entities\PlayerController.h" />
-    <ClInclude Include="src\Entities\StadiumController.h" />
+    <ClInclude Include="src\Entities\LevelController.h" />
     <ClInclude Include="src\Entities\StaticImage.h" />
     <ClInclude Include="src\precomp.h" />
   </ItemGroup>
@@ -171,7 +171,7 @@
     <ClCompile Include="src\Entities\BallController.cpp" />
     <ClCompile Include="src\Entities\CameraController.cpp" />
     <ClCompile Include="src\Entities\PlayerController.cpp" />
-    <ClCompile Include="src\Entities\StadiumController.cpp" />
+    <ClCompile Include="src\Entities\LevelController.cpp" />
     <ClCompile Include="src\Entities\StaticImage.cpp" />
     <ClCompile Include="src\precomp.cpp" />
   </ItemGroup>

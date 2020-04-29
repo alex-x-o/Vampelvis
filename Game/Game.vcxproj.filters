@@ -33,7 +33,7 @@
     <ClInclude Include="src\Entities\GameComponents.h">
       <Filter>src\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\Entities\StadiumController.h">
+    <ClInclude Include="src\Entities\LevelController.h">
       <Filter>src\Entities</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,7 +56,7 @@
     <ClCompile Include="src\Entities\BallController.cpp">
       <Filter>src\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\Entities\StadiumController.cpp">
+    <ClCompile Include="src\Entities\LevelController.cpp">
       <Filter>src\Entities</Filter>
     </ClCompile>
   </ItemGroup>
