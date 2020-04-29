@@ -25,7 +25,7 @@ namespace Game
         return !(entityManager_->GetAllEntitiesWithComponent<Engine::PlayerComponent>().empty());
     }
 
-    void PlayerController::Update(float dt, Engine::EntityManager* entityManager_)
+    bool PlayerController::Update(float dt, Engine::EntityManager* entityManager_)
     {
         auto entityToMove = entityManager_->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::MoverComponent, Engine::InputComponent>();
         ASSERT(entityToMove.size() == 1, "Must be only one entity with PlayerComponent, MoverComponent and InputComponent in PlayerController::Update()");
@@ -35,9 +35,20 @@ namespace Game
         auto input = entity->GetComponent<Engine::InputComponent>();
         auto speed = entity->GetComponent<Engine::PlayerComponent>()->m_PanSpeed;
 
+        // Move player
         bool jumpInput = Engine::InputManager::IsActionActive(input, fmt::format("Player{}Jump", 1));
             
         move->m_TranslationSpeed.x = 100.f;
-        move->m_TranslationSpeed.y = speed * (jumpInput ? -1.0f : 0.4f);
+        move->m_TranslationSpeed.y = speed * (jumpInput ? -0.7f : 0.2f);
+
+        // Check if hit
+        if (entity->GetComponent<Engine::CollisionComponent>()->m_CollidedWith.size() > 0)
+        {
+            LOG_INFO("Player hit something, game over :(");
+
+            return false;
+        }
+
+        return true;
     }
 }
