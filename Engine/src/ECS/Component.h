@@ -78,7 +78,7 @@ namespace Engine
 
     struct PlayerComponent : public Component
     {
-
+        int m_PanSpeed = 1000;
     };
 
     struct HealthComponent : public Component
