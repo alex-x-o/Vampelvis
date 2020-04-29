@@ -8,24 +8,23 @@ namespace Game
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to entitymanager to PlayerController::Init()");
         ASSERT(texture_ != nullptr, "Must pass valid pointer to texture to PlayerController::Init()");
 
-        for (int i = 1; i <= 2; ++i)
-        {
-            auto player = std::make_unique<Engine::Entity>();
 
-            player->AddComponent<Engine::TransformComponent>(i == 1 ? -600 : 600.f, 0.f, 30.f, 100.f);
-            player->AddComponent<Engine::CollisionComponent>(30.f, 100.f);
-            player->AddComponent<Engine::PlayerComponent>();
-            player->AddComponent<Engine::InputComponent>();
-            player->AddComponent<Engine::MoverComponent>();
-            player->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
+        auto player = std::make_unique<Engine::Entity>();
 
-            auto inputComp = player->GetComponent<Engine::InputComponent>();
+        player->AddComponent<Engine::TransformComponent>(-400.f, 0.f, 30.f, 100.f);
+        player->AddComponent<Engine::CollisionComponent>(30.f, 100.f);
+        player->AddComponent<Engine::PlayerComponent>();
+        player->AddComponent<Engine::InputComponent>();
+        player->AddComponent<Engine::MoverComponent>();
+        player->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
 
-            inputComp->inputActions.push_back({ fmt::format("Player{}MoveUp", i) });
-            inputComp->inputActions.push_back({ fmt::format("Player{}MoveDown", i) });
+        auto inputComp = player->GetComponent<Engine::InputComponent>();
 
-            entityManager_->AddEntity(std::move(player));
-        }
+        inputComp->inputActions.push_back({ fmt::format("Player{}MoveUp", 1) });
+        inputComp->inputActions.push_back({ fmt::format("Player{}MoveDown", 1) });
+
+        entityManager_->AddEntity(std::move(player));
+
 
         return !(entityManager_->GetAllEntitiesWithComponent<Engine::PlayerComponent>().empty());
     }
