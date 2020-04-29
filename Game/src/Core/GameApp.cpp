@@ -9,6 +9,7 @@
 #include <Engine.h>
 #include <Core/EntryPoint.h>
 
+#include <SDL.h>
 
 void Game::GameApp::GameSpecificWindowData()
 {
@@ -44,7 +45,16 @@ bool Game::GameApp::GameSpecificInit()
 
 void Game::GameApp::GameSpecificUpdate(float dt)
 {
-    m_PlayerController->Update(dt, m_EntityManager.get());
+    // If player hits something, shut down game
+    if (!m_PlayerController->Update(dt, m_EntityManager.get()))
+    {
+        SDL_Event quit_event;
+        quit_event.type = SDL_QUIT;
+        SDL_PushEvent(&quit_event);
+
+        return ;
+    }
+        
     m_CameraController->Update(dt, m_EntityManager.get());
     m_Level->Update(dt, m_EntityManager.get(), m_TextureManager->GetTexture("blank"));
 }
