@@ -12,6 +12,16 @@ namespace Game
 
     };
 
+    struct CeilingObstacleComponent : public Engine::Component
+    {
+
+    };
+
+    struct FloorObstacleComponent : public Engine::Component
+    {
+
+    };
+
     struct GoalComponent : public Engine::Component
     {
 

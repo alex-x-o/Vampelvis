@@ -46,7 +46,7 @@ void Game::GameApp::GameSpecificUpdate(float dt)
 {
     m_PlayerController->Update(dt, m_EntityManager.get());
     m_CameraController->Update(dt, m_EntityManager.get());
-    m_Level->Update(dt, m_EntityManager.get());
+    m_Level->Update(dt, m_EntityManager.get(), m_TextureManager->GetTexture("blank"));
 }
 
 bool Game::GameApp::GameSpecificShutdown()
