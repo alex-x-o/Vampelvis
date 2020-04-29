@@ -6,7 +6,6 @@ namespace Game
 {
     class CameraController;
     class PlayerController;
-    class BallController;
     class Level;
     class StaticImage;
 
@@ -20,7 +19,6 @@ namespace Game
 
         std::unique_ptr<PlayerController> m_PlayerController{};
         std::unique_ptr<CameraController> m_CameraController{};
-        std::unique_ptr<BallController> m_BallController{};
         std::unique_ptr<Level> m_Level{};
         std::unique_ptr<StaticImage> m_TestImage{};
     };
