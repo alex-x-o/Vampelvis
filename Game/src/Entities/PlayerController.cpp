@@ -9,6 +9,7 @@ namespace Game
         ASSERT(texture_ != nullptr, "Must pass valid pointer to texture to PlayerController::Init()");
 
         auto player = std::make_unique<Engine::Entity>();
+
         player->AddComponent<Engine::TransformComponent>(-400.f, 0.f, 30.f, 100.f);
         player->AddComponent<Engine::CollisionComponent>(30.f, 100.f);
         player->AddComponent<Engine::PlayerComponent>();
@@ -17,8 +18,7 @@ namespace Game
         player->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
 
         auto inputComp = player->GetComponent<Engine::InputComponent>();
-        inputComp->inputActions.push_back({ fmt::format("Player{}MoveUp", 1) });
-        inputComp->inputActions.push_back({ fmt::format("Player{}MoveDown", 1) });
+        inputComp->inputActions.push_back({ fmt::format("Player{}Jump", 1) });
 
         entityManager_->AddEntity(std::move(player));
 
@@ -35,10 +35,9 @@ namespace Game
         auto input = entity->GetComponent<Engine::InputComponent>();
         auto speed = entity->GetComponent<Engine::PlayerComponent>()->m_PanSpeed;
 
-        bool moveUpInput = Engine::InputManager::IsActionActive(input, fmt::format("Player{}MoveUp", 1));
-        bool moveDownInput = Engine::InputManager::IsActionActive(input, fmt::format("Player{}MoveDown", 1));
+        bool jumpInput = Engine::InputManager::IsActionActive(input, fmt::format("Player{}Jump", 1));
             
         move->m_TranslationSpeed.x = 100.f;
-        move->m_TranslationSpeed.y = speed * ((moveUpInput ? -1.0f : 0.0f) + (moveDownInput ? 1.0f : 0.0f));
+        move->m_TranslationSpeed.y = speed * (jumpInput ? -1.0f : 0.4f);
     }
 }
