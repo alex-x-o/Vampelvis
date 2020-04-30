@@ -46,7 +46,8 @@ bool Game::GameApp::GameSpecificInit()
 void Game::GameApp::GameSpecificUpdate(float dt)
 {
     // If player hits something, shut down game
-    if (!m_PlayerController->Update(dt, m_EntityManager.get()))
+    bool playerColided = !m_PlayerController->Update(dt, m_EntityManager.get());
+    if (!m_GodMode && playerColided)
     {
         SDL_Event quit_event;
         quit_event.type = SDL_QUIT;

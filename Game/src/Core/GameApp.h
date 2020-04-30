@@ -12,6 +12,8 @@ namespace Game
     class GameApp final : public Engine::Application
     {
     private:
+        bool m_GodMode{ false };
+
         void GameSpecificWindowData() override;
         bool GameSpecificInit() override;
         void GameSpecificUpdate(float dt) override;
