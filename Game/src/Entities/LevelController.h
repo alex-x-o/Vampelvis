@@ -14,6 +14,7 @@ namespace Game
         float m_LastObstaclePos{ 0 };
         float m_MinObstacleDist{ 200 };
 
+        void RemovePastObstacles(Engine::EntityManager* entityManager_);
         void GenerateObstacles(Engine::EntityManager* entityManager_, Engine::Texture* texture_);
     };
 

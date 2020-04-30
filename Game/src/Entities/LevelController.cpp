@@ -53,8 +53,47 @@ namespace Game
         
         if(this->m_ShouldGenerate)
         {
+            this->RemovePastObstacles(entityManager_);
             this->GenerateObstacles(entityManager_,  texture_);
         }
+    }
+
+    void Level::RemovePastObstacles(Engine::EntityManager* entityManager_)
+    {
+        float boundary = 0;
+
+        auto camera = entityManager_->GetAllEntitiesWithComponent<Engine::CameraComponent>()[0];
+        auto cameraTransform = camera->GetComponent<Engine::TransformComponent>();
+        boundary = cameraTransform->m_Position.x - cameraTransform->m_Size.x / 2;
+
+        auto floorObstacles = entityManager_->GetAllEntitiesWithComponent<Game::FloorObstacleComponent>();
+
+        for (auto& obstacle : floorObstacles)
+        {
+            auto obstacleTransformer = obstacle->GetComponent<Engine::TransformComponent>();
+            float xPos = obstacleTransformer->m_Position.x;
+            float xWidth = obstacleTransformer->m_Size.x;
+
+            if (xWidth / 2 + xPos < boundary)
+            {
+                entityManager_->RemoveEntityById(obstacle->GetId());
+            }
+        }
+
+        auto ceilingObstacles = entityManager_->GetAllEntitiesWithComponent<Game::CeilingObstacleComponent>();
+
+        for (auto& obstacle : ceilingObstacles)
+        {
+            auto obstacleTransformer = obstacle->GetComponent<Engine::TransformComponent>();
+            float xPos = obstacleTransformer->m_Position.x;
+            float xWidth = obstacleTransformer->m_Size.x;
+
+            if (xWidth / 2 + xPos < boundary)
+            {
+                entityManager_->RemoveEntityById(obstacle->GetId());
+            }
+        }
+
     }
 
     void Level::GenerateObstacles(Engine::EntityManager* entityManager_, Engine::Texture* texture_)
