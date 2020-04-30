@@ -8,25 +8,29 @@ int main(int argc, char* args[])
     Engine::Logger::Init();
     LOG_INFO("Logger initialized!");
 
-    auto app = Engine::CreateApplication();
-    
-    bool success = app->Init();
-    if (!success)
+    bool restartGame{ true };
+    while (restartGame)
     {
-        LOG_CRITICAL("Failed to initialize the application!");
-        return 1;
+        auto app = Engine::CreateApplication();
+
+        bool success = app->Init();
+        if (!success)
+        {
+            LOG_CRITICAL("Failed to initialize the application!");
+            return 1;
+        }
+
+        restartGame = app->Run();
+
+        success = app->Shutdown();
+        if (!success)
+        {
+            LOG_CRITICAL("Failed to uninitialize the application!");
+            return 2;
+        }
+
+        delete app;
     }
-
-    int retval = app->Run();
-
-    success = app->Shutdown();
-    if (!success)
-    {
-        LOG_CRITICAL("Failed to uninitialize the application!");
-        return 2;
-    }
-
-    delete app;
-
-    return retval;
+   
+    return 0;
 }

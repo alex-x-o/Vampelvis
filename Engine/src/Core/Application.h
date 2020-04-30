@@ -14,7 +14,7 @@ namespace Engine {
     {
     public:
         bool Init();
-        int Run();
+        bool Run();
         bool Shutdown();
 
         virtual ~Application();
@@ -37,9 +37,9 @@ namespace Engine {
         virtual void GameSpecificWindowData() = 0;
         virtual bool GameSpecificInit() = 0;
         virtual bool GameSpecificShutdown() = 0;
-        virtual void GameSpecificUpdate(float dt) = 0;
+        virtual bool GameSpecificUpdate(float dt) = 0;
 
-        void Update(float dt);
+        bool Update(float dt);
 
         Application(const Application& other) = delete;
         Application& operator=(Application& other) = delete;

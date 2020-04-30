@@ -43,21 +43,35 @@ bool Game::GameApp::GameSpecificInit()
     return true;
 }
 
-void Game::GameApp::GameSpecificUpdate(float dt)
+bool GameOver(Engine::EntityManager* entityManager_)
+{
+    LOG_INFO("GAME OVER. Game blocked until space is pressed");
+
+    auto entityToMove = entityManager_->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::InputComponent>();
+    ASSERT(entityToMove.size() == 1, "Must be only one entity with PlayerComponent and InputComponent in GameOver()");
+
+    auto entity = entityToMove.front();
+    auto input = entity->GetComponent<Engine::InputComponent>();
+
+    return Engine::InputManager::IsActionActive(input, fmt::format("Player{}Jump", 1));
+}
+
+bool Game::GameApp::GameSpecificUpdate(float dt)
 {
     // If player hits something, shut down game
-    bool playerColided = !m_PlayerController->Update(dt, m_EntityManager.get());
-    if (!m_GodMode && playerColided)
+    bool playerCollided = m_PlayerController->Update(dt, m_EntityManager.get());
+    if (!m_GodMode && playerCollided)
     {
-        SDL_Event quit_event;
-        quit_event.type = SDL_QUIT;
-        SDL_PushEvent(&quit_event);
-
-        return ;
+        if (GameOver(m_EntityManager.get()))
+        {
+            return false;
+        }
     }
         
     m_CameraController->Update(dt, m_EntityManager.get());
     m_Level->Update(dt, m_EntityManager.get(), m_TextureManager->GetTexture("blank"));
+
+    return true;
 }
 
 bool Game::GameApp::GameSpecificShutdown()

@@ -16,7 +16,7 @@ namespace Game
 
         void GameSpecificWindowData() override;
         bool GameSpecificInit() override;
-        void GameSpecificUpdate(float dt) override;
+        bool GameSpecificUpdate(float dt) override;
         bool GameSpecificShutdown() override;
 
         std::unique_ptr<PlayerController> m_PlayerController{};

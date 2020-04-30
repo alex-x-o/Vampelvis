@@ -79,7 +79,7 @@ namespace Engine {
         return true;
     }
 
-    int Application::Run()
+    bool Application::Run()
     {
         m_Running = true;
         auto previousFrameTime = SDL_GetPerformanceCounter();
@@ -101,17 +101,16 @@ namespace Engine {
             float deltaTime = (frameTime - previousFrameTime) / static_cast<float>(SDL_GetPerformanceFrequency());
 
             LOG_INFO("Current FPS: {}", 1.f / deltaTime);
-            Update(deltaTime);
+            if (!Update(deltaTime))
+                return true;
 
             previousFrameTime = frameTime;
         }
 
-        m_Running = false;
-
-        return 0;
+        return false;
     }
 
-    void Application::Update(float dt)
+    bool Application::Update(float dt)
     {
         // Update all systems
         m_InputManager->Update(dt, m_EntityManager.get());
@@ -119,7 +118,7 @@ namespace Engine {
         m_EntityManager->Update(dt);
         m_RenderSystem->Update(dt, m_EntityManager.get());
 
-        GameSpecificUpdate(dt);
+        return GameSpecificUpdate(dt);
     }
 
 }

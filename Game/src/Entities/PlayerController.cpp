@@ -39,16 +39,16 @@ namespace Game
         bool jumpInput = Engine::InputManager::IsActionActive(input, fmt::format("Player{}Jump", 1));
             
         move->m_TranslationSpeed.x = 100.f;
-        move->m_TranslationSpeed.y = speed * (jumpInput ? -0.7f : 0.2f);
+        move->m_TranslationSpeed.y = speed * (jumpInput ? -0.5f : 0.2f);
 
         // Check if hit
         if (entity->GetComponent<Engine::CollisionComponent>()->m_CollidedWith.size() > 0)
         {
-            LOG_INFO("Player hit something, game over :(");
+            LOG_INFO("Player hit something in PlayerController::Update");
 
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 }
