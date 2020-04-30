@@ -35,6 +35,14 @@ namespace Game
         auto input = entity->GetComponent<Engine::InputComponent>();
         auto speed = entity->GetComponent<Engine::PlayerComponent>()->m_PanSpeed;
 
+        if (gameOver)
+        {
+            move->m_TranslationSpeed.x = 0.f;
+            move->m_TranslationSpeed.y = 0.f;
+
+            return false;
+        }
+
         // Move player
         bool jumpInput = Engine::InputManager::IsActionActive(input, fmt::format("Player{}Jump", 1));
             
@@ -46,9 +54,10 @@ namespace Game
         {
             LOG_INFO("Player hit something in PlayerController::Update");
 
-            return true;
+            gameOver = true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 }

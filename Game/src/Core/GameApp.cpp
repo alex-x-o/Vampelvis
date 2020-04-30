@@ -60,7 +60,7 @@ bool Game::GameApp::GameSpecificUpdate(float dt)
 {
     // If player hits something, shut down game
     bool playerCollided = m_PlayerController->Update(dt, m_EntityManager.get());
-    if (!m_GodMode && playerCollided)
+    if (!m_GodMode && !playerCollided)
     {
         if (GameOver(m_EntityManager.get()))
         {
