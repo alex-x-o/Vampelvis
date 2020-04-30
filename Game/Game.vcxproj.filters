@@ -33,6 +33,9 @@
     <ClInclude Include="src\Entities\LevelController.h">
       <Filter>src\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="src\Entities\TextController.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\precomp.cpp">
@@ -51,6 +54,9 @@
       <Filter>src\Entities</Filter>
     </ClCompile>
     <ClCompile Include="src\Entities\LevelController.cpp">
+      <Filter>src\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\TextController.cpp">
       <Filter>src\Entities</Filter>
     </ClCompile>
   </ItemGroup>

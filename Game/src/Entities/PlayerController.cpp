@@ -18,14 +18,14 @@ namespace Game
         player->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
 
         auto inputComp = player->GetComponent<Engine::InputComponent>();
-        inputComp->inputActions.push_back({ fmt::format("Player{}Jump", 1) });
+        inputComp->inputActions.push_back({ "MainGameBtn" });
 
         entityManager_->AddEntity(std::move(player));
 
         return !(entityManager_->GetAllEntitiesWithComponent<Engine::PlayerComponent>().empty());
     }
 
-    bool PlayerController::Update(float dt, Engine::EntityManager* entityManager_)
+    bool PlayerController::Update(Engine::EntityManager* entityManager_)
     {
         auto entityToMove = entityManager_->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::MoverComponent, Engine::InputComponent>();
         ASSERT(entityToMove.size() == 1, "Must be only one entity with PlayerComponent, MoverComponent and InputComponent in PlayerController::Update()");
@@ -44,7 +44,7 @@ namespace Game
         }
 
         // Move player
-        bool jumpInput = Engine::InputManager::IsActionActive(input, fmt::format("Player{}Jump", 1));
+        bool jumpInput = Engine::InputManager::IsActionActive(input, "MainGameBtn");
             
         move->m_TranslationSpeed.x = 100.f;
         move->m_TranslationSpeed.y = speed * (jumpInput ? -0.5f : 0.2f);

@@ -8,6 +8,7 @@ namespace Game
     class PlayerController;
     class Level;
     class StaticImage;
+    class TextController;
 
     class GameApp final : public Engine::Application
     {
@@ -23,6 +24,7 @@ namespace Game
         std::unique_ptr<CameraController> m_CameraController{};
         std::unique_ptr<Level> m_Level{};
         std::unique_ptr<StaticImage> m_TestImage{};
+        std::unique_ptr<TextController> m_TextController{};
     };
 
 }

@@ -4,17 +4,16 @@ namespace Engine
 {
     class EntityManager;
     class TextureManager;
+    struct Texture;
 }
 
 namespace Game
 {
-    class PlayerController
+    class TextController
     {
     public:
-        bool Init(Engine::EntityManager* entityManager_, Engine::Texture* texture_);
+        void Init(Engine::EntityManager* entityManager_, Engine::Texture* texture_);
         bool Update(Engine::EntityManager* entityManager_);
-
-    private:
-        bool gameOver{ false };
     };
+
 }
