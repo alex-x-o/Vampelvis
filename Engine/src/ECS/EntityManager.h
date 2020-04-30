@@ -12,6 +12,7 @@ namespace Engine
         void Update(float dt);
         void AddEntity(Entity* e);
         void AddEntity(std::unique_ptr<Entity>&& e);
+        void RemoveEntityById(unsigned id);
 
         template <typename TComponent>
         auto GetAllEntitiesWithComponent()
