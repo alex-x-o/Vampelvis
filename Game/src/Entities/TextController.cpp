@@ -24,15 +24,15 @@ bool Game::TextController::Update(Engine::EntityManager* entityManager_, float p
     LOG_INFO("GAME OVER. Game blocked until space is pressed");
 
     auto inputEntities = entityManager_->GetAllEntitiesWithComponents<Engine::InputComponent, Engine::SpriteComponent, Engine::MoverComponent, Engine::TransformComponent>();
-    LOG_INFO(inputEntities.size());
+    ASSERT(!inputEntities.empty(), "Text entity must exist in TextController::Update()");
+
     for (auto& entity : inputEntities)
     {
         if (entity->HasComponent<Engine::PlayerComponent>()) continue;
 
         // Show text on screen
         auto position = entity->GetComponent<Engine::TransformComponent>();
-        LOG_INFO(position->m_Position.x);
-        if (abs(position->m_Position.x + 1000.f) < 0.001) position->m_Position.x = playerPosition_+300.f;
+        if (abs(position->m_Position.x + 1000.f) < 0.001) position->m_Position.x = playerPosition_ + 300.f;
 
         // Move text with camera
         auto move = entity->GetComponent<Engine::MoverComponent>();

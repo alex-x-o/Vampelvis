@@ -14,11 +14,11 @@ namespace Game
     {
     private:
         bool m_GodMode{ false };
-        float m_PlayerPositionX{};
+        bool gameOver{ false };
 
         void GameSpecificWindowData() override;
         bool GameSpecificInit() override;
-        bool GameSpecificUpdate(float dt) override;
+        bool GameSpecificUpdate(float dt_) override;
         bool GameSpecificShutdown() override;
 
         std::unique_ptr<PlayerController> m_PlayerController{};
@@ -27,7 +27,6 @@ namespace Game
         std::unique_ptr<StaticImage> m_TestImage{};
         std::unique_ptr<TextController> m_TextController{};
     };
-
 }
 
 Engine::Application* Engine::CreateApplication()

@@ -3,9 +3,9 @@
 #include "GameApp.h"
 #include "Entities/CameraController.h"
 #include "Entities/PlayerController.h"
+#include "Entities/TextController.h"
 #include "Entities/LevelController.h"
 #include "Entities/StaticImage.h"
-#include "Entities/TextController.h"
 
 #include <Engine.h>
 #include <Core/EntryPoint.h>
@@ -34,7 +34,8 @@ bool Game::GameApp::GameSpecificInit()
     m_TestImage->Init(m_EntityManager.get(), m_TextureManager->GetTexture("hello"));
 
     m_PlayerController = std::make_unique<PlayerController>();
-    m_PlayerController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("blank"));
+    bool playerStatus = m_PlayerController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("blank"));
+    ASSERT(playerStatus, "Player initialization failed in GameApp::GameSpecificInit()");
 
     m_Level = std::make_unique<Level>();
     m_Level->Init(m_EntityManager.get(), m_TextureManager->GetTexture("blank"));
@@ -45,20 +46,22 @@ bool Game::GameApp::GameSpecificInit()
     return true;
 }
 
-bool Game::GameApp::GameSpecificUpdate(float dt)
+bool Game::GameApp::GameSpecificUpdate(float dt_)
 {
-    // If player hits something, shut down game
-    bool playerCollided = m_PlayerController->Update(m_EntityManager.get());
-    if (!m_GodMode && !playerCollided)
+    if (gameOver && !m_GodMode)
     {
-        if (m_TextController->Update(m_EntityManager.get(), m_PlayerController->GetPlayerPositionX()))
-        {
-            return false;
-        }
+        // If space is pressed start new game
+        bool spacePressed = m_TextController->Update(m_EntityManager.get(), m_PlayerController->GetPlayerPositionX());
+        if (spacePressed) return false;
     }
-        
-    m_CameraController->Update(dt, m_EntityManager.get());
-    m_Level->Update(dt, m_EntityManager.get(), m_TextureManager->GetTexture("blank"));
+    else
+    {
+        // If player hits something, shut down game
+        gameOver = !m_PlayerController->Update(m_EntityManager.get());
+    }
+
+    m_CameraController->Update(dt_, m_EntityManager.get());
+    m_Level->Update(dt_, m_EntityManager.get(), m_TextureManager->GetTexture("blank"));
 
     return true;
 }

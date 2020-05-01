@@ -16,7 +16,6 @@ namespace Game
         float GetPlayerPositionX() const;
 
     private:
-        bool gameOver{ false };
         float m_PlayerPositionX{};
     };
 }

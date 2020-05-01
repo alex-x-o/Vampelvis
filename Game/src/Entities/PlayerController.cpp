@@ -28,21 +28,13 @@ namespace Game
     bool PlayerController::Update(Engine::EntityManager* entityManager_)
     {
         auto entityToMove = entityManager_->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::MoverComponent, Engine::InputComponent, Engine::TransformComponent>();
-        ASSERT(entityToMove.size() == 1, "Must be only one entity with PlayerComponent, MoverComponent and InputComponent in PlayerController::Update()");
+        ASSERT(entityToMove.size() == 1, "Must be only one entity with Player, Mover, Transform and Input Component in PlayerController::Update()");
 
         auto entity = entityToMove.front();
         auto move = entity->GetComponent<Engine::MoverComponent>();
         auto position = entity->GetComponent<Engine::TransformComponent>();
         auto input = entity->GetComponent<Engine::InputComponent>();
         auto speed = entity->GetComponent<Engine::PlayerComponent>()->m_PanSpeed;
-
-        if (gameOver)
-        {
-            move->m_TranslationSpeed.x = 0.f;
-            move->m_TranslationSpeed.y = 0.f;
-
-            return false;
-        }
 
         // Move player
         bool jumpInput = Engine::InputManager::IsActionActive(input, "MainGameBtn");
@@ -58,12 +50,15 @@ namespace Game
         {
             LOG_INFO("Player hit something in PlayerController::Update");
 
-            gameOver = true;
+            move->m_TranslationSpeed.x = 0.f;
+            move->m_TranslationSpeed.y = 0.f;
+
             return false;
         }
 
         return true;
     }
+
     float PlayerController::GetPlayerPositionX() const
     {
         return m_PlayerPositionX;
