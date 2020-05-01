@@ -27,11 +27,12 @@ namespace Game
 
     bool PlayerController::Update(Engine::EntityManager* entityManager_)
     {
-        auto entityToMove = entityManager_->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::MoverComponent, Engine::InputComponent>();
+        auto entityToMove = entityManager_->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::MoverComponent, Engine::InputComponent, Engine::TransformComponent>();
         ASSERT(entityToMove.size() == 1, "Must be only one entity with PlayerComponent, MoverComponent and InputComponent in PlayerController::Update()");
 
         auto entity = entityToMove.front();
         auto move = entity->GetComponent<Engine::MoverComponent>();
+        auto position = entity->GetComponent<Engine::TransformComponent>();
         auto input = entity->GetComponent<Engine::InputComponent>();
         auto speed = entity->GetComponent<Engine::PlayerComponent>()->m_PanSpeed;
 
@@ -49,6 +50,9 @@ namespace Game
         move->m_TranslationSpeed.x = 100.f;
         move->m_TranslationSpeed.y = speed * (jumpInput ? -0.5f : 0.2f);
 
+        // Check position
+        m_PlayerPositionX = position->m_Position.x;
+
         // Check if hit
         if (entity->GetComponent<Engine::CollisionComponent>()->m_CollidedWith.size() > 0)
         {
@@ -59,5 +63,9 @@ namespace Game
         }
 
         return true;
+    }
+    float PlayerController::GetPlayerPositionX() const
+    {
+        return m_PlayerPositionX;
     }
 }

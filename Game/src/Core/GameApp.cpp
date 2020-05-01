@@ -51,7 +51,7 @@ bool Game::GameApp::GameSpecificUpdate(float dt)
     bool playerCollided = m_PlayerController->Update(m_EntityManager.get());
     if (!m_GodMode && !playerCollided)
     {
-        if (m_TextController->Update(m_EntityManager.get()))
+        if (m_TextController->Update(m_EntityManager.get(), m_PlayerController->GetPlayerPositionX()))
         {
             return false;
         }

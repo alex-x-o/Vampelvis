@@ -14,6 +14,7 @@ namespace Game
     {
     private:
         bool m_GodMode{ false };
+        float m_PlayerPositionX{};
 
         void GameSpecificWindowData() override;
         bool GameSpecificInit() override;
