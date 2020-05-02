@@ -27,11 +27,7 @@ bool Game::GameApp::GameSpecificInit()
     m_CameraController = std::make_unique<CameraController>();
     m_CameraController->Init(m_EntityManager.get());
 
-    // TestImage
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chair", "./Textures/chair.png");
-    /*m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "vampire", "./Textures/vampire.gif");
-    m_TestImage = std::make_unique<StaticImage>();
-    m_TestImage->Init(m_EntityManager.get(), m_TextureManager->GetTexture("hello"));*/
+    this->LoadGameTextures();
 
     m_PlayerController = std::make_unique<PlayerController>();
     bool playerStatus = m_PlayerController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("chair"));
@@ -69,4 +65,23 @@ bool Game::GameApp::GameSpecificUpdate(float dt_)
 bool Game::GameApp::GameSpecificShutdown()
 {
     return true;
+}
+
+void Game::GameApp::LoadGameTextures()
+{
+
+    // Backgrounds
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "blank", "./Textures/blank.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "woodenTexture", "./Textures/woodenTexture.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "woodenTexture1", "./Textures/woodenTexture1.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "woodenTextureLong", "./Textures/woodenTextureLong.png");
+
+    // Level 1 Obstacles
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chair", "./Textures/chair.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "table", "./Textures/table.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chandelier", "./Textures/chandelier.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chandelier2", "./Textures/chandelier2.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chandelier3", "./Textures/chandelier3.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chanSil", "./Textures/chanSil.png");
+
 }

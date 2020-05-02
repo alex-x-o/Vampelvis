@@ -20,6 +20,7 @@ namespace Game
         bool GameSpecificInit() override;
         bool GameSpecificUpdate(float dt_) override;
         bool GameSpecificShutdown() override;
+        void LoadGameTextures();
 
         std::unique_ptr<PlayerController> m_PlayerController{};
         std::unique_ptr<CameraController> m_CameraController{};
