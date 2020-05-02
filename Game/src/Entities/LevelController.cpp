@@ -134,8 +134,8 @@ namespace Game
         auto floorObstacle = std::make_unique<Engine::Entity>();
 
         floorObstacle->AddComponent<Game::FloorObstacleComponent>();
-        floorObstacle->AddComponent<Engine::TransformComponent>(xObstacle, (windowHeight - floorObstacleHeight)/2 - wallHeight, 30.f, floorObstacleHeight);
-        floorObstacle->AddComponent<Engine::CollisionComponent>(30.f, floorObstacleHeight);
+        floorObstacle->AddComponent<Engine::TransformComponent>(xObstacle, (windowHeight - floorObstacleHeight)/2 - wallHeight, 100.f, floorObstacleHeight);
+        floorObstacle->AddComponent<Engine::CollisionComponent>(100.f, floorObstacleHeight);
         floorObstacle->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
 
         entityManager_->AddEntity(std::move(floorObstacle));
@@ -145,8 +145,8 @@ namespace Game
         auto ceilingObstacle = std::make_unique<Engine::Entity>();
 
         ceilingObstacle->AddComponent<Game::CeilingObstacleComponent>();
-        ceilingObstacle->AddComponent<Engine::TransformComponent>(xObstacle, -(windowHeight - ceilingObstacleHeight) / 2 + wallHeight, 30.f, ceilingObstacleHeight);
-        ceilingObstacle->AddComponent<Engine::CollisionComponent>(30.f, ceilingObstacleHeight);
+        ceilingObstacle->AddComponent<Engine::TransformComponent>(xObstacle, -(windowHeight - ceilingObstacleHeight) / 2 + wallHeight, 100.f, ceilingObstacleHeight);
+        ceilingObstacle->AddComponent<Engine::CollisionComponent>(100.f, ceilingObstacleHeight);
         ceilingObstacle->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
 
         entityManager_->AddEntity(std::move(ceilingObstacle));
