@@ -100,6 +100,8 @@ namespace Engine
         m_InputActions["PanCameraLeft"] = 'Y';
         m_InputActions["PanCameraDown"] = 'Y';
         m_InputActions["PanCameraRight"] = 'Y';
+
+        m_InputActions["ToggleGodMode"] = VK_F12;
     }
 
     bool InputManager::IsActionActive(InputComponent* inputComponent, EInputAction targetAction)
