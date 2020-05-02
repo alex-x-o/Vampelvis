@@ -138,6 +138,19 @@ namespace Engine
         SDL_SetRenderDrawColor(m_NativeRenderer, m_BackgroundColor.r, m_BackgroundColor.g, m_BackgroundColor.b, m_BackgroundColor.a);
     }
 
+    void Renderer::SetBackgroundTexture(Engine::Texture* texture_)
+    {
+        // SDL_RenderClear( m_NativeRenderer );
+        SDL_Rect loc;
+        loc.x = 0;
+        loc.y = 0;
+        loc.h = 256;
+        loc.w = 128;
+        SDL_RenderCopy(m_NativeRenderer, texture_->m_Texture, NULL, &loc);
+    }
+
+ 
+
     void Renderer::BeginScene() const
     {
         SDL_RenderClear(m_NativeRenderer);

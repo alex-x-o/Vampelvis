@@ -22,12 +22,12 @@ void Game::GameApp::GameSpecificWindowData()
 
 bool Game::GameApp::GameSpecificInit()
 {
-    m_RenderSystem->SetBackgroundColor(0, 0, 0, 1);
+    this->LoadGameTextures();
+
+    m_RenderSystem->SetBackgroundTexture(m_TextureManager->GetTexture("woodenTexture"));
 
     m_CameraController = std::make_unique<CameraController>();
     m_CameraController->Init(m_EntityManager.get());
-
-    this->LoadGameTextures();
 
     m_PlayerController = std::make_unique<PlayerController>();
     bool playerStatus = m_PlayerController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("chair"));
