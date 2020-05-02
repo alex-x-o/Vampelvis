@@ -34,10 +34,10 @@ bool Game::GameApp::GameSpecificInit()
     ASSERT(playerStatus, "Player initialization failed in GameApp::GameSpecificInit()");
 
     m_Level = std::make_unique<Level>();
-    m_Level->Init(m_EntityManager.get(), m_TextureManager->GetTexture("chair"));
+    m_Level->Init(m_EntityManager.get(), m_TextureManager.get());
 
     m_TextController = std::make_unique<TextController>();
-    m_TextController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("chair"));
+    m_TextController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("woodenTexture1"));
 
     return true;
 }
@@ -57,7 +57,7 @@ bool Game::GameApp::GameSpecificUpdate(float dt_)
     }
 
     m_CameraController->Update(dt_, m_EntityManager.get());
-    m_Level->Update(dt_, m_EntityManager.get(), m_TextureManager->GetTexture("chair"));
+    m_Level->Update(dt_, m_EntityManager.get(), m_TextureManager.get());
 
     return true;
 }
