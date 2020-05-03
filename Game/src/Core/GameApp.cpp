@@ -30,7 +30,7 @@ bool Game::GameApp::GameSpecificInit()
     m_CameraController->Init(m_EntityManager.get());
 
     m_PlayerController = std::make_unique<PlayerController>();
-    bool playerStatus = m_PlayerController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("chair"));
+    bool playerStatus = m_PlayerController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("vampire"));
     ASSERT(playerStatus, "Player initialization failed in GameApp::GameSpecificInit()");
 
     m_Level = std::make_unique<Level>();
@@ -69,12 +69,17 @@ bool Game::GameApp::GameSpecificShutdown()
 
 void Game::GameApp::LoadGameTextures()
 {
+    //Player
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "vampire", "./Textures/vampireSprites.png");
 
     // Backgrounds
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "blank", "./Textures/blank.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "woodenTexture", "./Textures/woodenTexture.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "woodenTexture1", "./Textures/woodenTexture1.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "woodenTextureLong", "./Textures/woodenTextureLong.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "background", "./Textures/background.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "floor", "./Textures/floorLong.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "ceiling", "./Textures/ceilingLong.png");
 
     // Level 1 Obstacles
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chair", "./Textures/chair.png");
