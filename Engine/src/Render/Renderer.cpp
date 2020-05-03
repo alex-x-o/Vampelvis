@@ -95,15 +95,36 @@ namespace Engine
             SDL_Rect dst{ (int)(screenPosition.x - size.x / 2), (int)(screenPosition.y - size.y / 2), (int)size.x, (int)size.y };
             SDL_RendererFlip flip = static_cast<SDL_RendererFlip>((sprite->m_FlipHorizontal ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE) | (sprite->m_FlipVertical ? SDL_FLIP_VERTICAL : SDL_FLIP_NONE));
 
-            SDL_RenderCopyEx(
-                m_NativeRenderer,
-                sprite->m_Image->m_Texture,
-                NULL,
-                &dst,
-                transform->m_Rotation,
-                NULL,
-                flip);
+            if (sprite->m_Animation == true)
+            {
+                SDL_Rect src;
+                int frame = sprite->m_AnimationCurrentFrame;
 
+                src.x = 64 * frame;
+                src.y = 0;
+                src.w = 64;
+                src.h = 64;
+
+                SDL_RenderCopyEx(
+                    m_NativeRenderer,
+                    sprite->m_Image->m_Texture,
+                    &src,
+                    &dst,
+                    transform->m_Rotation,
+                    NULL,
+                    flip);
+            }
+            else 
+            {
+                SDL_RenderCopyEx(
+                    m_NativeRenderer,
+                    sprite->m_Image->m_Texture,
+                    NULL,
+                    &dst,
+                    transform->m_Rotation,
+                    NULL,
+                    flip);
+            }
 #ifdef _DEBUG
             // DebugDraw
             SDL_SetRenderDrawColor(m_NativeRenderer, 255, 0, 0, SDL_ALPHA_OPAQUE);

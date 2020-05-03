@@ -16,6 +16,11 @@ namespace Game
         player->AddComponent<Engine::InputComponent>();
         player->AddComponent<Engine::MoverComponent>();
         player->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
+        
+        auto spriteComp = player->GetComponent<Engine::SpriteComponent>();
+        spriteComp->m_Animation = true;
+        spriteComp->m_AnimationFrames = 9;
+        spriteComp->m_AnimationCurrentFrame = 0;
 
         auto inputComp = player->GetComponent<Engine::InputComponent>();
         inputComp->inputActions.push_back({ "MainGameBtn" });
@@ -35,6 +40,18 @@ namespace Game
         auto position = entity->GetComponent<Engine::TransformComponent>();
         auto input = entity->GetComponent<Engine::InputComponent>();
         auto speed = entity->GetComponent<Engine::PlayerComponent>()->m_PanSpeed;
+        auto sprite = entity->GetComponent<Engine::SpriteComponent>();
+        auto frameCurrent = entity->GetComponent<Engine::SpriteComponent>()->m_AnimationCurrentFrame;
+        auto frameNum = entity->GetComponent<Engine::SpriteComponent>()->m_AnimationFrames;
+        
+        if (frameCurrent < frameNum - 1)
+        {
+            sprite->m_AnimationCurrentFrame = sprite->m_AnimationCurrentFrame + 1;
+        }
+        else
+        {
+            sprite->m_AnimationCurrentFrame = 0;
+        }
 
         // Move player
         bool jumpInput = Engine::InputManager::IsActionActive(input, "MainGameBtn");

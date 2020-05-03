@@ -74,6 +74,9 @@ namespace Engine
         Texture* m_Image{};
         bool m_FlipHorizontal{ false };
         bool m_FlipVertical{ false };
+        bool m_Animation{ false };
+        int m_AnimationFrames;
+        int m_AnimationCurrentFrame;
     };
 
     struct PlayerComponent : public Component
