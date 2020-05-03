@@ -7,6 +7,7 @@ namespace Engine
     class Renderer;
     class Entity;
     class EntityManager;
+    struct Texture;
 
     class RenderSystem
     {
@@ -17,6 +18,7 @@ namespace Engine
         Renderer* GetRenderer();
         void SetBackgroundColor(unsigned char bgR_, unsigned char bgG_, unsigned char bgB_, unsigned char bgA_);
         void SetBackgroundColor(const Color& col_);
+        void SetBackgroundTexture(Engine::Texture* texture_);
 
         RenderSystem() = default;
     private:

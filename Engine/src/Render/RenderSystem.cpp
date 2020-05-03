@@ -82,4 +82,9 @@ namespace Engine
         m_Renderer->SetBackgroundColor(col_);
     }
 
+    void RenderSystem::SetBackgroundTexture(Engine::Texture* texture_)
+    {
+        m_Renderer->SetBackgroundTexture(texture_);
+    }
+
 }

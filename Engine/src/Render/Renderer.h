@@ -8,6 +8,7 @@ namespace Engine
     struct WindowData;
     class Window;
     class Entity;
+    struct Texture;
 
     class Renderer
     {
@@ -24,6 +25,7 @@ namespace Engine
 
         void SetBackgroundColor(unsigned char bgR_, unsigned char bgG_, unsigned char bgB_, unsigned char bgA_);
         void SetBackgroundColor(const Color& col_);
+        void SetBackgroundTexture(Engine::Texture* texture_);
         ~Renderer();
 
     private:

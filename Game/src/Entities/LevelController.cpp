@@ -6,7 +6,7 @@
 
 namespace Game
 {
-    bool Level::Init(Engine::EntityManager* entityManager_, Engine::Texture* texture_)
+    bool Level::Init(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_)
     {
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to entitymanager to BallController::Init()");
 
@@ -19,7 +19,7 @@ namespace Game
         wall->AddComponent<WallComponent>();
         wall->AddComponent<Engine::TransformComponent>(0.f, 285.f, 1300.f, 30.f);
         wall->AddComponent<Engine::CollisionComponent>(1300.f, 30.f);
-        wall->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
+        wall->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetTexture("blank");
         wall->AddComponent<Engine::MoverComponent>();
 
         entityManager_->AddEntity(std::move(wall));
@@ -30,7 +30,7 @@ namespace Game
         wall->AddComponent<WallComponent>();
         wall->AddComponent<Engine::TransformComponent>(0.f, -285, 1300.f, 30.f);
         wall->AddComponent<Engine::CollisionComponent>(1300.f, 30.f);
-        wall->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
+        wall->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetTexture("blank");
         wall->AddComponent<Engine::MoverComponent>();
 
         entityManager_->AddEntity(std::move(wall));
@@ -38,9 +38,10 @@ namespace Game
         return true;
     }
 
-    void Level::Update(float dt, Engine::EntityManager* entityManager_, Engine::Texture* texture_)
+    void Level::Update(float dt, Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_)
     {
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to entitymanager to Level::Update()");
+        ASSERT(entityManager_ != nullptr, "Must pass valid pointer to texturemanager to Level::Update()");
 
         auto walls = entityManager_->GetAllEntitiesWithComponents<Game::WallComponent, Engine::MoverComponent>();
 
@@ -50,11 +51,11 @@ namespace Game
             move->m_TranslationSpeed.x = 100.f;
         }
 
-        
-        if(this->m_ShouldGenerate)
+
+        if (this->m_ShouldGenerate)
         {
             this->RemovePastObstacles(entityManager_);
-            this->GenerateObstacles(entityManager_,  texture_);
+            this->GenerateObstacles(entityManager_, textureManager_);
         }
     }
 
@@ -96,7 +97,7 @@ namespace Game
 
     }
 
-    void Level::GenerateObstacles(Engine::EntityManager* entityManager_, Engine::Texture* texture_)
+    void Level::GenerateObstacles(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_)
     {
         float boundary = 0;
 
@@ -106,13 +107,13 @@ namespace Game
 
         if (boundary < this->m_LastObstaclePos + this->m_MinObstacleDist)
             return;
-        
+
         float playerHeight = 0;
 
         auto player = entityManager_->GetAllEntitiesWithComponent<Engine::PlayerComponent>()[0];
         auto playerTransform = player->GetComponent<Engine::TransformComponent>();
         playerHeight = playerTransform->m_Size.y;
-        
+
         float obstacleGap = playerHeight * 2.5;
 
         //TODO - refactor wall height to be constant & add min obstacle height
@@ -129,25 +130,25 @@ namespace Game
 
         float xObstacle = boundary + 10;
         float floorObstacleHeight = heights(rd);
-       
+
 
         auto floorObstacle = std::make_unique<Engine::Entity>();
 
         floorObstacle->AddComponent<Game::FloorObstacleComponent>();
-        floorObstacle->AddComponent<Engine::TransformComponent>(xObstacle, (windowHeight - floorObstacleHeight)/2 - wallHeight, 100.f, floorObstacleHeight);
+        floorObstacle->AddComponent<Engine::TransformComponent>(xObstacle, (windowHeight - floorObstacleHeight) / 2 - wallHeight, 100.f, floorObstacleHeight);
         floorObstacle->AddComponent<Engine::CollisionComponent>(100.f, floorObstacleHeight);
-        floorObstacle->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
+        floorObstacle->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetTexture("table");
 
         entityManager_->AddEntity(std::move(floorObstacle));
 
 
-        float ceilingObstacleHeight = windowHeight - 2* wallHeight - obstacleGap - floorObstacleHeight;
+        float ceilingObstacleHeight = windowHeight - 2 * wallHeight - obstacleGap - floorObstacleHeight;
         auto ceilingObstacle = std::make_unique<Engine::Entity>();
 
         ceilingObstacle->AddComponent<Game::CeilingObstacleComponent>();
         ceilingObstacle->AddComponent<Engine::TransformComponent>(xObstacle, -(windowHeight - ceilingObstacleHeight) / 2 + wallHeight, 100.f, ceilingObstacleHeight);
         ceilingObstacle->AddComponent<Engine::CollisionComponent>(100.f, ceilingObstacleHeight);
-        ceilingObstacle->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
+        ceilingObstacle->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetTexture("chandelier2");
 
         entityManager_->AddEntity(std::move(ceilingObstacle));
 
