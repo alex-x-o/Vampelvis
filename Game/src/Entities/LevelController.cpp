@@ -19,7 +19,7 @@ namespace Game
         wall->AddComponent<WallComponent>();
         wall->AddComponent<Engine::TransformComponent>(0.f, 285.f, 1300.f, 30.f);
         wall->AddComponent<Engine::CollisionComponent>(1300.f, 30.f);
-        wall->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetTexture("blank");
+        wall->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetTexture("floor");
         wall->AddComponent<Engine::MoverComponent>();
 
         entityManager_->AddEntity(std::move(wall));
@@ -30,7 +30,7 @@ namespace Game
         wall->AddComponent<WallComponent>();
         wall->AddComponent<Engine::TransformComponent>(0.f, -285, 1300.f, 30.f);
         wall->AddComponent<Engine::CollisionComponent>(1300.f, 30.f);
-        wall->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetTexture("blank");
+        wall->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetTexture("ceiling");
         wall->AddComponent<Engine::MoverComponent>();
 
         entityManager_->AddEntity(std::move(wall));
