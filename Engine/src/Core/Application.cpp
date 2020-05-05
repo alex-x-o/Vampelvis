@@ -82,6 +82,24 @@ namespace Engine {
         m_RenderSystem->Shutdown();
         m_RenderSystem.reset();
 
+        LOG_INFO("Shutting down Menu Renderer");
+
+        if (m_MenuRenderer != nullptr)
+        {
+            SDL_DestroyRenderer(m_MenuRenderer);
+        }
+
+        m_MenuRenderer = nullptr;
+
+        LOG_INFO("Shutting down Menu Window");
+
+        if (m_MenuWindow != nullptr)
+        {
+            SDL_DestroyWindow(m_MenuWindow);
+        }
+
+        m_MenuWindow = nullptr;
+
         return true;
     }
 
@@ -115,7 +133,7 @@ namespace Engine {
                 {
                     if (event.key.keysym.sym == SDLK_ESCAPE)
                     {
-                        m_ShowMenu = !m_ShowMenu;
+                        if (!m_ShowMenu) m_ShowMenu = !m_ShowMenu;
                     }
                     else if (event.key.keysym.sym == SDLK_SPACE)
                     {
