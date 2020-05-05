@@ -10,8 +10,8 @@ namespace Game
 
         auto player = std::make_unique<Engine::Entity>();
 
-        player->AddComponent<Engine::TransformComponent>(-300.f, 0.f, 30.f, 100.f);
-        player->AddComponent<Engine::CollisionComponent>(30.f, 100.f);
+        player->AddComponent<Engine::TransformComponent>(-300.f, 0.f, 80.f, 100.f);
+        player->AddComponent<Engine::CollisionComponent>(80.f, 100.f);
         player->AddComponent<Engine::PlayerComponent>();
         player->AddComponent<Engine::InputComponent>();
         player->AddComponent<Engine::MoverComponent>();
