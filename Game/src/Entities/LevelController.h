@@ -13,7 +13,7 @@ namespace Game
 
     private:
         float m_LastObstaclePos{ 0 };
-        float m_MinObstacleDist{ 200 };
+        float m_MinObstacleDist{ 300 };
 
         float m_BaseSpeed{ 100.0f };
         float m_CurrentSpeed{ 100.0f };
