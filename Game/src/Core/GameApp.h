@@ -14,11 +14,10 @@ namespace Game
     {
     private:
         bool m_GodMode{ false };
-        bool gameOver{ false };
 
         void GameSpecificWindowData() override;
         bool GameSpecificInit() override;
-        bool GameSpecificUpdate(float dt_) override;
+        void GameSpecificUpdate(float dt_) override;
         bool GameSpecificShutdown() override;
         void LoadGameTextures();
         void ChangetGameSpeed();

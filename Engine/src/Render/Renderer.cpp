@@ -170,6 +170,18 @@ namespace Engine
         SDL_RenderCopy(m_NativeRenderer, texture_->m_Texture, NULL, &loc);
     }
 
+    void Renderer::ShowWindow()
+    { 
+        SDL_ShowWindow(m_Window->GetNativeWindowHandle());
+        SDL_RaiseWindow(m_Window->GetNativeWindowHandle());
+        m_Window->m_Visible = true;
+    }
+
+    void Renderer::HideWindow()
+    { 
+        SDL_HideWindow(m_Window->GetNativeWindowHandle()); 
+        m_Window->m_Visible = false;
+    }
  
 
     void Renderer::BeginScene() const

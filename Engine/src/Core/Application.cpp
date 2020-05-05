@@ -64,6 +64,12 @@ namespace Engine {
             return false;
         }
 
+        if (SDL_CreateWindowAndRenderer(800, 600, 0, &m_MenuWindow, &m_MenuRenderer)) {
+            LOG_ERROR("Error initializing menu window!");
+        }
+
+        SDL_SetWindowTitle(m_MenuWindow, "Vampelvis");
+
         return true;
     }
 
@@ -79,6 +85,17 @@ namespace Engine {
         return true;
     }
 
+    void Application::ShowMenu()
+    {
+        m_RenderSystem->GetRenderer()->HideWindow();
+        SDL_ShowWindow(m_MenuWindow);
+        SDL_RaiseWindow(m_MenuWindow);
+
+        SDL_SetRenderDrawColor(m_MenuRenderer, 0x00, 0x00, 0x00, 0x00);
+        SDL_RenderClear(m_MenuRenderer);
+        SDL_RenderPresent(m_MenuRenderer);
+    }
+
     bool Application::Run()
     {
         m_Running = true;
@@ -90,9 +107,20 @@ namespace Engine {
         {
             while (SDL_PollEvent(&event) != 0)
             {
-                if (event.type == SDL_QUIT)
+                if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE || event.type == SDL_QUIT)
                 {
                     m_Running = false;
+                }
+                else if (event.type == SDL_KEYDOWN)
+                {
+                    if (event.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        m_ShowMenu = !m_ShowMenu;
+                    }
+                    else if (event.key.keysym.sym == SDLK_SPACE)
+                    {
+                        if (m_ShowMenu) m_ShowMenu = !m_ShowMenu;
+                    }
                 }
             }
 
@@ -102,11 +130,10 @@ namespace Engine {
 
             LOG_INFO("Current FPS: {}", 1.f / deltaTime);
 
-            // Game needs restart?
-            if (!Update(deltaTime))
-            {
+            if (!m_ShowMenu && m_GameOver)
                 return true;
-            }
+
+            m_ShowMenu ? ShowMenu() : Update(deltaTime);
 
             previousFrameTime = frameTime;
         }
@@ -114,15 +141,22 @@ namespace Engine {
         return false;
     }
 
-    bool Application::Update(float dt)
+    void Application::Update(float dt)
     {
+        if (!m_RenderSystem->GetRenderer()->IsWindowVisible())
+        {
+            m_ShowMenu = false;
+            SDL_HideWindow(m_MenuWindow);
+            m_RenderSystem->GetRenderer()->ShowWindow();
+        }
+
         // Update all systems
         m_InputManager->Update(dt, m_EntityManager.get());
         m_PhysicsSystem->Update(dt, m_EntityManager.get());
         m_EntityManager->Update(dt);
         m_RenderSystem->Update(dt, m_EntityManager.get());
 
-        return GameSpecificUpdate(dt);
+        GameSpecificUpdate(dt);
     }
 
 }

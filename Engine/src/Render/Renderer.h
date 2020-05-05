@@ -1,12 +1,12 @@
 #pragma once
 #include "Render/WindowData.h"
+#include "Render/Window.h"
 
 struct SDL_Renderer;
 
 namespace Engine
 {
     struct WindowData;
-    class Window;
     class Entity;
     struct Texture;
 
@@ -22,6 +22,9 @@ namespace Engine
         void EndScene() const;
 
         SDL_Renderer* GetNativeRenderer() const { return m_NativeRenderer; }
+        bool IsWindowVisible() const { return m_Window->m_Visible; }
+        void ShowWindow();
+        void HideWindow();
 
         void SetBackgroundColor(unsigned char bgR_, unsigned char bgG_, unsigned char bgB_, unsigned char bgA_);
         void SetBackgroundColor(const Color& col_);

@@ -42,25 +42,20 @@ bool Game::GameApp::GameSpecificInit()
     return true;
 }
 
-bool Game::GameApp::GameSpecificUpdate(float dt_)
+void Game::GameApp::GameSpecificUpdate(float dt_)
 {
     this->ChangetGameSpeed();
+
+    bool gameOver = !m_PlayerController->Update(m_EntityManager.get());
     if (gameOver && !m_GodMode)
     {
-        // If space is pressed start new game
-        bool spacePressed = m_TextController->Update(m_EntityManager.get(), m_PlayerController->GetPlayerPositionX());
-        if (spacePressed) return false;
+        m_ShowMenu = true;
+        m_GameOver = true;
+        return;
     }
-    else
-    {
-        // If player hits something, shut down game
-        gameOver = !m_PlayerController->Update(m_EntityManager.get());
-    }
-
+    
     m_CameraController->Update(dt_, m_EntityManager.get());
     m_Level->Update(dt_, m_EntityManager.get(), m_TextureManager.get());
-
-    return true;
 }
 
 bool Game::GameApp::GameSpecificShutdown()
