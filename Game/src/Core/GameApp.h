@@ -21,6 +21,8 @@ namespace Game
         bool GameSpecificUpdate(float dt_) override;
         bool GameSpecificShutdown() override;
         void LoadGameTextures();
+        void ChangetGameSpeed();
+        int GetScore();
 
         std::unique_ptr<PlayerController> m_PlayerController{};
         std::unique_ptr<CameraController> m_CameraController{};

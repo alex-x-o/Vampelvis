@@ -48,7 +48,7 @@ namespace Game
         for (auto& wall : walls)
         {
             auto move = wall->GetComponent<Engine::MoverComponent>();
-            move->m_TranslationSpeed.x = 100.f;
+            move->m_TranslationSpeed.x = m_CurrentSpeed;
         }
 
 
@@ -155,5 +155,10 @@ namespace Game
 
 
         this->m_LastObstaclePos = xObstacle;
+    }
+
+    void Level::UpdateSpeed(float speedCoef_)
+    {
+        m_CurrentSpeed = m_BaseSpeed * speedCoef_;
     }
 }

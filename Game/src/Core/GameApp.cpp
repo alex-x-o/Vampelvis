@@ -44,6 +44,7 @@ bool Game::GameApp::GameSpecificInit()
 
 bool Game::GameApp::GameSpecificUpdate(float dt_)
 {
+    this->ChangetGameSpeed();
     if (gameOver && !m_GodMode)
     {
         // If space is pressed start new game
@@ -89,4 +90,18 @@ void Game::GameApp::LoadGameTextures()
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chandelier3", "./Textures/chandelier3.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chanSil", "./Textures/chanSil.png");
 
+}
+
+void Game::GameApp::ChangetGameSpeed()
+{
+    float coef = 1.0f + static_cast<float>(GetScore()) / 100.0f;
+    m_CameraController->UpdateSpeed(coef);
+    m_PlayerController->UpdateSpeed(coef);
+    m_Level->UpdateSpeed(coef);
+}
+
+int Game::GameApp::GetScore()
+{
+    int score = ceil(m_PlayerController->GetPlayerPositionX() - m_PlayerController->GetPlayerStartingPositionX()) / 80;
+    return score;
 }

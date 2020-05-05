@@ -46,7 +46,11 @@ namespace Game
             bool moveRightInput = Engine::InputManager::IsActionActive(input, "PanCameraRight");
 
 
-            move->m_TranslationSpeed.x = 100.f;
+            move->m_TranslationSpeed.x = m_CurrentSpeed;
         }
+    }
+    void CameraController::UpdateSpeed(float speedCoef_)
+    {
+        m_CurrentSpeed = m_BaseSpeed * speedCoef_;
     }
 }

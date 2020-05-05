@@ -10,7 +10,7 @@ namespace Game
 
         auto player = std::make_unique<Engine::Entity>();
 
-        player->AddComponent<Engine::TransformComponent>(-300.f, 0.f, 80.f, 100.f);
+        player->AddComponent<Engine::TransformComponent>(this->m_PlayerStartingPositionX, 0.f, 80.f, 100.f);
         player->AddComponent<Engine::CollisionComponent>(80.f, 100.f);
         player->AddComponent<Engine::PlayerComponent>();
         player->AddComponent<Engine::InputComponent>();
@@ -55,8 +55,7 @@ namespace Game
 
         // Move player
         bool jumpInput = Engine::InputManager::IsActionActive(input, "MainGameBtn");
-            
-        move->m_TranslationSpeed.x = 100.f;
+        move->m_TranslationSpeed.x = m_CurrentSpeed;
         move->m_TranslationSpeed.y = speed * (jumpInput ? -0.5f : 0.2f);
 
         // Check position
@@ -79,5 +78,14 @@ namespace Game
     float PlayerController::GetPlayerPositionX() const
     {
         return m_PlayerPositionX;
+    }
+    float PlayerController::GetPlayerStartingPositionX() const
+    {
+        return m_PlayerStartingPositionX;
+    }
+
+    void PlayerController::UpdateSpeed(float speedCoef_)
+    {
+        m_CurrentSpeed = m_BaseSpeed * speedCoef_;
     }
 }
