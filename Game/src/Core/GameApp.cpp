@@ -3,7 +3,6 @@
 #include "GameApp.h"
 #include "Entities/CameraController.h"
 #include "Entities/PlayerController.h"
-#include "Entities/TextController.h"
 #include "Entities/LevelController.h"
 #include "Entities/StaticImage.h"
 
@@ -35,9 +34,6 @@ bool Game::GameApp::GameSpecificInit()
 
     m_Level = std::make_unique<Level>();
     m_Level->Init(m_EntityManager.get(), m_TextureManager.get());
-
-    m_TextController = std::make_unique<TextController>();
-    m_TextController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("woodenTexture1"));
 
     return true;
 }

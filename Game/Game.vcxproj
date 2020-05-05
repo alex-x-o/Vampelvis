@@ -163,7 +163,6 @@
     <ClInclude Include="src\Entities\PlayerController.h" />
     <ClInclude Include="src\Entities\LevelController.h" />
     <ClInclude Include="src\Entities\StaticImage.h" />
-    <ClInclude Include="src\Entities\TextController.h" />
     <ClInclude Include="src\precomp.h" />
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +171,6 @@
     <ClCompile Include="src\Entities\PlayerController.cpp" />
     <ClCompile Include="src\Entities\LevelController.cpp" />
     <ClCompile Include="src\Entities\StaticImage.cpp" />
-    <ClCompile Include="src\Entities\TextController.cpp" />
     <ClCompile Include="src\precomp.cpp" />
   </ItemGroup>
   <ItemGroup>
