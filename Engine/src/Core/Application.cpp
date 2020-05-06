@@ -3,7 +3,6 @@
 #include "ECS/EntityManager.h"
 #include "Input/InputManager.h"
 #include "Render/RenderSystem.h"
-#include "MainMenu/MainMenu.h"
 #include "Render/Renderer.h"
 #include "Render/Texture.h"
 #include "Render/Window.h"
@@ -16,7 +15,7 @@
 namespace Engine {
 
     Application::~Application() = default;
-
+    WindowData Application::m_WindowData{};
 
     bool Application::Init()
     {

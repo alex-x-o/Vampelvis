@@ -1,25 +1,75 @@
 #include "precomp.h"
 #include "MainMenu.h"
 #include "Render/Renderer.h"
+#include "Core/Application.h"
 
 #include <SDL.h>
+
 
 bool Engine::MainMenu::Init()
 {
     LOG_INFO("Initializing Main Menu");
 
-    int retVal = SDL_CreateWindowAndRenderer(800, 600, 0, &m_MenuWindow, &m_MenuRenderer);
-    SDL_SetWindowTitle(m_MenuWindow, "Vampelvis");
+    if (TTF_Init() == -1)
+    {
+        LOG_CRITICAL("Unable to initialize SDL_ttf");
+        return false;
+    }
 
-	return !retVal;
+    m_WindowData = Engine::Application::GetWindowData();
+
+    int retVal = SDL_CreateWindowAndRenderer(m_WindowData.m_Width, m_WindowData.m_Height, 0, &m_MenuWindow, &m_MenuRenderer);
+    SDL_SetWindowTitle(m_MenuWindow, m_WindowData.m_Title.c_str());
+
+	return !retVal && CreateMenuItems();
+}
+
+bool Engine::MainMenu::CreateMenuItems()
+{
+    m_TitleFont = TTF_OpenFont("./menuFont.ttf", 150);
+    m_ItemsFont = TTF_OpenFont("./menuFont.ttf", 50);
+    if (!m_TitleFont || !m_ItemsFont)
+    {
+        LOG_ERROR("Failed to initialize Menu Fonts: ");
+        LOG_ERROR(TTF_GetError());
+
+        return false;
+    }
+
+    m_MenuLabels = { m_WindowData.m_Title, "High score", "About", "Press SPACE to start game" };
+
+    SDL_Color redColor = { 255, 0, 0 };
+
+    int i = 0;
+    for (auto& label : m_MenuLabels)
+    {
+        SDL_Surface* itemSurface = TTF_RenderText_Solid(i == 0 ? m_TitleFont : m_ItemsFont, label.c_str(), redColor);
+        m_MenuTextures.push_back(SDL_CreateTextureFromSurface(m_MenuRenderer, itemSurface));
+
+        m_MenuRects.push_back({ m_WindowData.m_Width / 2 - itemSurface->w / 2,
+                                i == 0 ? m_WindowData.m_Height / 4 - itemSurface->h / 2 : m_WindowData.m_Height / 2 + (i - 1) * itemSurface->h,
+                                itemSurface->w, itemSurface->h });
+
+        ++i;
+
+        SDL_FreeSurface(itemSurface);
+    }
+
+    return true;
 }
 
 void Engine::MainMenu::Update(Renderer* windowRenderer_)
 {
     if (!isVisible()) ShowMenu(windowRenderer_);
-  
+
     SDL_SetRenderDrawColor(m_MenuRenderer, 0x00, 0x00, 0x00, 0x00);
     SDL_RenderClear(m_MenuRenderer);
+    
+    for (unsigned i = 0; i < m_MenuLabels.size(); ++i)
+    {
+        SDL_RenderCopy(m_MenuRenderer, m_MenuTextures[i], NULL, &m_MenuRects[i]);
+    }
+
     SDL_RenderPresent(m_MenuRenderer);
 }
 
@@ -42,6 +92,11 @@ void Engine::MainMenu::Shutdown()
     }
 
     m_MenuWindow = nullptr;
+
+    for (auto& texture : m_MenuTextures)
+    {
+        SDL_DestroyTexture(texture);
+    }
 }
 
 void Engine::MainMenu::ShowMenu(Renderer* windowRenderer_)
@@ -51,7 +106,7 @@ void Engine::MainMenu::ShowMenu(Renderer* windowRenderer_)
     SDL_ShowWindow(m_MenuWindow);
     SDL_RaiseWindow(m_MenuWindow);
 
-    visible = true;
+    m_Visible = true;
 }
 
 void Engine::MainMenu::HideMenu(Renderer* windowRenderer_)
@@ -60,5 +115,5 @@ void Engine::MainMenu::HideMenu(Renderer* windowRenderer_)
 
     windowRenderer_->ShowWindow();
 
-    visible = false;
+    m_Visible = false;
 }

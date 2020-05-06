@@ -22,6 +22,8 @@ namespace Engine {
         virtual ~Application();
         Application() = default;
 
+        static WindowData GetWindowData() { return m_WindowData; }
+
     protected:
         void SetWindowData(const WindowData& windowData_) { m_WindowData = windowData_; }
 
@@ -29,7 +31,7 @@ namespace Engine {
         bool m_GameOver{ false };
         bool m_ShowMenu{ true };
 
-        WindowData m_WindowData{};
+        static WindowData m_WindowData;
         std::unique_ptr<RenderSystem> m_RenderSystem{};
         std::unique_ptr<MainMenu> m_MainMenu{};
         std::unique_ptr<PhysicsSystem> m_PhysicsSystem{};
