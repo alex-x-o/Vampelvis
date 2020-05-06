@@ -3,6 +3,9 @@
 
 namespace Game
 {
+    const float PlayerController::Height = 100.f;
+    const float PlayerController::Width = 80.f;
+
     bool PlayerController::Init(Engine::EntityManager* entityManager_, Engine::Texture* texture_)
     {
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to entitymanager to PlayerController::Init()");
@@ -10,8 +13,8 @@ namespace Game
 
         auto player = std::make_unique<Engine::Entity>();
 
-        player->AddComponent<Engine::TransformComponent>(this->m_PlayerStartingPositionX, 0.f, 80.f, 100.f);
-        player->AddComponent<Engine::CollisionComponent>(80.f, 100.f);
+        player->AddComponent<Engine::TransformComponent>(this->m_PlayerStartingPositionX, 0.f, Width, Height);
+        player->AddComponent<Engine::CollisionComponent>(Width, Height);
         player->AddComponent<Engine::PlayerComponent>();
         player->AddComponent<Engine::InputComponent>();
         player->AddComponent<Engine::MoverComponent>();
