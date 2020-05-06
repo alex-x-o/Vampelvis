@@ -22,7 +22,7 @@ namespace Game
 
     };
 
-    struct GoalComponent : public Engine::Component
+    struct GlidingEnemyComponent : public Engine::Component
     {
 
     };

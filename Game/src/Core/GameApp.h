@@ -11,6 +11,9 @@ namespace Game
 
     class GameApp final : public Engine::Application
     {
+    public:
+        const static int WindowWidth{ 800 };
+        const static int WindowHeight{ 600 };
     private:
         bool m_GodMode{ false };
 

@@ -13,8 +13,8 @@ void Game::GameApp::GameSpecificWindowData()
 {
     Engine::WindowData gameSpecificWindowData;
     gameSpecificWindowData.m_Title = "Vampelvis";
-    gameSpecificWindowData.m_Width = 800;
-    gameSpecificWindowData.m_Height = 600;
+    gameSpecificWindowData.m_Width = GameApp::WindowWidth;
+    gameSpecificWindowData.m_Height = GameApp::WindowHeight;
     gameSpecificWindowData.m_Vsync = true;
     SetWindowData(gameSpecificWindowData);
 }
@@ -33,7 +33,7 @@ bool Game::GameApp::GameSpecificInit()
     ASSERT(playerStatus, "Player initialization failed in GameApp::GameSpecificInit()");
 
     m_Level = std::make_unique<Level>();
-    m_Level->Init(m_EntityManager.get(), m_TextureManager.get());
+    m_Level->Init(m_EntityManager.get(), m_TextureManager.get(), GameApp::WindowHeight);
 
     return true;
 }
@@ -93,6 +93,6 @@ void Game::GameApp::ChangetGameSpeed()
 
 int Game::GameApp::GetScore()
 {
-    int score = ceil(m_PlayerController->GetPlayerPositionX() - m_PlayerController->GetPlayerStartingPositionX()) / 80;
+    int score = static_cast<int>(ceil(m_PlayerController->GetPlayerPositionX() - m_PlayerController->GetPlayerStartingPositionX())) / 80;
     return score;
 }
