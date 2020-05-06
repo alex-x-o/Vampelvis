@@ -15,13 +15,19 @@ namespace Engine
 	class MainMenu
 	{
 	public:
+		SDL_Color m_DarkColor{ 255, 0, 0 };
+		SDL_Color m_LightColor{ 255, 255, 255 };
+
 		bool Init();
 		void Update(Renderer* windowRenderer_);
 		void Shutdown();
 
 		void ShowMenu(Renderer* windowRenderer_);
 		void HideMenu(Renderer* windowRenderer_);
-		bool isVisible() const { return m_Visible; }
+		bool IsVisible() const { return m_Visible; }
+
+		void GoUp();
+		void GoDown();
 
 	private:
 		SDL_Window* m_MenuWindow;
@@ -37,6 +43,9 @@ namespace Engine
 		std::vector<SDL_Texture*> m_MenuTextures;
 		std::vector<SDL_Rect> m_MenuRects;
 
-		bool CreateMenuItems();
+		std::vector<bool> m_Selected;
+		void ChangeColorOfItem(int index_, SDL_Color color_);
+
+		void CreateMenuItems();
 	};
 }
