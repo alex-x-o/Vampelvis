@@ -106,7 +106,7 @@ namespace Game
         std::uniform_real_distribution<float> heights(minObstacleHeight, maxObstacleHeight);
 
 
-        float xObstacle = boundary + obstacleWidth/2;
+        float xObstacle = ceil(boundary + obstacleWidth/2);
         float floorObstacleHeight = heights(rd);
         float floorObstaclePos = (windowHeight - floorObstacleHeight) / 2 - Level::WallHeight;
         Engine::Texture* floorTex = textureManager_->GetTexture("chandelier");
