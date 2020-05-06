@@ -6,8 +6,6 @@
 #include "Entities/LevelController.h"
 #include "Entities/StaticImage.h"
 
-#include <Engine.h>
-#include <Core/EntryPoint.h>
 
 void Game::GameApp::GameSpecificWindowData()
 {
@@ -42,11 +40,10 @@ void Game::GameApp::GameSpecificUpdate(float dt_)
 {
     this->ChangetGameSpeed();
 
-    bool gameOver = !m_PlayerController->Update(m_EntityManager.get());
-    if (gameOver && !m_GodMode)
+    bool playerHit = !m_PlayerController->Update(m_EntityManager.get());
+    if (playerHit && !m_GodMode)
     {
-        m_ShowMenu = true;
-        m_GameOver = true;
+        m_ShowMenu = m_GameOver = true;
         return;
     }
     

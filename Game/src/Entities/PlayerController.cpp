@@ -41,9 +41,11 @@ namespace Game
         auto input = entity->GetComponent<Engine::InputComponent>();
         auto speed = entity->GetComponent<Engine::PlayerComponent>()->m_PanSpeed;
         auto sprite = entity->GetComponent<Engine::SpriteComponent>();
-        auto frameCurrent = entity->GetComponent<Engine::SpriteComponent>()->m_AnimationCurrentFrame;
-        auto frameNum = entity->GetComponent<Engine::SpriteComponent>()->m_AnimationFrames;
-        
+
+        // Animate player
+        auto frameCurrent = sprite->m_AnimationCurrentFrame;
+        auto frameNum = sprite->m_AnimationFrames;
+
         if (frameCurrent < frameNum - 1)
         {
             sprite->m_AnimationCurrentFrame = sprite->m_AnimationCurrentFrame + 1;
@@ -79,6 +81,7 @@ namespace Game
     {
         return m_PlayerPositionX;
     }
+
     float PlayerController::GetPlayerStartingPositionX() const
     {
         return m_PlayerStartingPositionX;

@@ -125,8 +125,7 @@ namespace Engine {
 
             LOG_INFO("Current FPS: {}", 1.f / deltaTime);
 
-            if (!m_ShowMenu && m_GameOver)
-                return true;
+            if (!m_ShowMenu && m_GameOver) return true;
 
             m_ShowMenu ? m_MainMenu->Update(m_RenderSystem->GetRenderer()) : Update(deltaTime);
 
@@ -138,11 +137,7 @@ namespace Engine {
 
     void Application::Update(float dt)
     {
-        if (!m_RenderSystem->GetRenderer()->IsWindowVisible())
-        {
-            m_ShowMenu = false;
-            m_MainMenu->HideMenu(m_RenderSystem->GetRenderer());
-        }
+        if (m_MainMenu->isVisible()) m_MainMenu->HideMenu(m_RenderSystem->GetRenderer());
 
         // Update all systems
         m_InputManager->Update(dt, m_EntityManager.get());

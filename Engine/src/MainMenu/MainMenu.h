@@ -16,11 +16,12 @@ namespace Engine
 
 		void ShowMenu(Renderer* windowRenderer_);
 		void HideMenu(Renderer* windowRenderer_);
+		bool isVisible() const { return visible; }
 
 	private:
 		SDL_Window* m_MenuWindow;
 		SDL_Renderer* m_MenuRenderer;
 
-		bool isVisible{ true };
+		bool visible{ true };
 	};
 }

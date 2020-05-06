@@ -16,7 +16,7 @@ bool Engine::MainMenu::Init()
 
 void Engine::MainMenu::Update(Renderer* windowRenderer_)
 {
-    if (!isVisible) ShowMenu(windowRenderer_);
+    if (!isVisible()) ShowMenu(windowRenderer_);
   
     SDL_SetRenderDrawColor(m_MenuRenderer, 0x00, 0x00, 0x00, 0x00);
     SDL_RenderClear(m_MenuRenderer);
@@ -51,7 +51,7 @@ void Engine::MainMenu::ShowMenu(Renderer* windowRenderer_)
     SDL_ShowWindow(m_MenuWindow);
     SDL_RaiseWindow(m_MenuWindow);
 
-    isVisible = true;
+    visible = true;
 }
 
 void Engine::MainMenu::HideMenu(Renderer* windowRenderer_)
@@ -60,5 +60,5 @@ void Engine::MainMenu::HideMenu(Renderer* windowRenderer_)
 
     windowRenderer_->ShowWindow();
 
-    isVisible = false;
+    visible = false;
 }
