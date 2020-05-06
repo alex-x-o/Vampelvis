@@ -21,6 +21,11 @@ bool Engine::MainMenu::Init()
     int retVal = SDL_CreateWindowAndRenderer(m_WindowData.m_Width, m_WindowData.m_Height, 0, &m_MenuWindow, &m_MenuRenderer);
     SDL_SetWindowTitle(m_MenuWindow, m_WindowData.m_Title.c_str());
 
+	return !retVal && CreateMenuItems();
+}
+
+bool Engine::MainMenu::CreateMenuItems()
+{
     m_TitleFont = TTF_OpenFont("./menuFont.ttf", 150);
     m_ItemsFont = TTF_OpenFont("./menuFont.ttf", 50);
     if (!m_TitleFont || !m_ItemsFont)
@@ -31,41 +36,41 @@ bool Engine::MainMenu::Init()
         return false;
     }
 
-    m_MenuLabels = { m_WindowData.m_Title, "High score", "About", "Press SPACE to start game"};
+    m_MenuLabels = { m_WindowData.m_Title, "High score", "About", "Press SPACE to start game" };
 
-	return !retVal;
+    SDL_Color redColor = { 255, 0, 0 };
+
+    int i = 0;
+    for (auto& label : m_MenuLabels)
+    {
+        SDL_Surface* itemSurface = TTF_RenderText_Solid(i == 0 ? m_TitleFont : m_ItemsFont, label.c_str(), redColor);
+        m_MenuTextures.push_back(SDL_CreateTextureFromSurface(m_MenuRenderer, itemSurface));
+
+        m_MenuRects.push_back({ m_WindowData.m_Width / 2 - itemSurface->w / 2,
+                                i == 0 ? m_WindowData.m_Height / 4 - itemSurface->h / 2 : m_WindowData.m_Height / 2 + (i - 1) * itemSurface->h,
+                                itemSurface->w, itemSurface->h });
+
+        ++i;
+
+        SDL_FreeSurface(itemSurface);
+    }
+
+    return true;
 }
 
 void Engine::MainMenu::Update(Renderer* windowRenderer_)
 {
     if (!isVisible()) ShowMenu(windowRenderer_);
-  
-    SDL_Color redColor = { 255,0,0 };
 
     SDL_SetRenderDrawColor(m_MenuRenderer, 0x00, 0x00, 0x00, 0x00);
     SDL_RenderClear(m_MenuRenderer);
     
-    ShowMenuItems(redColor);
+    for (unsigned i = 0; i < m_MenuLabels.size(); ++i)
+    {
+        SDL_RenderCopy(m_MenuRenderer, m_MenuTextures[i], NULL, &m_MenuRects[i]);
+    }
 
     SDL_RenderPresent(m_MenuRenderer);
-}
-
-void Engine::MainMenu::ShowMenuItems(SDL_Color& textColor) const
-{
-    int i = 0;
-    for (auto& label : m_MenuLabels)
-    {
-        SDL_Surface* itemSurface = TTF_RenderText_Solid(i == 0 ? m_TitleFont : m_ItemsFont, label.c_str(), textColor);
-        SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(m_MenuRenderer, itemSurface);
-
-        SDL_Rect itemRect = { m_WindowData.m_Width/2 - itemSurface->w/2,
-                              i == 0 ? m_WindowData.m_Height/4 - itemSurface->h/2 : m_WindowData.m_Height/2 + i*itemSurface->h,
-                              itemSurface->w, itemSurface->h };
-        
-        SDL_RenderCopy(m_MenuRenderer, itemTexture, NULL, &itemRect);
-
-        ++i;
-    }
 }
 
 void Engine::MainMenu::Shutdown()
@@ -87,6 +92,11 @@ void Engine::MainMenu::Shutdown()
     }
 
     m_MenuWindow = nullptr;
+
+    for (auto& texture : m_MenuTextures)
+    {
+        SDL_DestroyTexture(texture);
+    }
 }
 
 void Engine::MainMenu::ShowMenu(Renderer* windowRenderer_)

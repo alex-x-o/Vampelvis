@@ -27,13 +27,16 @@ namespace Engine
 		SDL_Window* m_MenuWindow;
 		WindowData m_WindowData;
 		SDL_Renderer* m_MenuRenderer;
+
 		TTF_Font* m_TitleFont;
 		TTF_Font* m_ItemsFont;
 
 		bool m_Visible{ true };
 
 		std::vector<std::string> m_MenuLabels;
+		std::vector<SDL_Texture*> m_MenuTextures;
+		std::vector<SDL_Rect> m_MenuRects;
 
-		void ShowMenuItems(SDL_Color& textColor) const;
+		bool CreateMenuItems();
 	};
 }
