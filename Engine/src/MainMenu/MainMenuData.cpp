@@ -10,6 +10,7 @@ Engine::MainMenuData::MainMenuData()
 	m_Width = windowData.m_Width;
 	m_Height = windowData.m_Height;
 	m_Title = windowData.m_Title;
+	m_Icon = windowData.m_Icon;
 
 	if (TTF_Init() == -1)
 	{

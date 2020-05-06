@@ -3,6 +3,7 @@
 #include "Render/Renderer.h"
 
 #include <SDL.h>
+#include <SDL_image.h>
 
 
 bool Engine::MainMenu::Init()
@@ -11,6 +12,8 @@ bool Engine::MainMenu::Init()
 
     int retVal = SDL_CreateWindowAndRenderer(m_Data.m_Width, m_Data.m_Height, 0, &m_MenuWindow, &m_MenuRenderer);
     SDL_SetWindowTitle(m_MenuWindow, m_Data.m_Title.c_str());
+
+    SDL_SetWindowIcon(m_MenuWindow, m_Data.m_Icon);
 
     CreateMenuItems();
 
@@ -84,6 +87,9 @@ void Engine::MainMenu::Update(Renderer* windowRenderer_)
     SDL_RenderClear(m_MenuRenderer);
     
     ChangeColorOfItem(FindSelectedItem(), m_Data.m_SelectedColor);
+
+    SDL_Texture* background = IMG_LoadTexture(m_MenuRenderer, "./Textures/backCave.png");
+    SDL_RenderCopy(m_MenuRenderer, background, NULL, NULL);
 
     // Render all Menu Items
     for (unsigned i = 0; i < m_MenuLabels.size(); ++i)

@@ -22,7 +22,7 @@ namespace Engine {
         virtual ~Application();
         Application() = default;
 
-        static WindowData GetWindowData() { return m_WindowData; }
+        static WindowData& GetWindowData() { return m_WindowData; }
 
     protected:
         void SetWindowData(const WindowData& windowData_) { m_WindowData = windowData_; }
