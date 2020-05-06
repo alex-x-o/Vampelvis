@@ -28,6 +28,8 @@ namespace Engine
         }
 
         LOG_INFO("Window successfully initialized");
+
+        SDL_HideWindow(m_NativeWindowHandle);
         return true;
     }
 

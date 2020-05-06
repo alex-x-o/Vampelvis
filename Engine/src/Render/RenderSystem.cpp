@@ -33,8 +33,6 @@ namespace Engine
             return false;
         }
 
-        m_Renderer->Init(windowData_);
-
         LOG_INFO("RenderSystem initialized successfully");
         return true;
     }

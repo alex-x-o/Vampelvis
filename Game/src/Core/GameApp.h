@@ -8,17 +8,18 @@ namespace Game
     class PlayerController;
     class Level;
     class StaticImage;
-    class TextController;
 
     class GameApp final : public Engine::Application
     {
+    public:
+        const static int WindowWidth{ 800 };
+        const static int WindowHeight{ 600 };
     private:
         bool m_GodMode{ false };
-        bool gameOver{ false };
 
         void GameSpecificWindowData() override;
         bool GameSpecificInit() override;
-        bool GameSpecificUpdate(float dt_) override;
+        void GameSpecificUpdate(float dt_) override;
         bool GameSpecificShutdown() override;
         void LoadGameTextures();
         void ChangetGameSpeed();
@@ -28,7 +29,6 @@ namespace Game
         std::unique_ptr<CameraController> m_CameraController{};
         std::unique_ptr<Level> m_Level{};
         std::unique_ptr<StaticImage> m_TestImage{};
-        std::unique_ptr<TextController> m_TextController{};
     };
 }
 

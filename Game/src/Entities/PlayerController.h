@@ -18,6 +18,9 @@ namespace Game
         float GetPlayerPositionX() const;
         float GetPlayerStartingPositionX() const;
 
+        const static float Height;
+        const static float Width;
+
     private:
         float m_PlayerPositionX{};
         float m_PlayerStartingPositionX{ -300.f };

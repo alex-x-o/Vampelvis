@@ -23,6 +23,9 @@ namespace Engine
 
         SDL_Renderer* GetNativeRenderer() const { return m_NativeRenderer; }
 
+        void ShowWindow();
+        void HideWindow();
+
         void SetBackgroundColor(unsigned char bgR_, unsigned char bgG_, unsigned char bgB_, unsigned char bgA_);
         void SetBackgroundColor(const Color& col_);
         void SetBackgroundTexture(Engine::Texture* texture_);

@@ -12,7 +12,9 @@ namespace Engine {
     public:
         bool Init(const WindowData& windowData_ = WindowData());
         bool Shutdown();
+
         SDL_Window* GetNativeWindowHandle() const { return m_NativeWindowHandle; }
+
         ~Window();
         Window() = default;
     private:

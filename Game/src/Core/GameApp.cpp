@@ -3,19 +3,16 @@
 #include "GameApp.h"
 #include "Entities/CameraController.h"
 #include "Entities/PlayerController.h"
-#include "Entities/TextController.h"
 #include "Entities/LevelController.h"
 #include "Entities/StaticImage.h"
 
-#include <Engine.h>
-#include <Core/EntryPoint.h>
 
 void Game::GameApp::GameSpecificWindowData()
 {
     Engine::WindowData gameSpecificWindowData;
     gameSpecificWindowData.m_Title = "Vampelvis";
-    gameSpecificWindowData.m_Width = 800;
-    gameSpecificWindowData.m_Height = 600;
+    gameSpecificWindowData.m_Width = GameApp::WindowWidth;
+    gameSpecificWindowData.m_Height = GameApp::WindowHeight;
     gameSpecificWindowData.m_Vsync = true;
     SetWindowData(gameSpecificWindowData);
 }
@@ -34,33 +31,24 @@ bool Game::GameApp::GameSpecificInit()
     ASSERT(playerStatus, "Player initialization failed in GameApp::GameSpecificInit()");
 
     m_Level = std::make_unique<Level>();
-    m_Level->Init(m_EntityManager.get(), m_TextureManager.get());
-
-    m_TextController = std::make_unique<TextController>();
-    m_TextController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("woodenTexture1"));
+    m_Level->Init(m_EntityManager.get(), m_TextureManager.get(), GameApp::WindowHeight);
 
     return true;
 }
 
-bool Game::GameApp::GameSpecificUpdate(float dt_)
+void Game::GameApp::GameSpecificUpdate(float dt_)
 {
     this->ChangetGameSpeed();
-    if (gameOver && !m_GodMode)
-    {
-        // If space is pressed start new game
-        bool spacePressed = m_TextController->Update(m_EntityManager.get(), m_PlayerController->GetPlayerPositionX());
-        if (spacePressed) return false;
-    }
-    else
-    {
-        // If player hits something, shut down game
-        gameOver = !m_PlayerController->Update(m_EntityManager.get());
-    }
 
+    bool playerHit = !m_PlayerController->Update(m_EntityManager.get());
+    if (playerHit && !m_GodMode)
+    {
+        m_ShowMenu = m_GameOver = true;
+        return;
+    }
+    
     m_CameraController->Update(dt_, m_EntityManager.get());
     m_Level->Update(dt_, m_EntityManager.get(), m_TextureManager.get());
-
-    return true;
 }
 
 bool Game::GameApp::GameSpecificShutdown()
@@ -102,6 +90,6 @@ void Game::GameApp::ChangetGameSpeed()
 
 int Game::GameApp::GetScore()
 {
-    int score = ceil(m_PlayerController->GetPlayerPositionX() - m_PlayerController->GetPlayerStartingPositionX()) / 80;
+    int score = static_cast<int>(ceil(m_PlayerController->GetPlayerPositionX() - m_PlayerController->GetPlayerStartingPositionX())) / 80;
     return score;
 }
