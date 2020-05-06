@@ -61,7 +61,7 @@ void Game::GameApp::LoadGameTextures()
     //Player
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "vampire", "./Textures/vampireSprites.png");
 
-    // Backgrounds
+    // Level 1 Backgrounds
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "blank", "./Textures/blank.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "woodenTexture", "./Textures/woodenTexture.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "woodenTexture1", "./Textures/woodenTexture1.png");
@@ -77,6 +77,18 @@ void Game::GameApp::LoadGameTextures()
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chandelier2", "./Textures/chandelier2.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chandelier3", "./Textures/chandelier3.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "chanSil", "./Textures/chanSil.png");
+
+    // Level 2 Backgrounds
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "backCave", "./Textures/backCave.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "floorCave", "./Textures/ceilingCave.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "ceilingCave", "./Textures/floorCave.png");
+
+    // Level 2 Obstacles
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "stalactite", "./Textures/stalactite.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "stalactite2", "./Textures/stalactite2.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "stalactite3", "./Textures/stalactite3.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "stalagmite", "./Textures/stalagmite.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "stalagmite2", "./Textures/stalagmite2.png");
 
 }
 
