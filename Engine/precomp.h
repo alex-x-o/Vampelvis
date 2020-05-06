@@ -4,6 +4,7 @@
 #define SPDLOG_NO_EXCEPTIONS
 
 #include <iostream>
+#include <fstream>
 #include <memory>
 #include <utility>
 #include <algorithm>

@@ -33,9 +33,7 @@
     <ClInclude Include="src\Entities\LevelController.h">
       <Filter>src\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="ScrollingBackground.h">
-      <Filter>src\Entities</Filter>
-    </ClInclude>
+    <ClInclude Include="src\Entities\ScrollingBackground.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\precomp.cpp">
@@ -56,9 +54,7 @@
     <ClCompile Include="src\Entities\LevelController.cpp">
       <Filter>src\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="ScrollingBackground.cpp">
-      <Filter>src\Entities</Filter>
-    </ClCompile>
+    <ClCompile Include="src\Entities\ScrollingBackground.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

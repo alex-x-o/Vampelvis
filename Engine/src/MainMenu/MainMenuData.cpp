@@ -3,6 +3,7 @@
 #include "Core/Application.h"
 
 #include <SDL_ttf.h>
+#include <nlohmann/json.hpp>
 
 Engine::MainMenuData::MainMenuData()
 {
@@ -25,6 +26,17 @@ Engine::MainMenuData::MainMenuData()
 		LOG_ERROR("Failed to initialize Menu Fonts: ");
 		LOG_ERROR(TTF_GetError());
 	}
+
+	std::ifstream input("score.json");
+	if (!input.is_open())
+	{
+		LOG_INFO("Opening file with high score failed");
+		return;
+	}
+
+	nlohmann::json j;
+	input >> j;
+	m_HighScore = j["score"];
 }
 
 Engine::MainMenuData::~MainMenuData()

@@ -6,6 +6,7 @@
 #include "Entities/LevelController.h"
 #include "Entities/StaticImage.h"
 
+#include <nlohmann/json.hpp>
 
 void Game::GameApp::GameSpecificWindowData()
 {
@@ -15,6 +16,14 @@ void Game::GameApp::GameSpecificWindowData()
     gameSpecificWindowData.m_Height = GameApp::WindowHeight;
     gameSpecificWindowData.m_Vsync = true;
     SetWindowData(gameSpecificWindowData);
+    
+    std::ifstream input("score.json");
+    if (input.good()) return;
+
+    std::ofstream output("score.json");
+    nlohmann::json j;
+    j["score"] = 0;
+    output << j;
 }
 
 bool Game::GameApp::GameSpecificInit()
@@ -31,8 +40,6 @@ bool Game::GameApp::GameSpecificInit()
     bool playerStatus = m_PlayerController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("vampire"));
     ASSERT(playerStatus, "Player initialization failed in GameApp::GameSpecificInit()");
 
-
-
     return true;
 }
 
@@ -44,6 +51,8 @@ void Game::GameApp::GameSpecificUpdate(float dt_)
     if (playerHit && !m_GodMode)
     {
         m_ShowMenu = m_GameOver = true;
+        UpdateHighScore();
+
         return;
     }
     
@@ -104,4 +113,26 @@ int Game::GameApp::GetScore()
 {
     int score = static_cast<int>(ceil(m_PlayerController->GetPlayerPositionX() - m_PlayerController->GetPlayerStartingPositionX())) / 80;
     return score;
+}
+
+void Game::GameApp::UpdateHighScore()
+{
+    std::ifstream input("score.json");
+    if (!input.is_open())
+    {
+        LOG_ERROR("Opening file with high score failed");
+        return;
+    }
+
+    nlohmann::json j;
+    input >> j;
+
+    int newScore = GetScore();
+    if (newScore > j["score"])
+    {
+        LOG_INFO("MADE IT");
+        j["score"] = newScore;
+        std::ofstream output("score.json");
+        output << j;
+    }
 }

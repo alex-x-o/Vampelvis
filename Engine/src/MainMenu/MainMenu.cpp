@@ -22,7 +22,7 @@ bool Engine::MainMenu::Init()
 
 void Engine::MainMenu::CreateMenuItems()
 {
-    m_MenuLabels = { m_Data.m_Title, "High score: 0", "Scoreboard", "About", "Press SPACE to start game" };
+    m_MenuLabels = { m_Data.m_Title, "High score: " + std::to_string(m_Data.m_HighScore), "Scoreboard", "About", "Press SPACE to start game" };
 
     int i = 0;
     for (auto& label : m_MenuLabels)
@@ -113,7 +113,6 @@ void Engine::MainMenu::ChangeColorOfItem(int index_, SDL_Color color_)
 void Engine::MainMenu::ShowMenu(Renderer* windowRenderer_)
 {
     windowRenderer_->HideWindow();
-
     SDL_ShowWindow(m_MenuWindow);
     SDL_RaiseWindow(m_MenuWindow);
 
@@ -123,7 +122,6 @@ void Engine::MainMenu::ShowMenu(Renderer* windowRenderer_)
 void Engine::MainMenu::HideMenu(Renderer* windowRenderer_)
 {
     SDL_HideWindow(m_MenuWindow);
-
     windowRenderer_->ShowWindow();
 
     // Switch back to first Item being selected

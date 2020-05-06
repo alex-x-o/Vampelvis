@@ -20,6 +20,8 @@ namespace Engine
 
 		bool m_Visible{ true };
 
+		int m_HighScore{ 0 };
+
 		MainMenuData();
 		~MainMenuData();
 	};
