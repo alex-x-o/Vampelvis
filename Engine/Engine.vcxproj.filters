@@ -55,6 +55,9 @@
     <Filter Include="src\PhysicsSystem">
       <UniqueIdentifier>{052e6dc8-81a8-4292-8613-324c90345e5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\MainMenu">
+      <UniqueIdentifier>{d67452da-a720-4e0c-801a-d1aa5636605c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Logger\Logger.cpp">
@@ -98,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="src\Physics\PhysicsSystem.cpp">
       <Filter>src\PhysicsSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenu\MainMenu.cpp">
+      <Filter>src\MainMenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1048,6 +1054,9 @@
     </ClInclude>
     <ClInclude Include="src\Physics\PhysicsSystem.h">
       <Filter>src\PhysicsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenu\MainMenu.h">
+      <Filter>src\MainMenu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
