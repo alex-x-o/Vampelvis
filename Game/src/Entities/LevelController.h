@@ -1,9 +1,8 @@
 #pragma once
+#include "ScrollingBackground.h"
 
 namespace Game
 {
-    class GameApp;
-
     struct CameraBoundary {
         float left;
         float right;
@@ -38,7 +37,7 @@ namespace Game
         
         void RemovePastObstacles(Engine::EntityManager* entityManager_, float boundary);
 
-        
+        std::unique_ptr<ScrollingBackground> m_Background{};
     };
 
 }

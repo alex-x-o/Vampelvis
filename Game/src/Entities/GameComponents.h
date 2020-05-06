@@ -7,6 +7,11 @@ namespace Game
 
     };
 
+    struct Background : public Engine::Component
+    {
+
+    };
+
     struct WallComponent : public Engine::Component
     {
 

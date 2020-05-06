@@ -21,17 +21,17 @@ bool Game::GameApp::GameSpecificInit()
 {
     this->LoadGameTextures();
 
-    m_RenderSystem->SetBackgroundTexture(m_TextureManager->GetTexture("woodenTexture"));
-
     m_CameraController = std::make_unique<CameraController>();
     m_CameraController->Init(m_EntityManager.get());
+
+    m_Level = std::make_unique<Level>();
+    m_Level->Init(m_EntityManager.get(), m_TextureManager.get(), GameApp::WindowHeight);
 
     m_PlayerController = std::make_unique<PlayerController>();
     bool playerStatus = m_PlayerController->Init(m_EntityManager.get(), m_TextureManager->GetTexture("vampire"));
     ASSERT(playerStatus, "Player initialization failed in GameApp::GameSpecificInit()");
 
-    m_Level = std::make_unique<Level>();
-    m_Level->Init(m_EntityManager.get(), m_TextureManager.get(), GameApp::WindowHeight);
+
 
     return true;
 }

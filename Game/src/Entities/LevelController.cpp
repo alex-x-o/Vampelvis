@@ -1,9 +1,10 @@
 #include "precomp.h"
 #include "LevelController.h"
 
-#include "Entities/GameComponents.h"
+#include "GameComponents.h"
 #include <random>
 #include "PlayerController.h"
+#include "ScrollingBackground.h"
 
 namespace Game
 {
@@ -15,6 +16,9 @@ namespace Game
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to texturemanager to Level::Init()");
 
         m_WindowHeight = static_cast<float>(windowHeight_);
+        
+        m_Background = std::make_unique <ScrollingBackground>();
+        m_Background->Init(entityManager_, textureManager_->GetTexture("background"), 800, m_WindowHeight-2* WallHeight);
         CreateWalls(entityManager_, textureManager_);
 
         return true;
@@ -26,9 +30,10 @@ namespace Game
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to texturemanager to Level::Update()");
 
         MoveWalls(entityManager_);
+        
 
         Game::CameraBoundary boundary = getCurrentBoundaries(entityManager_);
-
+        m_Background->Update(dt, entityManager_, boundary.left);
         if (m_ShouldGenerate)
         { 
             GenerateObstacles(entityManager_, textureManager_, boundary.right);
