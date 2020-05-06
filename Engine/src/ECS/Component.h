@@ -75,8 +75,8 @@ namespace Engine
         bool m_FlipHorizontal{ false };
         bool m_FlipVertical{ false };
         bool m_Animation{ false };
-        int m_AnimationFrames;
-        int m_AnimationCurrentFrame;
+        int m_AnimationFrames{0};
+        int m_AnimationCurrentFrame{0};
     };
 
     struct PlayerComponent : public Component

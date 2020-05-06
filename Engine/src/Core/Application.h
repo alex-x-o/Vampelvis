@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Render/WindowData.h"
+#include "MainMenu/MainMenu.h"
 #include <SDL.h>
 
 namespace Engine {
@@ -16,7 +17,6 @@ namespace Engine {
     public:
         bool Init();
         bool Run();
-        void ShowMenu();
         bool Shutdown();
 
         virtual ~Application();
@@ -28,11 +28,10 @@ namespace Engine {
         bool m_Running{ false };
         bool m_GameOver{ false };
         bool m_ShowMenu{ true };
-        SDL_Window* m_MenuWindow;
-        SDL_Renderer* m_MenuRenderer;
 
         WindowData m_WindowData{};
         std::unique_ptr<RenderSystem> m_RenderSystem{};
+        std::unique_ptr<MainMenu> m_MainMenu{};
         std::unique_ptr<PhysicsSystem> m_PhysicsSystem{};
         std::unique_ptr<InputManager> m_InputManager{};
         std::unique_ptr<EntityManager> m_EntityManager{};

@@ -3,6 +3,7 @@
 #include "ECS/EntityManager.h"
 #include "Input/InputManager.h"
 #include "Render/RenderSystem.h"
+#include "MainMenu/MainMenu.h"
 #include "Render/Renderer.h"
 #include "Render/Texture.h"
 #include "Render/Window.h"
@@ -28,6 +29,14 @@ namespace Engine {
         if (!m_RenderSystem->Init(m_WindowData))
         {
             LOG_CRITICAL("Failed to initialize RenderSystem");
+            return false;
+        }
+
+        // Main Menu initialize
+        m_MainMenu = std::make_unique<MainMenu>();
+        if (!m_MainMenu->Init())
+        {
+            LOG_CRITICAL("Failed to initialize MainMenu");
             return false;
         }
 
@@ -64,12 +73,6 @@ namespace Engine {
             return false;
         }
 
-        if (SDL_CreateWindowAndRenderer(800, 600, 0, &m_MenuWindow, &m_MenuRenderer)) {
-            LOG_ERROR("Error initializing menu window!");
-        }
-
-        SDL_SetWindowTitle(m_MenuWindow, "Vampelvis");
-
         return true;
     }
 
@@ -82,36 +85,10 @@ namespace Engine {
         m_RenderSystem->Shutdown();
         m_RenderSystem.reset();
 
-        LOG_INFO("Shutting down Menu Renderer");
-
-        if (m_MenuRenderer != nullptr)
-        {
-            SDL_DestroyRenderer(m_MenuRenderer);
-        }
-
-        m_MenuRenderer = nullptr;
-
-        LOG_INFO("Shutting down Menu Window");
-
-        if (m_MenuWindow != nullptr)
-        {
-            SDL_DestroyWindow(m_MenuWindow);
-        }
-
-        m_MenuWindow = nullptr;
+        m_MainMenu->Shutdown();
+        m_MainMenu.reset();
 
         return true;
-    }
-
-    void Application::ShowMenu()
-    {
-        m_RenderSystem->GetRenderer()->HideWindow();
-        SDL_ShowWindow(m_MenuWindow);
-        SDL_RaiseWindow(m_MenuWindow);
-
-        SDL_SetRenderDrawColor(m_MenuRenderer, 0x00, 0x00, 0x00, 0x00);
-        SDL_RenderClear(m_MenuRenderer);
-        SDL_RenderPresent(m_MenuRenderer);
     }
 
     bool Application::Run()
@@ -148,10 +125,9 @@ namespace Engine {
 
             LOG_INFO("Current FPS: {}", 1.f / deltaTime);
 
-            if (!m_ShowMenu && m_GameOver)
-                return true;
+            if (!m_ShowMenu && m_GameOver) return true;
 
-            m_ShowMenu ? ShowMenu() : Update(deltaTime);
+            m_ShowMenu ? m_MainMenu->Update(m_RenderSystem->GetRenderer()) : Update(deltaTime);
 
             previousFrameTime = frameTime;
         }
@@ -161,12 +137,7 @@ namespace Engine {
 
     void Application::Update(float dt)
     {
-        if (!m_RenderSystem->GetRenderer()->IsWindowVisible())
-        {
-            m_ShowMenu = false;
-            SDL_HideWindow(m_MenuWindow);
-            m_RenderSystem->GetRenderer()->ShowWindow();
-        }
+        if (m_MainMenu->isVisible()) m_MainMenu->HideMenu(m_RenderSystem->GetRenderer());
 
         // Update all systems
         m_InputManager->Update(dt, m_EntityManager.get());

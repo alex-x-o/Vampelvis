@@ -10,8 +10,6 @@ namespace Engine {
     class Window
     {
     public:
-        bool m_Visible{ false };
-
         bool Init(const WindowData& windowData_ = WindowData());
         bool Shutdown();
 
