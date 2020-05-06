@@ -26,6 +26,18 @@ namespace Engine
         return true;
     }
 
+    vec2 Texture::GetTextureSize() {
+        int width, height;
+        int query = SDL_QueryTexture(m_Texture, NULL, NULL, &width, &height);
+
+        if (query)
+        {
+            LOG_WARNING("Failed to get texture size");
+        }
+
+        return vec2(width, height);
+    }
+
     Texture::Texture(Renderer* renderer_, std::string path_)
     {
         LoadTexture(renderer_, path_);

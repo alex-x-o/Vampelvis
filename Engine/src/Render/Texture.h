@@ -10,7 +10,7 @@ namespace Engine {
     struct Texture
     {
         SDL_Texture* m_Texture{};
-
+        vec2 GetTextureSize();
         bool LoadTexture(Renderer* renderer_, std::string path_);
         Texture() = default;
         Texture(Renderer* renderer_, std::string path_);
