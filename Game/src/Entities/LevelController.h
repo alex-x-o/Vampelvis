@@ -25,7 +25,7 @@ namespace Game
 
         float m_BaseSpeed{ 100.0f };
         float m_CurrentSpeed{ 100.0f };
-        void MoveWalls(Engine::EntityManager* entityManager_);
+        void MoveLevelObjects(Engine::EntityManager* entityManager_);
 
         CameraBoundary getCurrentBoundaries(Engine::EntityManager* entityManager_);
         void GenerateObstacles(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, float boundary);

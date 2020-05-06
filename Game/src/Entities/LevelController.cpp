@@ -29,7 +29,7 @@ namespace Game
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to entitymanager to Level::Update()");
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to texturemanager to Level::Update()");
 
-        MoveWalls(entityManager_);
+        MoveLevelObjects(entityManager_);
         
 
         Game::CameraBoundary boundary = getCurrentBoundaries(entityManager_);
@@ -37,6 +37,7 @@ namespace Game
         if (m_ShouldGenerate)
         { 
             GenerateObstacles(entityManager_, textureManager_, boundary.right);
+            GenerateGlidingEnemies(entityManager_, textureManager_, boundary.right);
         }
 
         RemovePastObstacles(entityManager_, boundary.left);
@@ -123,6 +124,26 @@ namespace Game
 
     void Level::GenerateGlidingEnemies(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, float boundary)
     {
+        std::random_device rd;
+        std::uniform_int_distribution<> EnemyChance(0, 1000);
+
+        if (EnemyChance(rd) == 0) {
+            Engine::Texture* t = textureManager_->GetTexture("blank");
+            float width = PlayerController::Width;
+            float height = PlayerController::Height;
+            auto enemy = std::make_unique<Engine::Entity>();
+            float availableSpace = ceil((m_WindowHeight - WallHeight - height / 2) / 2);
+
+            std::uniform_int_distribution<> yPositions(-availableSpace, availableSpace);
+
+            enemy->AddComponent<Game::GlidingEnemyComponent>();
+            enemy->AddComponent<Engine::TransformComponent>(boundary + width, yPositions(rd), width, height);
+            enemy->AddComponent<Engine::CollisionComponent>(width, height);
+            enemy->AddComponent<Engine::SpriteComponent>().m_Image = t;
+            enemy->AddComponent<Engine::MoverComponent>();
+
+            entityManager_->AddEntity(std::move(enemy));
+        }
 
     }
 
@@ -166,7 +187,7 @@ namespace Game
         entityManager_->AddEntity(std::move(wall));
     }
 
-    void Level::MoveWalls(Engine::EntityManager* entityManager_)
+    void Level::MoveLevelObjects(Engine::EntityManager* entityManager_)
     {
         auto walls = entityManager_->GetAllEntitiesWithComponents<Game::WallComponent, Engine::MoverComponent>();
 
@@ -174,6 +195,14 @@ namespace Game
         {
             auto move = wall->GetComponent<Engine::MoverComponent>();
             move->m_TranslationSpeed.x = m_CurrentSpeed;
+        }
+
+        auto enemies = entityManager_->GetAllEntitiesWithComponents<Game::GlidingEnemyComponent, Engine::MoverComponent>();
+
+        for (auto& enemy : enemies)
+        {
+            auto move = enemy->GetComponent<Engine::MoverComponent>();
+            move->m_TranslationSpeed.x = -m_BaseSpeed;
         }
     }
 
