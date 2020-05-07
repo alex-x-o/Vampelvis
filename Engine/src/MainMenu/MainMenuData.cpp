@@ -2,7 +2,6 @@
 #include "Render/WindowData.h"
 #include "Core/Application.h"
 
-#include <SDL_ttf.h>
 #include <nlohmann/json.hpp>
 
 Engine::MainMenuData::MainMenuData()
@@ -27,16 +26,16 @@ Engine::MainMenuData::MainMenuData()
 		LOG_ERROR(TTF_GetError());
 	}
 
-	std::ifstream input("score.json");
-	if (!input.is_open())
+	if (!std::filesystem::exists("score.json"))
 	{
-		LOG_INFO("Opening file with high score failed");
+		LOG_INFO("File with High score does not exist!");
 		return;
 	}
 
-	nlohmann::json j;
-	input >> j;
-	m_HighScore = j["score"];
+	std::ifstream input("score.json");
+	nlohmann::json scoreObject;
+	input >> scoreObject;
+	m_HighScore = scoreObject["score"];
 }
 
 Engine::MainMenuData::~MainMenuData()

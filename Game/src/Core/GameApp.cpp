@@ -124,15 +124,15 @@ void Game::GameApp::UpdateHighScore()
         return;
     }
 
-    nlohmann::json j;
-    input >> j;
+    nlohmann::json scoreObject;
+    input >> scoreObject;
 
     int newScore = GetScore();
-    if (newScore > j["score"])
+    if (newScore > scoreObject["score"])
     {
-        LOG_INFO("MADE IT");
-        j["score"] = newScore;
+        scoreObject["score"] = newScore;
+
         std::ofstream output("score.json");
-        output << j;
+        output << scoreObject;
     }
 }

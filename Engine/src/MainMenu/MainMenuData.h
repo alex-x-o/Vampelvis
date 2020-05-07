@@ -18,8 +18,6 @@ namespace Engine
 		TTF_Font* m_TitleFont;
 		TTF_Font* m_ItemsFont;
 
-		bool m_Visible{ true };
-
 		int m_HighScore{ 0 };
 
 		MainMenuData();

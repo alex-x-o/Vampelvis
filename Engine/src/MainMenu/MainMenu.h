@@ -1,8 +1,6 @@
 #pragma once
 #include "MainMenuData.h"
 
-#include <SDL_ttf.h>
-
 
 namespace Engine
 {
@@ -21,10 +19,11 @@ namespace Engine
 		void GoUp();
 		void GoDown();
 
-		bool IsVisible() const { return m_Data.m_Visible; }
+		bool IsVisible() const { return m_Visible; }
 
 	private:
 		MainMenuData m_Data{};
+		bool m_Visible{ true };
 
 		SDL_Window* m_MenuWindow;
 		SDL_Renderer* m_MenuRenderer;
@@ -36,6 +35,7 @@ namespace Engine
 
 		void CreateMenuItems();
 		int FindSelectedItem() const;
+		void ChangeSelectedItem(int oldIndex_, int newIndex_);
 		void ChangeColorOfItem(int index_, SDL_Color color_);
 	};
 }
