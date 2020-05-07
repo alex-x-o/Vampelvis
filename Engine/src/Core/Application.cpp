@@ -142,7 +142,7 @@ namespace Engine {
             if (m_GameOver)
             {
                 if (!m_ShowMenu) return true;
-                else m_MainMenu->GameOver();
+                else m_MainMenu->GameOver(GetScore());
             }
 
             m_ShowMenu ? m_MainMenu->Update(m_RenderSystem->GetRenderer()) : Update(deltaTime);
@@ -161,7 +161,7 @@ namespace Engine {
         m_InputManager->Update(dt, m_EntityManager.get());
         m_PhysicsSystem->Update(dt, m_EntityManager.get());
         m_EntityManager->Update(dt);
-        m_RenderSystem->Update(dt, m_EntityManager.get());
+        m_RenderSystem->Update(dt, m_EntityManager.get(), GetScore());
 
         GameSpecificUpdate(dt);
     }

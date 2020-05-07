@@ -22,7 +22,7 @@ bool Engine::MainMenu::Init()
 
 void Engine::MainMenu::CreateMenuItems()
 {
-    m_MenuLabels = {m_Data.m_Title, "High score: " + std::to_string(m_Data.m_HighScore), "Scoreboard", "About", "Press SPACE to start game"};
+    m_MenuLabels = {m_Data.m_Title, "High score: " + std::to_string(m_Data.m_HighScore), "Scoreboard", "About", "Press SPACE to Play"};
 
     int i = 0;
     for (auto& label : m_MenuLabels)
@@ -161,9 +161,9 @@ void Engine::MainMenu::ChangeMenuItem(int index_, SDL_Color color_)
     SDL_FreeSurface(itemSurface);
 }
 
-void Engine::MainMenu::GameOver()
+void Engine::MainMenu::GameOver(int playerScore_)
 {
-    std::vector<std::string> newLabels = { m_Data.m_Title, "GAME OVER", "Press SPACE to return to Main Menu" };
+    std::vector<std::string> newLabels = { m_Data.m_Title, "GAME OVER", "Your score: " + std::to_string(playerScore_) , "Press SPACE to return to Main Menu" };
 
     for (size_t i = newLabels.size(); i < m_MenuLabels.size(); i++)
         SDL_DestroyTexture(m_MenuTextures[i]);
@@ -175,4 +175,5 @@ void Engine::MainMenu::GameOver()
     for (unsigned i = 1; i < m_MenuLabels.size(); i++)
         ChangeMenuItem(i, m_Data.m_DefaultColor);
 
+    m_Selected[FindSelectedItem()] = false;
 }

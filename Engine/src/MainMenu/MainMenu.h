@@ -18,7 +18,7 @@ namespace Engine
 
 		void GoUp();
 		void GoDown();
-		void GameOver();
+		void GameOver(int playerScore_);
 
 		bool IsVisible() const { return m_Visible; }
 
