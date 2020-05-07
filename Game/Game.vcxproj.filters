@@ -1,69 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{d0c45ae1-b1d5-45cf-a569-6d4cea7f7337}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Core">
-      <UniqueIdentifier>{90334991-7d5c-46b0-8821-e01b39d51713}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Entities">
-      <UniqueIdentifier>{e4110741-b421-4277-b8e9-be5b08fe3cfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Level">
-      <UniqueIdentifier>{6c22cd12-6a5c-4150-b98f-0b1b79d72ce0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Helper">
-      <UniqueIdentifier>{7fb6b48c-da95-4f57-b9fd-1147926d5f55}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\precomp.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Core\GameApp.h">
-      <Filter>src\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Entities\CameraController.h">
-      <Filter>src\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Entities\StaticImage.h">
-      <Filter>src\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Entities\PlayerController.h">
-      <Filter>src\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Entities\GameComponents.h">
-      <Filter>src\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Entities\LevelController.h">
-      <Filter>src\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Entities\ScrollingBackground.h">
-      <Filter>src\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Level\ObstacleController.h">
+    <ClCompile Include="src\Level\EnemyController.cpp">
       <Filter>src\Level</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Level\EnemyController.h">
-      <Filter>src\Level</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Level\Level.h">
-      <Filter>src\Level</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Level\WallController.h">
-      <Filter>src\Level</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Helper\CameraBoundry.h">
-      <Filter>src\Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Core\GameConstants.h">
-      <Filter>src\Core</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\precomp.cpp">
-      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\GameApp.cpp">
       <Filter>src\Core</Filter>
@@ -71,32 +10,93 @@
     <ClCompile Include="src\Entities\CameraController.cpp">
       <Filter>src\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\Entities\StaticImage.cpp">
-      <Filter>src\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Entities\PlayerController.cpp">
-      <Filter>src\Entities</Filter>
+    <ClCompile Include="src\Level\Level.cpp">
+      <Filter>src\Level</Filter>
     </ClCompile>
     <ClCompile Include="src\Entities\LevelController.cpp">
-      <Filter>src\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Entities\ScrollingBackground.cpp">
-      <Filter>src\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Level\EnemyController.cpp">
       <Filter>src\Level</Filter>
     </ClCompile>
     <ClCompile Include="src\Level\ObstacleController.cpp">
       <Filter>src\Level</Filter>
     </ClCompile>
-    <ClCompile Include="src\Level\Level.cpp">
-      <Filter>src\Level</Filter>
+    <ClCompile Include="src\Entities\PlayerController.cpp">
+      <Filter>src\Entities</Filter>
     </ClCompile>
     <ClCompile Include="src\Level\WallController.cpp">
       <Filter>src\Level</Filter>
     </ClCompile>
+    <ClCompile Include="src\Entities\ScrollingBackground.cpp">
+      <Filter>src\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\StaticImage.cpp">
+      <Filter>src\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\precomp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Helper\CameraBoundry.h">
+      <Filter>src\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Level\EnemyController.h">
+      <Filter>src\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\GameApp.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\GameComponents.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\GameConstants.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\CameraController.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\LevelController.h">
+      <Filter>src\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Level\Level.h">
+      <Filter>src\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Level\ObstacleController.h">
+      <Filter>src\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\PlayerController.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Level\WallController.h">
+      <Filter>src\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\ScrollingBackground.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\StaticImage.h">
+      <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\precomp.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{7a51763f-848c-463d-a1e3-cc0acdc1adae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Core">
+      <UniqueIdentifier>{62efbfb9-4258-44d6-b2d7-35dbae74e149}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Entities">
+      <UniqueIdentifier>{4a34c94a-2ed2-420b-8a68-157df161db97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Level">
+      <UniqueIdentifier>{00ccd8ff-3fc0-44f2-ae3e-0bf2a652eeed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Helper">
+      <UniqueIdentifier>{1120b6b5-c6ef-431b-811f-b5e41b2de1a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
