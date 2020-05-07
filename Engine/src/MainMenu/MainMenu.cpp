@@ -22,7 +22,7 @@ bool Engine::MainMenu::Init()
 
 void Engine::MainMenu::CreateMenuItems()
 {
-    m_MenuLabels = { m_Data.m_Title, "High score: " + std::to_string(m_Data.m_HighScore), "Scoreboard", "About", "Press SPACE to start game" };
+    m_MenuLabels = {m_Data.m_Title, "High score: " + std::to_string(m_Data.m_HighScore), "Scoreboard", "About", "Press SPACE to start game"};
 
     int i = 0;
     for (auto& label : m_MenuLabels)
@@ -44,7 +44,7 @@ void Engine::MainMenu::CreateMenuItems()
         ++i;
     }
 
-    ChangeColorOfItem(1, m_Data.m_SelectedColor);
+    ChangeMenuItem(1, m_Data.m_SelectedColor);
 }
 
 void Engine::MainMenu::Shutdown()
@@ -138,18 +138,41 @@ void Engine::MainMenu::GoDown()
 void Engine::MainMenu::ChangeSelectedItem(int oldIndex_, int newIndex_)
 {
     m_Selected[oldIndex_] = false;
-    ChangeColorOfItem(oldIndex_, m_Data.m_DefaultColor);
+    ChangeMenuItem(oldIndex_, m_Data.m_DefaultColor);
 
     m_Selected[newIndex_] = true;
-    ChangeColorOfItem(newIndex_, m_Data.m_SelectedColor);
+    ChangeMenuItem(newIndex_, m_Data.m_SelectedColor);
 }
 
-void Engine::MainMenu::ChangeColorOfItem(int index_, SDL_Color color_)
+void Engine::MainMenu::ChangeMenuItem(int index_, SDL_Color color_)
 {
     SDL_DestroyTexture(m_MenuTextures[index_]);
 
     SDL_Surface* itemSurface = TTF_RenderText_Solid(m_Data.m_ItemsFont, m_MenuLabels[index_].c_str(), color_);
     m_MenuTextures[index_] = SDL_CreateTextureFromSurface(m_MenuRenderer, itemSurface);
 
+    int windowWidth = m_Data.m_Width;
+    int windowHeight = m_Data.m_Height;
+    int textWidth = itemSurface->w;
+    int textHeight = itemSurface->h;
+
+    m_MenuRects[index_] = { windowWidth / 2 - textWidth / 2, index_ == 0 ? windowHeight / 4 - textHeight / 2 : windowHeight / 2 + (index_ - 1) * textHeight, textWidth, textHeight };
+
     SDL_FreeSurface(itemSurface);
+}
+
+void Engine::MainMenu::GameOver()
+{
+    std::vector<std::string> newLabels = { m_Data.m_Title, "GAME OVER", "Press SPACE to return to Main Menu" };
+
+    for (size_t i = newLabels.size(); i < m_MenuLabels.size(); i++)
+        SDL_DestroyTexture(m_MenuTextures[i]);
+
+    for (unsigned i = 0; i < (m_MenuLabels.size() - newLabels.size()); i++)
+        m_MenuLabels.pop_back();
+
+    m_MenuLabels = newLabels;
+    for (unsigned i = 1; i < m_MenuLabels.size(); i++)
+        ChangeMenuItem(i, m_Data.m_DefaultColor);
+
 }

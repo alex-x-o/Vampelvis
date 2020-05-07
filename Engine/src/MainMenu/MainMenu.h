@@ -18,6 +18,7 @@ namespace Engine
 
 		void GoUp();
 		void GoDown();
+		void GameOver();
 
 		bool IsVisible() const { return m_Visible; }
 
@@ -36,6 +37,6 @@ namespace Engine
 		void CreateMenuItems();
 		int FindSelectedItem() const;
 		void ChangeSelectedItem(int oldIndex_, int newIndex_);
-		void ChangeColorOfItem(int index_, SDL_Color color_);
+		void ChangeMenuItem(int index_, SDL_Color color_);
 	};
 }

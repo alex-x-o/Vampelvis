@@ -109,7 +109,7 @@ namespace Engine {
                 {
                     switch (event.key.keysym.sym)
                     {
-                    case SDLK_ESCAPE: 
+                    case SDLK_ESCAPE:
                     {
                         if (!m_ShowMenu) m_ShowMenu = !m_ShowMenu;
                         break;
@@ -139,7 +139,11 @@ namespace Engine {
 
             LOG_INFO("Current FPS: {}", 1.f / deltaTime);
 
-            if (!m_ShowMenu && m_GameOver) return true;
+            if (m_GameOver)
+            {
+                if (!m_ShowMenu) return true;
+                else m_MainMenu->GameOver();
+            }
 
             m_ShowMenu ? m_MainMenu->Update(m_RenderSystem->GetRenderer()) : Update(deltaTime);
 
