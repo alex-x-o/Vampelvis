@@ -158,12 +158,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\GameApp.h" />
+    <ClInclude Include="src\Core\GameConstants.h" />
     <ClInclude Include="src\Entities\CameraController.h" />
     <ClInclude Include="src\Entities\GameComponents.h" />
     <ClInclude Include="src\Entities\PlayerController.h" />
     <ClInclude Include="src\Entities\LevelController.h" />
     <ClInclude Include="src\Entities\ScrollingBackground.h" />
     <ClInclude Include="src\Entities\StaticImage.h" />
+    <ClInclude Include="src\Helper\CameraBoundry.h" />
+    <ClInclude Include="src\Level\EnemyController.h" />
+    <ClInclude Include="src\Level\Level.h" />
+    <ClInclude Include="src\Level\ObstacleController.h" />
+    <ClInclude Include="src\Level\WallController.h" />
     <ClInclude Include="src\precomp.h" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +179,10 @@
     <ClCompile Include="src\Entities\LevelController.cpp" />
     <ClCompile Include="src\Entities\ScrollingBackground.cpp" />
     <ClCompile Include="src\Entities\StaticImage.cpp" />
+    <ClCompile Include="src\Level\EnemyController.cpp" />
+    <ClCompile Include="src\Level\Level.cpp" />
+    <ClCompile Include="src\Level\ObstacleController.cpp" />
+    <ClCompile Include="src\Level\WallController.cpp" />
     <ClCompile Include="src\precomp.cpp" />
   </ItemGroup>
   <ItemGroup>

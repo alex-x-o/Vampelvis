@@ -10,6 +10,12 @@
     <Filter Include="src\Entities">
       <UniqueIdentifier>{e4110741-b421-4277-b8e9-be5b08fe3cfa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Level">
+      <UniqueIdentifier>{6c22cd12-6a5c-4150-b98f-0b1b79d72ce0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Helper">
+      <UniqueIdentifier>{7fb6b48c-da95-4f57-b9fd-1147926d5f55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\precomp.h">
@@ -33,8 +39,26 @@
     <ClInclude Include="src\Entities\LevelController.h">
       <Filter>src\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="ScrollingBackground.h">
+    <ClInclude Include="src\Entities\ScrollingBackground.h">
       <Filter>src\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Level\ObstacleController.h">
+      <Filter>src\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Level\EnemyController.h">
+      <Filter>src\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Level\Level.h">
+      <Filter>src\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Level\WallController.h">
+      <Filter>src\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Helper\CameraBoundry.h">
+      <Filter>src\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\GameConstants.h">
+      <Filter>src\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -56,8 +80,20 @@
     <ClCompile Include="src\Entities\LevelController.cpp">
       <Filter>src\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="ScrollingBackground.cpp">
+    <ClCompile Include="src\Entities\ScrollingBackground.cpp">
       <Filter>src\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Level\EnemyController.cpp">
+      <Filter>src\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Level\ObstacleController.cpp">
+      <Filter>src\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Level\Level.cpp">
+      <Filter>src\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Level\WallController.cpp">
+      <Filter>src\Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

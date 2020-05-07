@@ -6,7 +6,7 @@ namespace Game
 {
     class CameraController;
     class PlayerController;
-    class Level;
+    class LevelController;
     class StaticImage;
 
     class GameApp final : public Engine::Application
@@ -27,7 +27,7 @@ namespace Game
 
         std::unique_ptr<PlayerController> m_PlayerController{};
         std::unique_ptr<CameraController> m_CameraController{};
-        std::unique_ptr<Level> m_Level{};
+        std::unique_ptr<LevelController> m_Level{};
         std::unique_ptr<StaticImage> m_TestImage{};
     };
 }
