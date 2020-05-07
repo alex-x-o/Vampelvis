@@ -1,12 +1,6 @@
 #pragma once
+#include "MainMenuData.h"
 
-#include "Render/WindowData.h"
-
-#include <SDL_ttf.h>
-
-struct SDL_Window;
-struct SDL_Renderer;
-struct SDL_Color;
 
 namespace Engine
 {
@@ -21,22 +15,28 @@ namespace Engine
 
 		void ShowMenu(Renderer* windowRenderer_);
 		void HideMenu(Renderer* windowRenderer_);
-		bool isVisible() const { return m_Visible; }
+
+		void GoUp();
+		void GoDown();
+		void GameOver(int playerScore_);
+
+		bool IsVisible() const { return m_Visible; }
 
 	private:
-		SDL_Window* m_MenuWindow;
-		WindowData m_WindowData;
-		SDL_Renderer* m_MenuRenderer;
-
-		TTF_Font* m_TitleFont;
-		TTF_Font* m_ItemsFont;
-
+		MainMenuData m_Data{};
 		bool m_Visible{ true };
+
+		SDL_Window* m_MenuWindow;
+		SDL_Renderer* m_MenuRenderer;
 
 		std::vector<std::string> m_MenuLabels;
 		std::vector<SDL_Texture*> m_MenuTextures;
 		std::vector<SDL_Rect> m_MenuRects;
+		std::vector<bool> m_Selected;
 
-		bool CreateMenuItems();
+		void CreateMenuItems();
+		int FindSelectedItem() const;
+		void ChangeSelectedItem(int oldIndex_, int newIndex_);
+		void ChangeMenuItem(int index_, SDL_Color color_);
 	};
 }

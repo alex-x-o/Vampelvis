@@ -105,6 +105,9 @@
     <ClCompile Include="src\MainMenu\MainMenu.cpp">
       <Filter>src\MainMenu</Filter>
     </ClCompile>
+    <ClCompile Include="src\MainMenu\MainMenuData.cpp">
+      <Filter>src\MainMenu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="extern\spdlog\async.h">
@@ -1056,6 +1059,9 @@
       <Filter>src\PhysicsSystem</Filter>
     </ClInclude>
     <ClInclude Include="src\MainMenu\MainMenu.h">
+      <Filter>src\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenu\MainMenuData.h">
       <Filter>src\MainMenu</Filter>
     </ClInclude>
   </ItemGroup>

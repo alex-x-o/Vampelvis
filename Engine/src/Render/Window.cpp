@@ -21,6 +21,8 @@ namespace Engine
             0
         );
 
+        SDL_SetWindowIcon(m_NativeWindowHandle, windowData_.m_Icon);
+
         if (m_NativeWindowHandle == nullptr)
         {
             LOG_CRITICAL("Unable to create a window. SDL Error: {}", SDL_GetError());

@@ -47,7 +47,7 @@ namespace Engine
         return true;
     }
 
-    void RenderSystem::Update(float dt_, EntityManager* entityManager)
+    void RenderSystem::Update(float dt_, EntityManager* entityManager, int playerScore_)
     {
         m_Renderer->BeginScene();
 
@@ -61,6 +61,8 @@ namespace Engine
         // Find all entities to draw
         auto renderables = entityManager->GetAllEntitiesWithComponents<TransformComponent, SpriteComponent>();
         m_Renderer->DrawEntities(renderables, camera);
+
+        m_Renderer->DrawPlayerScore(playerScore_);
 
         m_Renderer->EndScene();
     }

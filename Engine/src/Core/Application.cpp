@@ -107,13 +107,28 @@ namespace Engine {
                 }
                 else if (event.type == SDL_KEYDOWN)
                 {
-                    if (event.key.keysym.sym == SDLK_ESCAPE)
+                    switch (event.key.keysym.sym)
+                    {
+                    case SDLK_ESCAPE:
                     {
                         if (!m_ShowMenu) m_ShowMenu = !m_ShowMenu;
+                        break;
                     }
-                    else if (event.key.keysym.sym == SDLK_SPACE)
+                    case SDLK_SPACE:
                     {
                         if (m_ShowMenu) m_ShowMenu = !m_ShowMenu;
+                        break;
+                    }
+                    case SDLK_UP:
+                    {
+                        m_MainMenu->GoUp();
+                        break;
+                    }
+                    case SDLK_DOWN:
+                    {
+                        m_MainMenu->GoDown();
+                        break;
+                    }
                     }
                 }
             }
@@ -124,7 +139,11 @@ namespace Engine {
 
             LOG_INFO("Current FPS: {}", 1.f / deltaTime);
 
-            if (!m_ShowMenu && m_GameOver) return true;
+            if (m_GameOver)
+            {
+                if (!m_ShowMenu) return true;
+                else m_MainMenu->GameOver(GetScore());
+            }
 
             m_ShowMenu ? m_MainMenu->Update(m_RenderSystem->GetRenderer()) : Update(deltaTime);
 
@@ -136,13 +155,13 @@ namespace Engine {
 
     void Application::Update(float dt)
     {
-        if (m_MainMenu->isVisible()) m_MainMenu->HideMenu(m_RenderSystem->GetRenderer());
+        if (m_MainMenu->IsVisible()) m_MainMenu->HideMenu(m_RenderSystem->GetRenderer());
 
         // Update all systems
         m_InputManager->Update(dt, m_EntityManager.get());
         m_PhysicsSystem->Update(dt, m_EntityManager.get());
         m_EntityManager->Update(dt);
-        m_RenderSystem->Update(dt, m_EntityManager.get());
+        m_RenderSystem->Update(dt, m_EntityManager.get(), GetScore());
 
         GameSpecificUpdate(dt);
     }

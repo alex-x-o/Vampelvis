@@ -35,6 +35,20 @@ namespace Engine
 
         SetBackgroundColor(100, 150, 236, SDL_ALPHA_OPAQUE);
 
+        if (TTF_Init() == -1)
+        {
+            LOG_CRITICAL("Unable to initialize SDL_ttf");
+        }
+
+        m_ScoreFont = TTF_OpenFont("./menuFont.ttf", 30);
+        m_ScoreColor = { 255, 255, 255 };
+
+        if (!m_ScoreFont)
+        {
+            LOG_ERROR("Failed to initialize Score Font: ");
+            LOG_ERROR(TTF_GetError());
+        }
+
         return true;
     }
 
@@ -50,6 +64,8 @@ namespace Engine
         m_NativeRenderer = nullptr;
 
         m_Window.reset();
+
+        TTF_CloseFont(m_ScoreFont);
 
         return true;
     }
@@ -143,6 +159,19 @@ namespace Engine
 #endif
         }
     }
+
+	void Renderer::DrawPlayerScore(int score_)
+	{
+        SDL_Surface* scoreSurface = TTF_RenderText_Solid(m_ScoreFont, fmt::format("Score: {}", score_).c_str(), m_ScoreColor);
+        SDL_Texture* scoreTexture = SDL_CreateTextureFromSurface(m_NativeRenderer, scoreSurface);
+
+        SDL_Rect scoreRect = {30, -3, scoreSurface->w, scoreSurface->h};
+
+        SDL_RenderCopy(m_NativeRenderer, scoreTexture, NULL, &scoreRect);
+
+        SDL_DestroyTexture(scoreTexture);
+        SDL_FreeSurface(scoreSurface);
+	}
 
     void Renderer::SetBackgroundColor(unsigned char bgR_, unsigned char bgG_, unsigned char bgB_, unsigned char bgA_)
     {
