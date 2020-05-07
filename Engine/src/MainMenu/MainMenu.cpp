@@ -97,6 +97,8 @@ void Engine::MainMenu::Update(Renderer* windowRenderer_)
     }
 
     SDL_RenderPresent(m_MenuRenderer);
+
+    SDL_DestroyTexture(background);
 }
 
 void Engine::MainMenu::ShowMenu(Renderer* windowRenderer_)
