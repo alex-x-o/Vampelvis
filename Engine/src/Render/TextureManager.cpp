@@ -7,7 +7,7 @@
 namespace Engine
 {
 
-    bool TextureManager::CreateTexture(Renderer* renderer_, std::string name_, std::string path_)
+    bool TextureManager::CreateTexture(Renderer* renderer_, int lvlId_, std::string name_, std::string path_)
     {
         if (m_Textures.find(name_) != m_Textures.end()) {
             LOG_ERROR("Attempting to create a texture twice! name: {}, path: {}", name_, path_);
@@ -15,8 +15,19 @@ namespace Engine
         }
 
         m_Textures.emplace(name_, std::make_unique<Texture>(renderer_, path_));
+        auto cond = m_Textures.at(name_)->m_Texture;
 
-        return m_Textures.at(name_)->m_Texture != nullptr;
+        if (cond != nullptr)
+        {
+            m_Multi.emplace(lvlId_, &m_Textures);
+            /*auto it = m_Multi.equal_range(lvlId_);
+            for (auto i = it.first; i != it.second; ++i)
+            {
+                std::cout << i->first << std::endl;
+            }*/
+        }
+
+        return cond != nullptr;
     }
 
     Texture* TextureManager::GetTexture(std::string name_)
@@ -27,6 +38,17 @@ namespace Engine
         }
 
         return m_Textures.at(name_).get();
+    }
+
+    void TextureManager::WriteTextures()
+    {
+        for (auto i = m_Multi.begin(); i != m_Multi.end(); i++)
+        {
+            for (auto it = i->second->begin(); it != i->second->end(); it++)
+            {
+                std::cout << i->first << '   ' << it->first << '\n';
+            }
+        }
     }
 
 }
