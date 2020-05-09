@@ -1,5 +1,7 @@
 #include "precomp.h"
 #include "PlayerController.h"
+#include "Core/GameConstants.h"
+
 
 namespace Game
 {
@@ -18,6 +20,8 @@ namespace Game
         player->AddComponent<Engine::PlayerComponent>();
         player->AddComponent<Engine::InputComponent>();
         player->AddComponent<Engine::MoverComponent>();
+        player->AddComponent<Engine::InventoryComponent>();
+        player->AddComponent<Engine::PowerupComponent>();
         player->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
         
         auto spriteComp = player->GetComponent<Engine::SpriteComponent>();
@@ -27,6 +31,12 @@ namespace Game
 
         auto inputComp = player->GetComponent<Engine::InputComponent>();
         inputComp->inputActions.push_back({ "MainGameBtn" });
+        inputComp->inputActions.push_back({ "Player1BatMode" });
+        inputComp->inputActions.push_back({ "Player1Immortality" });
+        inputComp->inputActions.push_back({ "ToggleImmortality" });
+
+        auto inventory = player->GetComponent<Engine::InventoryComponent>();
+        InitInventory(inventory);
 
         entityManager_->AddEntity(std::move(player));
 
@@ -44,6 +54,9 @@ namespace Game
         auto input = entity->GetComponent<Engine::InputComponent>();
         auto speed = entity->GetComponent<Engine::PlayerComponent>()->m_PanSpeed;
         auto sprite = entity->GetComponent<Engine::SpriteComponent>();
+        auto inventory = entity->GetComponent<Engine::InventoryComponent>();
+        auto powerups = entity->GetComponent<Engine::PowerupComponent>();
+        auto collision = entity->GetComponent<Engine::CollisionComponent>();
 
         // Animate player
         auto frameCurrent = sprite->m_AnimationCurrentFrame;
@@ -66,8 +79,14 @@ namespace Game
         // Check position
         m_PlayerPositionX = position->m_Position.x;
 
+        PickUpPowerups(collision, inventory);
+        RemoveExpiredPowerups(powerups, m_PlayerPositionX);
+        CastPowerups(powerups, input, inventory, m_PlayerPositionX);
+
+        bool immortal = powerups->m_ActivePowers.find(Game::Immortality) != powerups->m_ActivePowers.end();
+
         // Check if hit
-        if (entity->GetComponent<Engine::CollisionComponent>()->m_CollidedWith.size() > 0)
+        if (collision->m_CollidedWith.size() > 0 && !immortal)
         {
             LOG_INFO("Player hit something in PlayerController::Update");
 
@@ -93,5 +112,124 @@ namespace Game
     void PlayerController::UpdateSpeed(float speedCoef_)
     {
         m_CurrentSpeed = m_BaseSpeed * speedCoef_;
+    }
+
+    void PlayerController::InitInventory(Engine::InventoryComponent* inventory_)
+    {
+        inventory_->m_Inventory[Game::Immortality] = 1;
+        inventory_->m_Inventory[Game::BatMode] = 1;
+    }
+
+    void PlayerController::PickUpPowerups(Engine::CollisionComponent* collision_, Engine::InventoryComponent* inventory_)
+    {
+        auto collisions = collision_->m_CollidedWith;
+        for (auto& collision : collisions)
+        {
+            if (collision->HasComponent<Engine::PickupComponent>())
+            {
+                PickUpItem(inventory_, collision->GetComponent<Engine::PickupComponent>());
+                
+                collision_->m_CollidedWith.erase(collision);
+            }
+        }
+    }
+
+    void PlayerController::PickUpItem(Engine::InventoryComponent* inventory_, Engine::PickupComponent* item_)
+    {
+        int id = item_->m_Type;
+        auto finder = inventory_->m_Inventory.find(id);
+        if (finder != inventory_->m_Inventory.end())
+        {
+            finder->second++;
+        }
+        else
+        {
+            inventory_->m_Inventory[id] = 1;
+        }
+
+        item_->m_PickedUp = true;
+    }
+
+    bool PlayerController::UseItem(Engine::InventoryComponent* inventory_, int id_)
+    {
+        bool used = false;
+
+        auto finder = inventory_->m_Inventory.find(id_);
+        if (finder != inventory_->m_Inventory.end())
+        {
+            if (finder->second > 0)
+            {
+                finder->second--;
+                used = true;
+            }
+
+        }
+        else
+        {
+            LOG_WARNING("Trying to use DropItem on unknown item (id: {}).", id_);
+        }
+
+        return used;
+    }
+
+
+    void PlayerController::CastPowerups(Engine::PowerupComponent* activePowerups, Engine::InputComponent* input,
+                                       Engine::InventoryComponent* inventory, float playerPositionX_)
+    {
+        if (Engine::InputManager::IsActionActive(input, "Player1Immortality"))
+        {
+            bool powerUsed = false;
+
+            if (!isActivePowerup(activePowerups, Game::Immortality))
+            {
+                powerUsed = UseItem(inventory, Game::Immortality);
+            }
+
+            if (powerUsed)
+            {
+                activePowerups->m_ActivePowers[Game::Immortality] = playerPositionX_ + GameConstants::IMMORTALITY_DURATION;
+            }
+        }
+
+        if (Engine::InputManager::IsActionActive(input, "Player1BatMode"))
+        {
+            bool powerUsed = false;
+            if (!isActivePowerup(activePowerups, Game::BatMode))
+            {
+                powerUsed = UseItem(inventory, Game::BatMode);
+            }
+
+            if (powerUsed)
+            {
+                activePowerups->m_ActivePowers[Game::BatMode] = playerPositionX_ + GameConstants::BATMODE_DURATION;
+            }
+        }
+
+    }
+
+    bool PlayerController::isActivePowerup(Engine::PowerupComponent* powerups, Game::Powerup power)
+    {
+        ASSERT(powerups != nullptr, "Must pass valid pointer to PowerupComponent to PlayerController::isActivePowerup()");
+        bool isActive = false;
+
+        auto finder = powerups->m_ActivePowers.find(power);
+        
+        if (finder != powerups->m_ActivePowers.end())
+        {
+            isActive = true;
+        }
+        return isActive;
+    }
+
+    void PlayerController::RemoveExpiredPowerups(Engine::PowerupComponent* powerups_, float playerPositionX_)
+    {
+        auto activePowers = powerups_->m_ActivePowers;
+        for (auto& [power, expiry] : activePowers)
+        {
+            if (expiry < playerPositionX_)
+            {
+                powerups_->m_ActivePowers.erase(power);
+            }
+        }
     }
 }

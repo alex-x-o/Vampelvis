@@ -93,21 +93,17 @@ namespace Engine
     struct InventoryComponent : public Component
     {
         std::unordered_map<int, int> m_Inventory{};
-
     };
 
     struct PowerupComponent : public Component
     {
-        int m_Type;
-        float m_End;
-
-        PowerupComponent() = default;
-        PowerupComponent(int type, float end) : m_Type(type), m_End(end) {};
+        std::unordered_map<int, float> m_ActivePowers{};
     };
 
     struct PickupComponent : public Component
     {
         int m_Type;
+        bool m_PickedUp = false;
 
         PickupComponent() = default;
         PickupComponent(int type) : m_Type(type) {};

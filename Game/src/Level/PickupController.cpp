@@ -17,7 +17,7 @@ namespace Game
 		m_LastPickupPos = pickupPosX;
 
 		std::random_device rd;
-		std::uniform_int_distribution<> rollForPickup(0, 5);
+		std::uniform_int_distribution<> rollForPickup(0, 1);
 
 		if (rollForPickup(rd) == 0)
 		{
@@ -44,10 +44,11 @@ namespace Game
 		for (auto& pickup : pickups)
 		{
 			auto pickupTransformer = pickup->GetComponent<Engine::TransformComponent>();
+			auto picupComponent = pickup->GetComponent<Engine::PickupComponent>();
 			float xPos = pickupTransformer->m_Position.x;
 			float xWidth = pickupTransformer->m_Size.x;
 
-			if (xWidth / 2 + xPos < boundary)
+			if (xWidth / 2 + xPos < boundary || picupComponent->m_PickedUp)
 			{
 				entityManager_->RemoveEntityById(pickup->GetId());
 			}
