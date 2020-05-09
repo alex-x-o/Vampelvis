@@ -70,7 +70,7 @@ void Game::GameApp::LoadGameTextures()
     //Common
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 0, "vampire", "./Textures/vampireSprites.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 0, "immortality", "./Textures/testTube.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 0, "batMode", "./Textures/testTube.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 0, "batMode", "./Textures/testTube2.png");
 
     // Level 1 Backgrounds
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 1, "blank", "./Textures/blank.png");
