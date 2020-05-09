@@ -15,7 +15,6 @@ namespace Engine
 		void SelectItem();
 		void DeSelectItem();
 
-		bool m_Selected{ false };
 		static int numOfItems;
 
 	private:
@@ -30,6 +29,7 @@ namespace Engine
 
 		void ChangeMenuItem(SDL_Color color_);
 
+		MenuItem(const MenuItem& other) = delete;
 		MenuItem& operator=(MenuItem& other) = delete;
 	};
 }

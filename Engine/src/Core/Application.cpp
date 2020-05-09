@@ -105,9 +105,13 @@ namespace Engine {
                 {
                     m_Running = false;
                 }
-                else if (event.type == SDL_KEYDOWN)
+                else if (event.type == SDL_KEYDOWN && m_ShowMenu)
                 {
                     ProcessInput(event.key.keysym.sym);
+                }
+                else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+                {
+                    m_ShowMenu = true;
                 }
             }
 
@@ -115,8 +119,9 @@ namespace Engine {
 
             float deltaTime = (frameTime - previousFrameTime) / static_cast<float>(SDL_GetPerformanceFrequency());
 
-            //LOG_INFO("Current FPS: {}", 1.f / deltaTime);
+            LOG_INFO("Current FPS: {}", 1.f / deltaTime);
 
+            // Restart game
             if (m_GameOver && !m_ShowMenu) return true;
 
             m_ShowMenu ? m_MainMenu->Update(m_RenderSystem->GetRenderer()) : Update(deltaTime);
@@ -131,27 +136,21 @@ namespace Engine {
     {
         switch (key_)
         {
-        case SDLK_ESCAPE:
-        {
-            if (!m_ShowMenu) m_ShowMenu = true;
-            break;
-        }
-        case SDLK_SPACE:
-        {
-            if (m_ShowMenu) m_ShowMenu = false;
-            m_MainMenu->HideMenu(m_RenderSystem->GetRenderer());
-            break;
-        }
-        case SDLK_UP:
-        {
-            m_MainMenu->m_MenuItemsManager->GoUp();
-            break;
-        }
-        case SDLK_DOWN:
-        {
-            m_MainMenu->m_MenuItemsManager->GoDown();
-            break;
-        }
+            case SDLK_SPACE: if (m_ShowMenu) m_ShowMenu = false;
+                             m_MainMenu->HideMenu(m_RenderSystem->GetRenderer());
+                             break;
+
+            case SDLK_UP: m_MainMenu->m_MenuItemsManager->GoUp();
+                          break;
+
+            case SDLK_DOWN: m_MainMenu->m_MenuItemsManager->GoDown();
+                            break;
+
+            case SDLK_RETURN: m_MainMenu->m_MenuItemsManager->EnterSubMenu();
+                              break;
+
+            case SDLK_BACKSPACE: m_MainMenu->m_MenuItemsManager->LeaveSubmenu();
+                                 break;
         }
     }
 

@@ -1,6 +1,7 @@
 #include "precomp.h"
 
 #include "GameApp.h"
+#include "../Engine/src/MainMenu/HighScoreData.h"
 #include "Entities/CameraController.h"
 #include "Entities/PlayerController.h"
 #include "Entities/LevelController.h"
@@ -17,14 +18,6 @@ void Game::GameApp::GameSpecificWindowData()
     gameSpecificWindowData.m_Vsync = true;
     gameSpecificWindowData.m_Icon = "./Textures/testTube2.png";
     m_WindowData = gameSpecificWindowData;
-    
-    if (!std::filesystem::exists("score.json"))
-    {
-        std::ofstream output("score.json");
-        nlohmann::json scoreObject;
-        scoreObject.emplace("score", 0);
-        output << scoreObject;
-    }
 }
 
 bool Game::GameApp::GameSpecificInit()
@@ -119,21 +112,9 @@ int Game::GameApp::GetPlayerScore()
 
 void Game::GameApp::UpdateHighScore()
 {
-    std::ifstream inputFile("score.json");
-    if (!inputFile.is_open())
-    {
-        LOG_ERROR("Opening file with high score failed");
-        return;
-    }
-
-    nlohmann::json scoreObject = nlohmann::json::parse(inputFile);
-
     int newScore = GetPlayerScore();
-    if (newScore > scoreObject.at("score"))
+    if (newScore > scoreData.GetHighScore())
     {
-        scoreObject["score"] = newScore;
-
-        std::ofstream output("score.json");
-        output << scoreObject;
+        scoreData.SetHighScore(newScore);
     }
 }

@@ -10,15 +10,15 @@ namespace Engine
 	{
 	public:
 		bool Init();
-		void Update(Renderer* windowRenderer_);
+		void Update(Renderer* gameRenderer_);
 		void Shutdown();
 
-		void ShowMenu(Renderer* windowRenderer_);
-		void HideMenu(Renderer* windowRenderer_);
-
-		bool IsMenuVisible() const { return m_Visible; }
+		void ShowMenu(Renderer* gameRenderer_);
+		void HideMenu(Renderer* gameRenderer_);
 
 		std::unique_ptr<MenuItemsManager> m_MenuItemsManager;
+
+		MainMenu() = default;
 
 	private:
 		bool m_Visible{ true };
@@ -28,5 +28,8 @@ namespace Engine
 
 		void setBackground() const;
 		void setIcon() const;
+
+		MainMenu(const MainMenu& other) = delete;
+		MainMenu& operator=(MainMenu& other) = delete;
 	};
 }

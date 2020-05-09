@@ -20,15 +20,16 @@ namespace Engine
         setIcon();
 
         m_MenuItemsManager = std::make_unique<MenuItemsManager>();
-        bool initMenuItems = m_MenuItemsManager->Init(m_MenuRenderer);
+        m_MenuItemsManager->Init(m_MenuRenderer);
 
-        return !createWindow && initMenuItems;
+        return !createWindow;
     }
 
     void MainMenu::setIcon() const
     {
         SDL_Surface* iconSurface = IMG_Load(Application::m_WindowData.m_Icon.c_str());
 
+        // If icon file doesn't exist just continue
         if (!iconSurface)
         {
             LOG_INFO("Error with Menu Window Icon");
@@ -58,9 +59,9 @@ namespace Engine
         }
     }
 
-    void MainMenu::Update(Renderer* windowRenderer_)
+    void MainMenu::Update(Renderer* gameRenderer_)
     {
-        if (!m_Visible) ShowMenu(windowRenderer_);
+        if (!m_Visible) ShowMenu(gameRenderer_);
 
         SDL_RenderClear(m_MenuRenderer);
 
@@ -85,24 +86,22 @@ namespace Engine
         SDL_DestroyTexture(background);
     }
 
-    void MainMenu::ShowMenu(Renderer* windowRenderer_)
+    void MainMenu::ShowMenu(Renderer* gameRenderer_)
     {
-        windowRenderer_->HideWindow();
+        gameRenderer_->HideWindow();
         SDL_ShowWindow(m_MenuWindow);
         SDL_RaiseWindow(m_MenuWindow);
 
         m_Visible = true;
     }
 
-    void MainMenu::HideMenu(Renderer* windowRenderer_)
+    void MainMenu::HideMenu(Renderer* gameRenderer_)
     {
         SDL_HideWindow(m_MenuWindow);
-        windowRenderer_->ShowWindow();
+        gameRenderer_->ShowWindow();
 
         // Switch back to first selectable Item
-        int selected = m_MenuItemsManager->FindSelectedItem();
-        if (selected < 0) return;
-        m_MenuItemsManager->ChangeSelectedItem(selected, 2);
+        m_MenuItemsManager->ChangeSelectedItem(0);
 
         m_Visible = false;
     }

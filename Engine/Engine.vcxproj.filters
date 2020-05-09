@@ -1076,6 +1076,9 @@
     <ClInclude Include="src\MainMenu\MenuItemsData.h">
       <Filter>src\MainMenu</Filter>
     </ClInclude>
+    <ClInclude Include="src\MainMenu\HighScoreData.h">
+      <Filter>src\MainMenu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="extern\spdlog\LICENSE">

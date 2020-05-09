@@ -2,37 +2,25 @@
 #include "MenuItemsManager.h"
 #include "MenuItem.h"
 #include "Core/Application.h"
-
-#include <nlohmann/json.hpp>
+#include "HighScoreData.h"
 
 
 namespace Engine
 {
-    bool MenuItemsManager::Init(SDL_Renderer* menuRenderer_)
+    void MenuItemsManager::Init(SDL_Renderer* menuRenderer_)
     {
         LOG_INFO("Initializing Menu Items Manager");
 
         m_MenuRenderer = menuRenderer_;
 
-        // Get current High score from file
-        if (!std::filesystem::exists("score.json"))
-        {
-            LOG_INFO("File with High score does not exist!");
-            return false;
-        }
-
-        std::ifstream inputFile("score.json");
-        nlohmann::json scoreObject = nlohmann::json::parse(inputFile);
-        m_HighScore = scoreObject.at("score");
-
-        std::vector<std::string> beginingLabels = { Application::m_WindowData.m_Title,
-                                                   "High score: " + std::to_string(m_HighScore),
-                                                   "Scoreboard", "About", "Press SPACE to Play" };
+        scoreData.LoadHighScore();
+        m_BeginingLabels = { Application::m_WindowData.m_Title, "Best score: " + std::to_string(scoreData.GetHighScore()),
+                             "Hall of Fame", "Game Instructions", "About us", "Press SPACE to Play" };
 
         MenuItem::numOfItems = 0;
-        CreateMenuItems(beginingLabels);
 
-        return true;
+        CreateMenuItems(m_BeginingLabels);
+        SetSelectableItems(std::begin(m_MenuItems) + 2, std::end(m_MenuItems) - 1);
     }
 
     void Engine::MenuItemsManager::CreateMenuItems(std::vector<std::string>& labels_)
@@ -43,12 +31,19 @@ namespace Engine
         unsigned i = 0;
         while (i < m_NumOfItems)
         {
-            m_MenuItems.emplace_back(labels_[i], &m_ItemsData, m_MenuRenderer);
-            
+            m_MenuItems.push_back(std::make_shared<MenuItem>(labels_[i], &m_ItemsData, m_MenuRenderer));
+
             ++i;
         }
 
-        LOG_INFO("Done initializing Menu items");
+        m_SelectedItem = 0;
+    }
+
+    void MenuItemsManager::SetSelectableItems(std::vector<std::shared_ptr<MenuItem>>::iterator begining_, std::vector<std::shared_ptr<MenuItem>>::iterator end_)
+    {
+        m_SelectableMenuItems = std::vector<std::shared_ptr<MenuItem>>(begining_, end_);
+
+        ChangeSelectedItem(0);
     }
 
     void Engine::MenuItemsManager::Update()
@@ -56,7 +51,7 @@ namespace Engine
         // Render all Menu Items
         for (auto& item : m_MenuItems)
         {
-            item.Update();
+            item->Update();
         }
     }
 
@@ -64,54 +59,48 @@ namespace Engine
 
     void Engine::MenuItemsManager::GoUp()
     {
-        int index = FindSelectedItem();
-        if (index < 0) return;
-        int newIndex = index - 1 == 1 ? static_cast<int>(m_MenuItems.size() - 2) : index - 1;
-
-        ChangeSelectedItem(index, newIndex);
+        int newIndex = m_SelectedItem - 1 < 0 ? static_cast<int>(m_SelectableMenuItems.size()) - 1 : m_SelectedItem - 1;
+ 
+        ChangeSelectedItem(newIndex);
     }
 
     void Engine::MenuItemsManager::GoDown()
     {
-        int index = FindSelectedItem();
-        if (index < 0) return;
-        int newIndex = index + 1 == static_cast<int>(m_MenuItems.size() - 1) ? 2 : index + 1;
+        int newIndex = (m_SelectedItem + 1) % static_cast<int>(m_SelectableMenuItems.size());
 
-        ChangeSelectedItem(index, newIndex);
+        ChangeSelectedItem(newIndex);
     }
 
-    void Engine::MenuItemsManager::ChangeSelectedItem(int oldIndex_, int newIndex_)
+    void MenuItemsManager::EnterSubMenu()
     {
-        m_MenuItems[oldIndex_].m_Selected = false;
-        m_MenuItems[oldIndex_].DeSelectItem();
+    }
 
-        m_MenuItems[newIndex_].m_Selected = true;
-        m_MenuItems[newIndex_].SelectItem();
+    void MenuItemsManager::LeaveSubmenu()
+    {
+    }
+
+    void Engine::MenuItemsManager::ChangeSelectedItem(int newIndex_)
+    {
+        m_SelectableMenuItems[m_SelectedItem]->DeSelectItem();
+
+        m_SelectableMenuItems[newIndex_]->SelectItem();
+        m_SelectedItem = newIndex_;
     }
 
     void Engine::MenuItemsManager::GameOver(int playerScore_)
     {
-        std::vector<std::string> newLabels = { Application::m_WindowData.m_Title, "GAME OVER", 
-                                               "Your score: " + std::to_string(playerScore_) ,
+        std::vector<std::string> newLabels = { Application::m_WindowData.m_Title, " " ,"GAME OVER", 
+                                               "Your score: " + std::to_string(playerScore_),
                                                "Press SPACE to return to Main Menu" };
 
+        if (playerScore_ > scoreData.GetHighScore())
+            newLabels[2] = "New High Score!!! Score: " + std::to_string(playerScore_);
+
         m_MenuItems.clear();
+        m_SelectableMenuItems.clear();
         MenuItem::numOfItems = 0;
 
         CreateMenuItems(newLabels);
-
-        m_MenuItems[2].m_Selected = false;
-    }
-
-    int Engine::MenuItemsManager::FindSelectedItem() const
-    {
-        int index{ -1 };
-        auto selected = std::find_if(std::cbegin(m_MenuItems), std::cend(m_MenuItems), [](const MenuItem& i) {return i.m_Selected; });
-        if (selected != std::cend(m_MenuItems))
-        {
-            index = static_cast<int>(std::distance(std::cbegin(m_MenuItems), selected));
-        }
-
-        return index;
+        SetSelectableItems(std::begin(m_MenuItems) + 3, std::end(m_MenuItems) - 1);
     }
 }

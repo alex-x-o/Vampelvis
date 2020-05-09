@@ -11,7 +11,7 @@ namespace Engine
 
     SDL_Rect CalculateRect(int windowW_, int windowH_, int textW_, int textH_, int index_)
     {
-        return {windowW_/2 - textW_/2, index_ == 0 ? windowH_/4 - textH_/2 : windowH_/2 + (index_ - 1)*textH_, textW_, textH_};
+        return {windowW_/2 - textW_/2, index_ == 0 ? windowH_/4 - textH_/2 : windowH_/2 + (index_ - 2)*textH_, textW_, textH_};
     }
 
     MenuItem::MenuItem(std::string label_, MenuItemsData* data_, SDL_Renderer* menuRenderer_)
@@ -23,16 +23,12 @@ namespace Engine
         LOG_INFO(fmt::format("Initializing Item number {}", m_ItemId));
 
         SDL_Surface* itemSurface = TTF_RenderText_Solid(m_ItemId == 0 ? m_Data->m_TitleFont: m_Data->m_ItemsFont,
-                                                        m_Label.c_str(),
-                                                        m_ItemId == 2 ? m_Data->m_SelectedColor : m_Data->m_DefaultColor);
+                                                        m_Label.c_str(), m_Data->m_DefaultColor);
         
         m_Texture = SDL_CreateTextureFromSurface(m_ItemRenderer, itemSurface);
 
         m_Rect = CalculateRect(Application::m_WindowData.m_Width, Application::m_WindowData.m_Height,
                                itemSurface->w, itemSurface->h, m_ItemId);
-
-        if (m_ItemId == 2)
-            m_Selected = true;
 
         SDL_FreeSurface(itemSurface);
     }
