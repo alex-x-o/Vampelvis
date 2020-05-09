@@ -13,4 +13,18 @@ namespace GameConstants
 	const int BAT_WIDTH = 40;
 	const int BAT_HEIGHT = 40;
 	
+	const float IMMORTALITY_DURATION = 240.f;
+	const float BATMODE_DURATION = 1200.f;
+
+	const int IMMORTAITY_PICKUP_CHANCE = 1;
+	const int BATMODE_PICKUP_CHANCE = 4;
+}
+
+namespace Game
+{
+	enum Powerup {
+		Immortality,
+		BatMode
+	};
+
 }

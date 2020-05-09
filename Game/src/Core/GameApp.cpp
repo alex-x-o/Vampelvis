@@ -99,6 +99,9 @@ void Game::GameApp::LoadGameTextures()
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "stalagmite", "./Textures/stalagmite.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "stalagmite2", "./Textures/stalagmite2.png");
 
+    //Powerups
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "immortality", "./Textures/testTube.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), "batMode", "./Textures/testTube2.png");
 }
 
 void Game::GameApp::ChangetGameSpeed()

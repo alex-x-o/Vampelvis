@@ -3,6 +3,7 @@
 #include "Level/ObstacleController.h"
 #include "Level/EnemyController.h"
 #include "Level/WallController.h"
+#include "Level/PickupController.h"
 #include "Level/Level.h"
 
 namespace Game
@@ -31,6 +32,7 @@ namespace Game
         std::unique_ptr<WallController> m_WallController{};
         std::unique_ptr<ObstacleController> m_ObstacleController{};
         std::unique_ptr<EnemyController> m_EnemyController{};
+        std::unique_ptr<PickupController> m_PickupController{};
 
     };
 

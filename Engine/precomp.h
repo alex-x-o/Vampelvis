@@ -14,6 +14,7 @@
 #include <string>
 #include <array>
 #include <vector>
+#include <unordered_map>
 #include <set>
 
 #include "Logger/Logger.h"

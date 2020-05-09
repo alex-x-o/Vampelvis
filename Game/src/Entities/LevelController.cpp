@@ -16,6 +16,7 @@ namespace Game
 
         m_ObstacleController = std::make_unique<Game::ObstacleController>();
         m_EnemyController = std::make_unique<Game::EnemyController>();
+        m_PickupController = std::make_unique<Game::PickupController>();
 
         float backgroundHeigt = GameConstants::SCREEN_HEIGHT - 2 * GameConstants::WALL_HEIGHT;
         m_Background = std::make_unique <ScrollingBackground>();
@@ -36,6 +37,7 @@ namespace Game
 
         m_EnemyController->GenerateEnemies(entityManager_, textureManager_, boundary.right);
         m_ObstacleController->GenerateObstacles(entityManager_, textureManager_, boundary.right);
+        m_PickupController->GeneratePickups(entityManager_, textureManager_, boundary.right, 300.f, m_ObstacleController->m_LastObstaclePos);
 
         MoveLevelObjects(entityManager_);
         
@@ -49,6 +51,7 @@ namespace Game
     {
         m_EnemyController->RemovePastEnemies(entityManager_, boundary_);
         m_ObstacleController->RemovePastObstacles(entityManager_, boundary_);
+        m_PickupController->RemovePastPickups(entityManager_, boundary_);
     }
 
     void LevelController::MoveLevelObjects(Engine::EntityManager* entityManager_)

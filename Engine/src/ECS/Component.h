@@ -90,6 +90,29 @@ namespace Engine
         int m_MaxHealth;
     };
 
+    struct InventoryComponent : public Component
+    {
+        std::unordered_map<int, int> m_Inventory{};
+
+    };
+
+    struct PowerupComponent : public Component
+    {
+        int m_Type;
+        float m_End;
+
+        PowerupComponent() = default;
+        PowerupComponent(int type, float end) : m_Type(type), m_End(end) {};
+    };
+
+    struct PickupComponent : public Component
+    {
+        int m_Type;
+
+        PickupComponent() = default;
+        PickupComponent(int type) : m_Type(type) {};
+    };
+
     struct CameraComponent : public Component
     {
         Entity* m_ReferenceEntity{};

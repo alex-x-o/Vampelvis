@@ -169,6 +169,7 @@
     <ClInclude Include="src\Level\EnemyController.h" />
     <ClInclude Include="src\Level\Level.h" />
     <ClInclude Include="src\Level\ObstacleController.h" />
+    <ClInclude Include="src\Level\PickupController.h" />
     <ClInclude Include="src\Level\WallController.h" />
     <ClInclude Include="src\precomp.h" />
   </ItemGroup>
@@ -182,6 +183,7 @@
     <ClCompile Include="src\Level\EnemyController.cpp" />
     <ClCompile Include="src\Level\Level.cpp" />
     <ClCompile Include="src\Level\ObstacleController.cpp" />
+	<ClCompile Include="src\Level\PickupController.cpp" />
     <ClCompile Include="src\Level\WallController.cpp" />
     <ClCompile Include="src\precomp.cpp" />
   </ItemGroup>
