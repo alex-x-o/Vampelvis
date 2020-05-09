@@ -1,5 +1,5 @@
 #pragma once
-#include "MainMenuData.h"
+#include "MenuItemsManager.h"
 
 
 namespace Engine
@@ -16,27 +16,17 @@ namespace Engine
 		void ShowMenu(Renderer* windowRenderer_);
 		void HideMenu(Renderer* windowRenderer_);
 
-		void GoUp();
-		void GoDown();
-		void GameOver(int playerScore_);
+		bool IsMenuVisible() const { return m_Visible; }
 
-		bool IsVisible() const { return m_Visible; }
+		std::unique_ptr<MenuItemsManager> m_MenuItemsManager;
 
 	private:
-		MainMenuData m_Data{};
 		bool m_Visible{ true };
 
-		SDL_Window* m_MenuWindow;
-		SDL_Renderer* m_MenuRenderer;
+		SDL_Window* m_MenuWindow{};
+		SDL_Renderer* m_MenuRenderer{};
 
-		std::vector<std::string> m_MenuLabels;
-		std::vector<SDL_Texture*> m_MenuTextures;
-		std::vector<SDL_Rect> m_MenuRects;
-		std::vector<bool> m_Selected;
-
-		void CreateMenuItems();
-		int FindSelectedItem() const;
-		void ChangeSelectedItem(int oldIndex_, int newIndex_);
-		void ChangeMenuItem(int index_, SDL_Color color_);
+		void setBackground() const;
+		void setIcon() const;
 	};
 }

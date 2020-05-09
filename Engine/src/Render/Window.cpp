@@ -2,6 +2,7 @@
 #include "Window.h"
 
 #include <SDL.h>
+#include <SDL_image.h>
 
 namespace Engine
 {
@@ -21,7 +22,7 @@ namespace Engine
             0
         );
 
-        SDL_SetWindowIcon(m_NativeWindowHandle, windowData_.m_Icon);
+        SetWindowIcon();
 
         if (m_NativeWindowHandle == nullptr)
         {
@@ -33,6 +34,17 @@ namespace Engine
 
         SDL_HideWindow(m_NativeWindowHandle);
         return true;
+    }
+
+    void Window::SetWindowIcon()
+    {
+        SDL_Surface* iconSurface = IMG_Load(m_WindowData.m_Icon.c_str());
+
+        if (iconSurface)
+        {
+            SDL_SetWindowIcon(m_NativeWindowHandle, iconSurface);
+            SDL_FreeSurface(iconSurface);
+        }
     }
 
     bool Window::Shutdown()

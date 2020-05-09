@@ -15,15 +15,16 @@ void Game::GameApp::GameSpecificWindowData()
     gameSpecificWindowData.m_Width = GameApp::WindowWidth;
     gameSpecificWindowData.m_Height = GameApp::WindowHeight;
     gameSpecificWindowData.m_Vsync = true;
-    SetWindowData(gameSpecificWindowData);
+    gameSpecificWindowData.m_Icon = "./Textures/testTube2.png";
+    m_WindowData = gameSpecificWindowData;
     
-    std::ifstream input("score.json");
-    if (input.good()) return;
-
-    std::ofstream output("score.json");
-    nlohmann::json j;
-    j["score"] = 0;
-    output << j;
+    if (!std::filesystem::exists("score.json"))
+    {
+        std::ofstream output("score.json");
+        nlohmann::json scoreObject;
+        scoreObject.emplace("score", 0);
+        output << scoreObject;
+    }
 }
 
 bool Game::GameApp::GameSpecificInit()
@@ -51,6 +52,7 @@ void Game::GameApp::GameSpecificUpdate(float dt_)
     if (playerHit && !m_GodMode)
     {
         m_ShowMenu = m_GameOver = true;
+        m_MainMenu->m_MenuItemsManager->GameOver(GetPlayerScore());
         UpdateHighScore();
 
         return;
@@ -60,10 +62,7 @@ void Game::GameApp::GameSpecificUpdate(float dt_)
     m_Level->Update(dt_, m_EntityManager.get(), m_TextureManager.get());
 }
 
-bool Game::GameApp::GameSpecificShutdown()
-{
-    return true;
-}
+void Game::GameApp::GameSpecificShutdown() {}
 
 void Game::GameApp::LoadGameTextures()
 {
@@ -106,13 +105,13 @@ void Game::GameApp::LoadGameTextures()
 
 void Game::GameApp::ChangetGameSpeed()
 {
-    float coef = 1.0f + static_cast<float>(GetScore()) / 100.0f;
+    float coef = 1.0f + static_cast<float>(GetPlayerScore()) / 100.0f;
     m_CameraController->UpdateSpeed(coef);
     m_PlayerController->UpdateSpeed(coef);
     m_Level->UpdateSpeed(coef);
 }
 
-int Game::GameApp::GetScore()
+int Game::GameApp::GetPlayerScore()
 {
     int score = static_cast<int>(ceil(m_PlayerController->GetPlayerPositionX() - m_PlayerController->GetPlayerStartingPositionX())) / 80;
     return score;
@@ -120,18 +119,17 @@ int Game::GameApp::GetScore()
 
 void Game::GameApp::UpdateHighScore()
 {
-    std::ifstream input("score.json");
-    if (!input.is_open())
+    std::ifstream inputFile("score.json");
+    if (!inputFile.is_open())
     {
         LOG_ERROR("Opening file with high score failed");
         return;
     }
 
-    nlohmann::json scoreObject;
-    input >> scoreObject;
+    nlohmann::json scoreObject = nlohmann::json::parse(inputFile);
 
-    int newScore = GetScore();
-    if (newScore > scoreObject["score"])
+    int newScore = GetPlayerScore();
+    if (newScore > scoreObject.at("score"))
     {
         scoreObject["score"] = newScore;
 

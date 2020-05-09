@@ -105,7 +105,13 @@
     <ClCompile Include="src\MainMenu\MainMenu.cpp">
       <Filter>src\MainMenu</Filter>
     </ClCompile>
-    <ClCompile Include="src\MainMenu\MainMenuData.cpp">
+    <ClCompile Include="src\MainMenu\MenuItemsManager.cpp">
+      <Filter>src\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenu\MenuItem.cpp">
+      <Filter>src\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenu\MenuItemsData.cpp">
       <Filter>src\MainMenu</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1061,7 +1067,13 @@
     <ClInclude Include="src\MainMenu\MainMenu.h">
       <Filter>src\MainMenu</Filter>
     </ClInclude>
-    <ClInclude Include="src\MainMenu\MainMenuData.h">
+    <ClInclude Include="src\MainMenu\MenuItemsManager.h">
+      <Filter>src\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenu\MenuItem.h">
+      <Filter>src\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenu\MenuItemsData.h">
       <Filter>src\MainMenu</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,6 +21,8 @@ namespace Engine {
         WindowData m_WindowData{};
         SDL_Window* m_NativeWindowHandle{ };
 
+        void SetWindowIcon();
+
         Window(const Window& other) = delete;
         Window& operator=(Window& other) = delete;
     };

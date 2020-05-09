@@ -20,11 +20,11 @@ namespace Game
         void GameSpecificWindowData() override;
         bool GameSpecificInit() override;
         void GameSpecificUpdate(float dt_) override;
-        bool GameSpecificShutdown() override;
+        void GameSpecificShutdown() override;
         void LoadGameTextures();
         void ChangetGameSpeed();
 
-        int GetScore();
+        int GetPlayerScore();
         void UpdateHighScore();
 
         std::unique_ptr<PlayerController> m_PlayerController{};

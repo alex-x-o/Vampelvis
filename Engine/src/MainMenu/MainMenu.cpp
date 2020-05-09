@@ -1,181 +1,109 @@
 #include "precomp.h"
 #include "MainMenu.h"
+#include "MenuItemsManager.h"
+#include "Core/Application.h"
 #include "Render/Renderer.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
 
 
-bool Engine::MainMenu::Init()
+namespace Engine
 {
-    LOG_INFO("Initializing Main Menu");
-
-    int retVal = SDL_CreateWindowAndRenderer(m_Data.m_Width, m_Data.m_Height, 0, &m_MenuWindow, &m_MenuRenderer);
-    SDL_SetWindowTitle(m_MenuWindow, m_Data.m_Title.c_str());
-
-    SDL_SetWindowIcon(m_MenuWindow, m_Data.m_Icon);
-
-    CreateMenuItems();
-
-	return !retVal;
-}
-
-void Engine::MainMenu::CreateMenuItems()
-{
-    m_MenuLabels = {m_Data.m_Title, "High score: " + std::to_string(m_Data.m_HighScore), "Scoreboard", "About", "Press SPACE to Play"};
-
-    int i = 0;
-    for (auto& label : m_MenuLabels)
+    bool MainMenu::Init()
     {
-        SDL_Surface* itemSurface = TTF_RenderText_Solid(i == 0 ? m_Data.m_TitleFont : m_Data.m_ItemsFont, label.c_str(), m_Data.m_DefaultColor);
-        m_MenuTextures.push_back(SDL_CreateTextureFromSurface(m_MenuRenderer, itemSurface));
+        LOG_INFO("Initializing Main Menu");
 
-        int windowWidth = m_Data.m_Width;
-        int windowHeight = m_Data.m_Height;
-        int textWidth = itemSurface->w;
-        int textHeight = itemSurface->h;
+        int createWindow = SDL_CreateWindowAndRenderer(Application::m_WindowData.m_Width, Application::m_WindowData.m_Height, 0, &m_MenuWindow, &m_MenuRenderer);
+        
+        SDL_SetWindowTitle(m_MenuWindow, Application::m_WindowData.m_Title.c_str());
+        setIcon();
 
-        m_MenuRects.push_back({windowWidth/2-textWidth/2, i == 0 ? windowHeight/4-textHeight/2 : windowHeight/2+(i-1)*textHeight, textWidth, textHeight });
+        m_MenuItemsManager = std::make_unique<MenuItemsManager>();
+        bool initMenuItems = m_MenuItemsManager->Init(m_MenuRenderer);
 
-        m_Selected.push_back(i == 1 ? true : false);
-
-        SDL_FreeSurface(itemSurface);
-
-        ++i;
+        return !createWindow && initMenuItems;
     }
 
-    ChangeMenuItem(1, m_Data.m_SelectedColor);
-}
-
-void Engine::MainMenu::Shutdown()
-{
-    LOG_INFO("Shutting down Menu Renderer");
-    if (m_MenuRenderer != nullptr)
+    void MainMenu::setIcon() const
     {
-        SDL_DestroyRenderer(m_MenuRenderer);
-        m_MenuRenderer = nullptr;
+        SDL_Surface* iconSurface = IMG_Load(Application::m_WindowData.m_Icon.c_str());
+
+        if (!iconSurface)
+        {
+            LOG_INFO("Error with Menu Window Icon");
+            return;
+        }
+
+        SDL_SetWindowIcon(m_MenuWindow, iconSurface);
+        SDL_FreeSurface(iconSurface);
     }
 
-    LOG_INFO("Shutting down Menu Window");
-    if (m_MenuWindow != nullptr)
+    void MainMenu::Shutdown()
     {
-        SDL_DestroyWindow(m_MenuWindow);
-        m_MenuWindow = nullptr;
+        m_MenuItemsManager->Shutdown();
+
+        LOG_INFO("Shutting down Menu Renderer");
+        if (m_MenuRenderer != nullptr)
+        {
+            SDL_DestroyRenderer(m_MenuRenderer);
+            m_MenuRenderer = nullptr;
+        }
+
+        LOG_INFO("Shutting down Menu Window");
+        if (m_MenuWindow != nullptr)
+        {
+            SDL_DestroyWindow(m_MenuWindow);
+            m_MenuWindow = nullptr;
+        }
     }
 
-    for (auto& texture : m_MenuTextures)
+    void MainMenu::Update(Renderer* windowRenderer_)
     {
-        SDL_DestroyTexture(texture);
-    }
-}
+        if (!m_Visible) ShowMenu(windowRenderer_);
 
-int Engine::MainMenu::FindSelectedItem() const
-{
-    int index{ 1 };
-    auto selected = std::find(std::cbegin(m_Selected), std::cend(m_Selected), true);
-    if (selected != std::cend(m_Selected))
-    {
-        index = static_cast<int>(std::distance(std::cbegin(m_Selected), selected));
+        SDL_RenderClear(m_MenuRenderer);
+
+        setBackground();
+        m_MenuItemsManager->Update();
+
+        SDL_RenderPresent(m_MenuRenderer);
     }
 
-    return index;
-}
-
-void Engine::MainMenu::Update(Renderer* windowRenderer_)
-{
-    if (!m_Visible) ShowMenu(windowRenderer_);
-
-    SDL_RenderClear(m_MenuRenderer);
-
-    SDL_Texture* background = IMG_LoadTexture(m_MenuRenderer, "./Textures/backCave.png");
-    SDL_RenderCopy(m_MenuRenderer, background, NULL, NULL);
-
-    // Render all Menu Items
-    for (unsigned i = 0; i < m_MenuLabels.size(); ++i)
+    void MainMenu::setBackground() const
     {
-        SDL_RenderCopy(m_MenuRenderer, m_MenuTextures[i], NULL, &m_MenuRects[i]);
+        SDL_Texture* background = IMG_LoadTexture(m_MenuRenderer, "./Textures/backCave.png");
+
+        if (!background)
+        {
+            LOG_INFO("Error with setting Main Menu background");
+            return;
+        }
+
+        SDL_RenderCopy(m_MenuRenderer, background, NULL, NULL);
+
+        SDL_DestroyTexture(background);
     }
 
-    SDL_RenderPresent(m_MenuRenderer);
+    void MainMenu::ShowMenu(Renderer* windowRenderer_)
+    {
+        windowRenderer_->HideWindow();
+        SDL_ShowWindow(m_MenuWindow);
+        SDL_RaiseWindow(m_MenuWindow);
 
-    SDL_DestroyTexture(background);
-}
+        m_Visible = true;
+    }
 
-void Engine::MainMenu::ShowMenu(Renderer* windowRenderer_)
-{
-    windowRenderer_->HideWindow();
-    SDL_ShowWindow(m_MenuWindow);
-    SDL_RaiseWindow(m_MenuWindow);
+    void MainMenu::HideMenu(Renderer* windowRenderer_)
+    {
+        SDL_HideWindow(m_MenuWindow);
+        windowRenderer_->ShowWindow();
 
-    m_Visible = true;
-}
+        // Switch back to first selectable Item
+        int selected = m_MenuItemsManager->FindSelectedItem();
+        if (selected < 0) return;
+        m_MenuItemsManager->ChangeSelectedItem(selected, 2);
 
-void Engine::MainMenu::HideMenu(Renderer* windowRenderer_)
-{
-    SDL_HideWindow(m_MenuWindow);
-    windowRenderer_->ShowWindow();
-
-    // Switch back to first Item being selected
-    ChangeSelectedItem(FindSelectedItem(), 1);
-
-    m_Visible = false;
-}
-
-void Engine::MainMenu::GoUp()
-{
-    int index = FindSelectedItem();
-    int newIndex = index - 1 == 0 ? static_cast<int>(m_Selected.size()) - 2 : index - 1;
-    
-    ChangeSelectedItem(index, newIndex);
-}
-
-void Engine::MainMenu::GoDown()
-{
-    int index = FindSelectedItem();
-    int newIndex = index % (m_Selected.size() - 2) + 1;
-    
-    ChangeSelectedItem(index, newIndex);
-}
-
-void Engine::MainMenu::ChangeSelectedItem(int oldIndex_, int newIndex_)
-{
-    m_Selected[oldIndex_] = false;
-    ChangeMenuItem(oldIndex_, m_Data.m_DefaultColor);
-
-    m_Selected[newIndex_] = true;
-    ChangeMenuItem(newIndex_, m_Data.m_SelectedColor);
-}
-
-void Engine::MainMenu::ChangeMenuItem(int index_, SDL_Color color_)
-{
-    SDL_DestroyTexture(m_MenuTextures[index_]);
-
-    SDL_Surface* itemSurface = TTF_RenderText_Solid(m_Data.m_ItemsFont, m_MenuLabels[index_].c_str(), color_);
-    m_MenuTextures[index_] = SDL_CreateTextureFromSurface(m_MenuRenderer, itemSurface);
-
-    int windowWidth = m_Data.m_Width;
-    int windowHeight = m_Data.m_Height;
-    int textWidth = itemSurface->w;
-    int textHeight = itemSurface->h;
-
-    m_MenuRects[index_] = { windowWidth / 2 - textWidth / 2, index_ == 0 ? windowHeight / 4 - textHeight / 2 : windowHeight / 2 + (index_ - 1) * textHeight, textWidth, textHeight };
-
-    SDL_FreeSurface(itemSurface);
-}
-
-void Engine::MainMenu::GameOver(int playerScore_)
-{
-    std::vector<std::string> newLabels = { m_Data.m_Title, "GAME OVER", "Your score: " + std::to_string(playerScore_) , "Press SPACE to return to Main Menu" };
-
-    for (size_t i = newLabels.size(); i < m_MenuLabels.size(); i++)
-        SDL_DestroyTexture(m_MenuTextures[i]);
-
-    for (unsigned i = 0; i < (m_MenuLabels.size() - newLabels.size()); i++)
-        m_MenuLabels.pop_back();
-
-    m_MenuLabels = newLabels;
-    for (unsigned i = 1; i < m_MenuLabels.size(); i++)
-        ChangeMenuItem(i, m_Data.m_DefaultColor);
-
-    m_Selected[FindSelectedItem()] = false;
+        m_Visible = false;
+    }
 }

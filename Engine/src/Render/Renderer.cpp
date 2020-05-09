@@ -209,11 +209,6 @@ namespace Engine
         SDL_RenderPresent(m_NativeRenderer);
     }
 
-    Renderer::~Renderer()
-    {
-        Shutdown();
-    }
-
     void Renderer::ShowWindow()
     {
         SDL_ShowWindow(m_Window->GetNativeWindowHandle());
@@ -223,5 +218,10 @@ namespace Engine
     void Renderer::HideWindow()
     {
         SDL_HideWindow(m_Window->GetNativeWindowHandle());
+    }
+
+    Renderer::~Renderer()
+    {
+        Shutdown();
     }
 }

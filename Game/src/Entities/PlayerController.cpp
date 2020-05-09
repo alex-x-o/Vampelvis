@@ -46,7 +46,7 @@ namespace Game
     bool PlayerController::Update(Engine::EntityManager* entityManager_)
     {
         auto entityToMove = entityManager_->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::MoverComponent, Engine::InputComponent, Engine::TransformComponent>();
-        ASSERT(entityToMove.size() == 1, "Must be only one entity with Player, Mover, Transform and Input Component in PlayerController::Update()");
+        ASSERT(entityToMove.size() == 1, "Must be only one entity with Player, Mover, Input and Transform Component in PlayerController::Update()");
 
         auto entity = entityToMove.front();
         auto move = entity->GetComponent<Engine::MoverComponent>();
@@ -76,7 +76,7 @@ namespace Game
         move->m_TranslationSpeed.x = m_CurrentSpeed;
         move->m_TranslationSpeed.y = speed * (jumpInput ? -0.5f : 0.2f);
 
-        // Check position
+        // Update position
         m_PlayerPositionX = position->m_Position.x;
 
         PickUpPowerups(collision, inventory);
@@ -89,9 +89,6 @@ namespace Game
         if (collision->m_CollidedWith.size() > 0 && !immortal)
         {
             LOG_INFO("Player hit something in PlayerController::Update");
-
-            move->m_TranslationSpeed.x = 0.f;
-            move->m_TranslationSpeed.y = 0.f;
 
             return false;
         }

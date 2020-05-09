@@ -2,6 +2,7 @@
 
 #include "Render/WindowData.h"
 #include "MainMenu/MainMenu.h"
+
 #include <SDL.h>
 
 namespace Engine {
@@ -22,16 +23,13 @@ namespace Engine {
         virtual ~Application();
         Application() = default;
 
-        static WindowData& GetWindowData() { return m_WindowData; }
+        static WindowData m_WindowData;
 
     protected:
-        void SetWindowData(const WindowData& windowData_) { m_WindowData = windowData_; }
-
         bool m_Running{ false };
-        bool m_GameOver{ false };
         bool m_ShowMenu{ true };
+        bool m_GameOver{ false };
 
-        static WindowData m_WindowData;
         std::unique_ptr<RenderSystem> m_RenderSystem{};
         std::unique_ptr<MainMenu> m_MainMenu{};
         std::unique_ptr<PhysicsSystem> m_PhysicsSystem{};
@@ -43,11 +41,12 @@ namespace Engine {
         // To be overridden by the game
         virtual void GameSpecificWindowData() = 0;
         virtual bool GameSpecificInit() = 0;
-        virtual bool GameSpecificShutdown() = 0;
+        virtual void GameSpecificShutdown() = 0;
         virtual void GameSpecificUpdate(float dt) = 0;
-        virtual int GetScore() = 0;
+        virtual int GetPlayerScore() = 0;
 
         void Update(float dt);
+        void ProcessInput(SDL_Keycode key_);
 
         Application(const Application& other) = delete;
         Application& operator=(Application& other) = delete;

@@ -107,29 +107,7 @@ namespace Engine {
                 }
                 else if (event.type == SDL_KEYDOWN)
                 {
-                    switch (event.key.keysym.sym)
-                    {
-                    case SDLK_ESCAPE:
-                    {
-                        if (!m_ShowMenu) m_ShowMenu = !m_ShowMenu;
-                        break;
-                    }
-                    case SDLK_SPACE:
-                    {
-                        if (m_ShowMenu) m_ShowMenu = !m_ShowMenu;
-                        break;
-                    }
-                    case SDLK_UP:
-                    {
-                        m_MainMenu->GoUp();
-                        break;
-                    }
-                    case SDLK_DOWN:
-                    {
-                        m_MainMenu->GoDown();
-                        break;
-                    }
-                    }
+                    ProcessInput(event.key.keysym.sym);
                 }
             }
 
@@ -137,13 +115,9 @@ namespace Engine {
 
             float deltaTime = (frameTime - previousFrameTime) / static_cast<float>(SDL_GetPerformanceFrequency());
 
-            LOG_INFO("Current FPS: {}", 1.f / deltaTime);
+            //LOG_INFO("Current FPS: {}", 1.f / deltaTime);
 
-            if (m_GameOver)
-            {
-                if (!m_ShowMenu) return true;
-                else m_MainMenu->GameOver(GetScore());
-            }
+            if (m_GameOver && !m_ShowMenu) return true;
 
             m_ShowMenu ? m_MainMenu->Update(m_RenderSystem->GetRenderer()) : Update(deltaTime);
 
@@ -153,17 +127,42 @@ namespace Engine {
         return false;
     }
 
+    void Application::ProcessInput(SDL_Keycode key_)
+    {
+        switch (key_)
+        {
+        case SDLK_ESCAPE:
+        {
+            if (!m_ShowMenu) m_ShowMenu = true;
+            break;
+        }
+        case SDLK_SPACE:
+        {
+            if (m_ShowMenu) m_ShowMenu = false;
+            m_MainMenu->HideMenu(m_RenderSystem->GetRenderer());
+            break;
+        }
+        case SDLK_UP:
+        {
+            m_MainMenu->m_MenuItemsManager->GoUp();
+            break;
+        }
+        case SDLK_DOWN:
+        {
+            m_MainMenu->m_MenuItemsManager->GoDown();
+            break;
+        }
+        }
+    }
+
     void Application::Update(float dt)
     {
-        if (m_MainMenu->IsVisible()) m_MainMenu->HideMenu(m_RenderSystem->GetRenderer());
-
         // Update all systems
         m_InputManager->Update(dt, m_EntityManager.get());
         m_PhysicsSystem->Update(dt, m_EntityManager.get());
         m_EntityManager->Update(dt);
-        m_RenderSystem->Update(dt, m_EntityManager.get(), GetScore());
+        m_RenderSystem->Update(dt, m_EntityManager.get(), GetPlayerScore());
 
         GameSpecificUpdate(dt);
     }
-
 }
