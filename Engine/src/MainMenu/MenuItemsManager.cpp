@@ -15,7 +15,7 @@ namespace Engine
 
         scoreData.LoadHighScore();
         m_BeginingLabels = { Application::m_WindowData.m_Title, "Best score: " + std::to_string(scoreData.GetHighScore()),
-                             "Hall of Fame", "Game Instructions", "About us", "Press SPACE to Play" };
+                             "Hall of Fame", "Sound : on", "How to play", "About us", "Press ENTER to open or SPACE to Play" };
 
         ChangeMenu(m_BeginingLabels, 2, 1);
     }
@@ -61,6 +61,12 @@ namespace Engine
         {
             item->Update();
         }
+
+        if (m_ItemsData.m_RepoQRTexture)
+        {
+            SDL_Rect qrRect = { Application::m_WindowData.m_Width/2-100, Application::m_WindowData.m_Height/2-80, 200, 200 };
+            SDL_RenderCopy(m_MenuRenderer, m_ItemsData.m_RepoQRTexture, NULL, &qrRect);
+        }
     }
 
     void Engine::MenuItemsManager::Shutdown() {}
@@ -85,7 +91,7 @@ namespace Engine
 
     void MenuItemsManager::EnterSubMenu()
     {
-        if (m_SelectableMenuItems[m_SelectedItem]->m_Label == "Hall of Fame")
+        if (m_SelectableMenuItems[m_SelectedItem]->m_Label == m_BeginingLabels[2])
         {
             auto hallOfFame = scoreData.GetHallOfFame();
 
@@ -100,16 +106,16 @@ namespace Engine
             std::transform(std::begin(sortedMap), std::end(sortedMap), std::back_inserter(bestVampires),
                 [](std::pair<const int, std::string>& entry) {return entry.second + " : " +std::to_string(entry.first); });
 
-            bestVampires.insert(std::begin(bestVampires), "Hall of Fame");
+            bestVampires.insert(std::begin(bestVampires), m_BeginingLabels[2]);
             bestVampires.push_back("Press BACKSPACE to return");
             ChangeMenu(bestVampires, static_cast<int>(bestVampires.size()) - 1, 0);
 
             m_SubmenuOpened = true;
             m_SelectableMenuItems[0]->DeSelectItem();
         }
-        else if (m_SelectableMenuItems[m_SelectedItem]->m_Label == "Game Instructions")
+        else if (m_SelectableMenuItems[m_SelectedItem]->m_Label == m_BeginingLabels[4])
         {
-            std::vector<std::string> instructions = { "Instructions", "You have awakened from your slumber!", 
+            std::vector<std::string> instructions = { m_BeginingLabels[4], "You have awakened from your slumber!",
                                                       "Fly through the SPACE, SHIFT into a terrifying",
                                                       "creature of the night by drinking Red Blood Vials or put",
                                                       "your death under CONTROL by drinking Blue Blood", 
@@ -121,6 +127,20 @@ namespace Engine
             m_SubmenuOpened = true;
             m_SelectableMenuItems[0]->DeSelectItem();
         }
+        else if (m_SelectableMenuItems[m_SelectedItem]->m_Label == m_BeginingLabels[5])
+        {
+            std::vector<std::string> aboutUs(3, " ");
+            aboutUs.insert(std::begin(aboutUs), m_BeginingLabels[5]);
+            aboutUs.push_back("Scan it to find out more!");
+            aboutUs.push_back("Press BACKSPACE to return");
+
+            ChangeMenu(aboutUs, static_cast<int>(aboutUs.size()) - 1, 0);
+
+            m_SubmenuOpened = true;
+            m_SelectableMenuItems[0]->DeSelectItem();
+
+            m_ItemsData.CreateQRTexture(m_MenuRenderer);
+        }
     }
 
     void MenuItemsManager::LeaveSubmenu()
@@ -130,6 +150,7 @@ namespace Engine
             ChangeMenu(m_BeginingLabels, 2, 1);
 
             m_SubmenuOpened = false;
+            if (m_ItemsData.m_RepoQRTexture) m_ItemsData.DestroyQRTexture();
         }
     }
 

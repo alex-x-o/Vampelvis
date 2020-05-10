@@ -3,8 +3,10 @@
 #include "Render/Window.h"
 #include "Render/Texture.h"
 #include "ECS/Entity.h"
+#include "../Game/src/Core/GameConstants.h"
 
 #include <SDL.h>
+#include <SDL_image.h>
 
 namespace Engine
 {
@@ -40,7 +42,7 @@ namespace Engine
             LOG_CRITICAL("Unable to initialize SDL_ttf");
         }
 
-        m_ScoreFont = TTF_OpenFont("./menuFont.ttf", 30);
+        m_ScoreFont = TTF_OpenFont("./Data/menuFont.ttf", 30);
 
         if (!m_ScoreFont)
         {
@@ -160,22 +162,57 @@ namespace Engine
         }
     }
 
-	void Renderer::DrawPlayerScore(int score_)
-	{
-        SDL_Surface* scoreSurface = TTF_RenderText_Solid(m_ScoreFont, fmt::format("Score: {}", score_).c_str(), m_ScoreColor);
-        SDL_Texture* scoreTexture = SDL_CreateTextureFromSurface(m_NativeRenderer, scoreSurface);
+    void DrawString(SDL_Renderer* windowRenderer_, std::string text_, TTF_Font* font_, int x_)
+    {
+        SDL_Surface* scoreSurface = TTF_RenderText_Solid(font_, text_.c_str(), { 255, 255, 255 });
+        SDL_Texture* scoreTexture = SDL_CreateTextureFromSurface(windowRenderer_, scoreSurface);
 
-        SDL_Rect scoreRect = {20, -3, scoreSurface->w, scoreSurface->h};
+        SDL_Rect scoreRect = { x_, -3, scoreSurface->w, scoreSurface->h };
 
-        SDL_RenderCopy(m_NativeRenderer, scoreTexture, NULL, &scoreRect);
+        SDL_RenderCopy(windowRenderer_, scoreTexture, NULL, &scoreRect);
 
         SDL_DestroyTexture(scoreTexture);
         SDL_FreeSurface(scoreSurface);
+    }
+
+	void Renderer::DrawPlayerScore(int score_)
+	{
+        DrawString(m_NativeRenderer, fmt::format("Score: {}", score_), m_ScoreFont, 20);
 	}
 
 	void Renderer::DrawPlayerInventory(const std::unordered_map<int, int>& playerInventory_)
 	{
-        // TODO Draw Player Inventory
+        int i = 0;
+        for (auto& inv : playerInventory_)
+        {
+            DrawString(m_NativeRenderer, std::to_string(inv.second), m_ScoreFont, 800 - 60 - i*100);
+            
+            if (inv.first == Game::Powerup::BatMode)
+            {
+                SDL_Texture* batPowerup = IMG_LoadTexture(m_NativeRenderer, "./Textures/testTubeRed.png");
+
+                if (batPowerup)
+                {
+                    SDL_Rect rect = { 800 - (i + 1) * 100, -3, 30, 30 };
+                    SDL_RenderCopy(m_NativeRenderer, batPowerup, NULL, &rect);
+                    SDL_DestroyTexture(batPowerup);
+                }
+            }
+            else
+            {
+                SDL_Texture* imortality = IMG_LoadTexture(m_NativeRenderer, "./Textures/testTubeBlue.png");
+
+                if (imortality)
+                {
+                    SDL_Rect rect = { 800 - (i + 1) * 100, -3, 30, 30 };
+                    SDL_RenderCopy(m_NativeRenderer, imortality, NULL, &rect);
+                    SDL_DestroyTexture(imortality);
+                }
+
+            }
+
+            i++;
+        }
 	}
 
     void Renderer::SetBackgroundColor(unsigned char bgR_, unsigned char bgG_, unsigned char bgB_, unsigned char bgA_)
