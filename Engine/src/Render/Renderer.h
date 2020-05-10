@@ -21,6 +21,7 @@ namespace Engine
         void DrawEntities(const std::vector<Entity*> renderables_, const Entity* camera);
         void DrawEntity(const Entity* r, const Entity* camera);
         void DrawPlayerScore(int score_);
+        void DrawPlayerInventory(const std::unordered_map<int, int>& playerInventory_);
 
         void BeginScene() const;
         void EndScene() const;
@@ -40,7 +41,7 @@ namespace Engine
         SDL_Renderer* m_NativeRenderer{ };
         Color m_BackgroundColor{ };
 
-        TTF_Font* m_ScoreFont;
-        SDL_Color m_ScoreColor;
+        TTF_Font* m_ScoreFont{};
+        SDL_Color m_ScoreColor{ 255, 255, 255 };
     };
 }

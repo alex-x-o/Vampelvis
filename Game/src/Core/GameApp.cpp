@@ -110,6 +110,14 @@ void Game::GameApp::ChangetGameSpeed()
     m_Level->UpdateSpeed(coef);
 }
 
+const std::unordered_map<int, int>& Game::GameApp::GetPlayerInventory()
+{
+    auto player = m_EntityManager.get()->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::InventoryComponent>();
+    ASSERT(player.size() == 1, "Must be only one Player");
+
+    return player.front()->GetComponent<Engine::InventoryComponent>()->m_Inventory;
+}
+
 int Game::GameApp::GetPlayerScore()
 {
     int score = static_cast<int>(ceil(m_PlayerController->GetPlayerPositionX() - m_PlayerController->GetPlayerStartingPositionX())) / 80;

@@ -3,6 +3,8 @@
 
 #include <nlohmann/json.hpp>
 
+using json = nlohmann::json;
+
 namespace
 {
 	class HighScoreData
@@ -15,6 +17,7 @@ namespace
 		}
 
 		int GetHighScore() const { return m_HighScore; }
+
 		void SetHighScore(int score_) 
 		{ 
 			m_HighScore = score_; 
@@ -23,17 +26,21 @@ namespace
 
 		void LoadHighScore() 
 		{
-			std::ifstream inputFile("score.json");
-			nlohmann::json scoreObject = nlohmann::json::parse(inputFile);
+			std::ifstream inputFile(fileName);
+			json scoreObject = json::parse(inputFile);
 			m_HighScore = scoreObject.at("score");
 		}
 
 		void StoreHighScore(std::string key_, int value_)
 		{
-			std::ofstream output("score.json");
+			std::ifstream inputFile(fileName);
 			nlohmann::json scoreObject;
-			scoreObject.emplace(key_, value_);
-			output << scoreObject;
+			inputFile >> scoreObject;
+
+			scoreObject[key_] = value_;
+
+			std::ofstream outputFile(fileName);
+			outputFile << scoreObject;
 		}
 
 		HighScoreData& operator=(HighScoreData& other) = delete;
@@ -41,17 +48,34 @@ namespace
 		HighScoreData() 
 		{
 			// Get current High score from file
-			if (std::filesystem::exists("score.json"))
+			if (std::filesystem::exists(fileName))
 			{
 				LoadHighScore();
 			}
 			else
 			{
-				StoreHighScore("score", 0);
+				CreateHighScoreData();
 			}
 		}
 
+		void CreateHighScoreData()
+		{
+			std::unordered_map<std::string, int> famousVampires;
+			famousVampires.insert(std::pair<std::string, int>("Dracula", 1000));
+			famousVampires.insert(std::pair<std::string, int>("Sava Savanovic", 700));
+			famousVampires.insert(std::pair<std::string, int>("Damon Salvatore", 500));
+			famousVampires.insert(std::pair<std::string, int>("Edward Cullen", 300));
+			famousVampires.insert(std::pair<std::string, int>("Barnabas Collins", 100));
+			famousVampires.insert(std::pair<std::string, int>("score", 0));
+
+			json scoreObject(famousVampires);
+
+			std::ofstream output(fileName);
+			output << scoreObject; 
+		}
+
 		int m_HighScore{ 0 };
+		std::string fileName{ "score.json" };
 	};
 		
 	extern HighScoreData scoreData = HighScoreData::GetData();

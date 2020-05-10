@@ -15,6 +15,7 @@ namespace Engine
 		void SelectItem();
 		void DeSelectItem();
 
+		std::string m_Label;
 		static int numOfItems;
 
 	private:
@@ -22,8 +23,7 @@ namespace Engine
 
 		SDL_Renderer* m_ItemRenderer;
 		MenuItemsData* m_Data;
-
-		std::string m_Label;
+		
 		SDL_Texture* m_Texture;
 		SDL_Rect m_Rect;
 
