@@ -41,7 +41,6 @@ namespace Engine
         }
 
         m_ScoreFont = TTF_OpenFont("./menuFont.ttf", 30);
-        m_ScoreColor = { 255, 255, 255 };
 
         if (!m_ScoreFont)
         {
@@ -173,7 +172,7 @@ namespace Engine
         SDL_FreeSurface(scoreSurface);
 	}
 
-	void Renderer::DrawPlayerInventory(const std::unordered_map<int, float>& playerInventory_)
+	void Renderer::DrawPlayerInventory(const std::unordered_map<int, int>& playerInventory_)
 	{
         // TODO Draw Player Inventory
 	}

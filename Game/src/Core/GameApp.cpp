@@ -104,12 +104,12 @@ void Game::GameApp::ChangetGameSpeed()
     m_Level->UpdateSpeed(coef);
 }
 
-const std::unordered_map<int, float>& Game::GameApp::GetPlayerInventory()
+const std::unordered_map<int, int>& Game::GameApp::GetPlayerInventory()
 {
-    auto player = m_EntityManager.get()->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::PowerupComponent>();
+    auto player = m_EntityManager.get()->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::InventoryComponent>();
     ASSERT(player.size() == 1, "Must be only one Player");
 
-    return player.front()->GetComponent<Engine::PowerupComponent>()->m_ActivePowers;
+    return player.front()->GetComponent<Engine::InventoryComponent>()->m_Inventory;
 }
 
 int Game::GameApp::GetPlayerScore()

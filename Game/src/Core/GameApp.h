@@ -24,7 +24,7 @@ namespace Game
         void LoadGameTextures();
         void ChangetGameSpeed();
 
-        const std::unordered_map<int, float>& GetPlayerInventory();
+        const std::unordered_map<int, int>& GetPlayerInventory();
         int GetPlayerScore();
         void UpdateHighScore();
 
