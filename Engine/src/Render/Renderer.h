@@ -42,6 +42,5 @@ namespace Engine
         Color m_BackgroundColor{ };
 
         TTF_Font* m_ScoreFont{};
-        SDL_Color m_ScoreColor{ 255, 255, 255 };
     };
 }

@@ -106,7 +106,7 @@ namespace Engine
             std::transform(std::begin(sortedMap), std::end(sortedMap), std::back_inserter(bestVampires),
                 [](std::pair<const int, std::string>& entry) {return entry.second + " : " +std::to_string(entry.first); });
 
-            bestVampires.insert(std::begin(bestVampires), "Hall of Fame");
+            bestVampires.insert(std::begin(bestVampires), m_BeginingLabels[2]);
             bestVampires.push_back("Press BACKSPACE to return");
             ChangeMenu(bestVampires, static_cast<int>(bestVampires.size()) - 1, 0);
 
@@ -115,7 +115,7 @@ namespace Engine
         }
         else if (m_SelectableMenuItems[m_SelectedItem]->m_Label == m_BeginingLabels[4])
         {
-            std::vector<std::string> instructions = { "Instructions", "You have awakened from your slumber!", 
+            std::vector<std::string> instructions = { m_BeginingLabels[4], "You have awakened from your slumber!",
                                                       "Fly through the SPACE, SHIFT into a terrifying",
                                                       "creature of the night by drinking Red Blood Vials or put",
                                                       "your death under CONTROL by drinking Blue Blood", 
@@ -130,7 +130,7 @@ namespace Engine
         else if (m_SelectableMenuItems[m_SelectedItem]->m_Label == m_BeginingLabels[5])
         {
             std::vector<std::string> aboutUs(3, " ");
-            aboutUs.insert(std::begin(aboutUs), "About us");
+            aboutUs.insert(std::begin(aboutUs), m_BeginingLabels[5]);
             aboutUs.push_back("Scan it to find out more!");
             aboutUs.push_back("Press BACKSPACE to return");
 
