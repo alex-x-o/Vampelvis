@@ -165,12 +165,17 @@ namespace Engine
         SDL_Surface* scoreSurface = TTF_RenderText_Solid(m_ScoreFont, fmt::format("Score: {}", score_).c_str(), m_ScoreColor);
         SDL_Texture* scoreTexture = SDL_CreateTextureFromSurface(m_NativeRenderer, scoreSurface);
 
-        SDL_Rect scoreRect = {30, -3, scoreSurface->w, scoreSurface->h};
+        SDL_Rect scoreRect = {20, -3, scoreSurface->w, scoreSurface->h};
 
         SDL_RenderCopy(m_NativeRenderer, scoreTexture, NULL, &scoreRect);
 
         SDL_DestroyTexture(scoreTexture);
         SDL_FreeSurface(scoreSurface);
+	}
+
+	void Renderer::DrawPlayerInventory(const std::unordered_map<int, float>& playerInventory_)
+	{
+        // TODO Draw Player Inventory
 	}
 
     void Renderer::SetBackgroundColor(unsigned char bgR_, unsigned char bgG_, unsigned char bgB_, unsigned char bgA_)

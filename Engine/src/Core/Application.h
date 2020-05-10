@@ -44,6 +44,7 @@ namespace Engine {
         virtual void GameSpecificShutdown() = 0;
         virtual void GameSpecificUpdate(float dt) = 0;
         virtual int GetPlayerScore() = 0;
+        virtual const std::unordered_map<int, float>& GetPlayerInventory() = 0;
 
         void Update(float dt);
         void ProcessInput(SDL_Keycode key_);

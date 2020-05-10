@@ -16,7 +16,7 @@ void Game::GameApp::GameSpecificWindowData()
     gameSpecificWindowData.m_Width = GameApp::WindowWidth;
     gameSpecificWindowData.m_Height = GameApp::WindowHeight;
     gameSpecificWindowData.m_Vsync = true;
-    gameSpecificWindowData.m_Icon = "./Textures/testTube2.png";
+    gameSpecificWindowData.m_Icon = "./Textures/testTubeRed.png";
     m_WindowData = gameSpecificWindowData;
 }
 
@@ -102,6 +102,14 @@ void Game::GameApp::ChangetGameSpeed()
     m_CameraController->UpdateSpeed(coef);
     m_PlayerController->UpdateSpeed(coef);
     m_Level->UpdateSpeed(coef);
+}
+
+const std::unordered_map<int, float>& Game::GameApp::GetPlayerInventory()
+{
+    auto player = m_EntityManager.get()->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::PowerupComponent>();
+    ASSERT(player.size() == 1, "Must be only one Player");
+
+    return player.front()->GetComponent<Engine::PowerupComponent>()->m_ActivePowers;
 }
 
 int Game::GameApp::GetPlayerScore()

@@ -73,6 +73,10 @@ namespace Engine
 
     void MenuItemsManager::EnterSubMenu()
     {
+        if (m_SelectableMenuItems[m_SelectedItem]->m_Label == "Hall of Fame")
+        {
+            
+        }
     }
 
     void MenuItemsManager::LeaveSubmenu()
@@ -94,7 +98,7 @@ namespace Engine
                                                "Press SPACE to return to Main Menu" };
 
         if (playerScore_ > scoreData.GetHighScore())
-            newLabels[2] = "New High Score!!! Score: " + std::to_string(playerScore_);
+            newLabels[3] = "New High Score!!! Score: " + std::to_string(playerScore_);
 
         m_MenuItems.clear();
         m_SelectableMenuItems.clear();

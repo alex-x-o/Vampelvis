@@ -47,7 +47,7 @@ namespace Engine
         return true;
     }
 
-    void RenderSystem::Update(float dt_, EntityManager* entityManager, int playerScore_)
+    void RenderSystem::Update(float dt_, EntityManager* entityManager, int playerScore_, const std::unordered_map<int, float>& playerInventory_)
     {
         m_Renderer->BeginScene();
 
@@ -63,6 +63,7 @@ namespace Engine
         m_Renderer->DrawEntities(renderables, camera);
 
         m_Renderer->DrawPlayerScore(playerScore_);
+        m_Renderer->DrawPlayerInventory(playerInventory_);
 
         m_Renderer->EndScene();
     }

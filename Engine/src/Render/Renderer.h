@@ -21,6 +21,7 @@ namespace Engine
         void DrawEntities(const std::vector<Entity*> renderables_, const Entity* camera);
         void DrawEntity(const Entity* r, const Entity* camera);
         void DrawPlayerScore(int score_);
+        void DrawPlayerInventory(const std::unordered_map<int, float>& playerInventory_);
 
         void BeginScene() const;
         void EndScene() const;

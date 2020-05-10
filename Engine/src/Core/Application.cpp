@@ -160,7 +160,7 @@ namespace Engine {
         m_InputManager->Update(dt, m_EntityManager.get());
         m_PhysicsSystem->Update(dt, m_EntityManager.get());
         m_EntityManager->Update(dt);
-        m_RenderSystem->Update(dt, m_EntityManager.get(), GetPlayerScore());
+        m_RenderSystem->Update(dt, m_EntityManager.get(), GetPlayerScore(), GetPlayerInventory());
 
         GameSpecificUpdate(dt);
     }
