@@ -24,6 +24,7 @@ namespace Engine
 
 		std::vector<std::shared_ptr<MenuItem>> m_SelectableMenuItems;
 		int m_SelectedItem{ 0 };
+		bool m_SubmenuOpened{ false };
 
 	private:
 		int m_HighScore{ 0 };
@@ -35,6 +36,7 @@ namespace Engine
 		MenuItemsData m_ItemsData{};
 		SDL_Renderer* m_MenuRenderer{};
 
+		void ChangeMenu(std::vector<std::string>& labels_, int selectableBegining_, int selectableEnd_);
 		void CreateMenuItems(std::vector<std::string>& labels);
 		void SetSelectableItems(std::vector<std::shared_ptr<MenuItem>>::iterator begining_, std::vector<std::shared_ptr<MenuItem>>::iterator end_);
 

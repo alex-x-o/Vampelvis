@@ -16,12 +16,20 @@ namespace
 			return data;
 		}
 
+		std::map<std::string, int> GetHallOfFame()
+		{
+			std::ifstream inputFile(fileName);
+			json scoreObject = json::parse(inputFile);
+
+			return scoreObject["hallOfFame"];
+		}
+
 		int GetHighScore() const { return m_HighScore; }
 
 		void SetHighScore(int score_) 
 		{ 
 			m_HighScore = score_; 
-			StoreHighScore("score", score_);
+			StoreHighScore(score_);
 		}
 
 		void LoadHighScore() 
@@ -31,13 +39,13 @@ namespace
 			m_HighScore = scoreObject.at("score");
 		}
 
-		void StoreHighScore(std::string key_, int value_)
+		void StoreHighScore(int value_)
 		{
 			std::ifstream inputFile(fileName);
 			nlohmann::json scoreObject;
 			inputFile >> scoreObject;
 
-			scoreObject[key_] = value_;
+			scoreObject["score"] = value_;
 
 			std::ofstream outputFile(fileName);
 			outputFile << scoreObject;
@@ -60,18 +68,17 @@ namespace
 
 		void CreateHighScoreData()
 		{
-			std::unordered_map<std::string, int> famousVampires;
-			famousVampires.insert(std::pair<std::string, int>("Dracula", 1000));
-			famousVampires.insert(std::pair<std::string, int>("Sava Savanovic", 700));
-			famousVampires.insert(std::pair<std::string, int>("Damon Salvatore", 500));
-			famousVampires.insert(std::pair<std::string, int>("Edward Cullen", 300));
-			famousVampires.insert(std::pair<std::string, int>("Barnabas Collins", 100));
-			famousVampires.insert(std::pair<std::string, int>("score", 0));
-
-			json scoreObject(famousVampires);
+			json scoreObject;
+			scoreObject["score"] = 0;
+			scoreObject["hallOfFame"] = {
+											{"Dracula", 1000},
+											{"Sava Savanovic", 700},
+											{"Damon Salvatore", 500},
+											{"Edward Cullen", 300}
+										};
 
 			std::ofstream output(fileName);
-			output << scoreObject; 
+			output << scoreObject.dump(); 
 		}
 
 		int m_HighScore{ 0 };

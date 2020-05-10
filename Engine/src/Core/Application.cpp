@@ -136,7 +136,8 @@ namespace Engine {
     {
         switch (key_)
         {
-            case SDLK_SPACE: if (m_ShowMenu) m_ShowMenu = false;
+            case SDLK_SPACE: if (m_MainMenu->m_MenuItemsManager->m_SubmenuOpened) return;
+                             if (m_ShowMenu) m_ShowMenu = false;
                              m_MainMenu->HideMenu(m_RenderSystem->GetRenderer());
                              break;
 
