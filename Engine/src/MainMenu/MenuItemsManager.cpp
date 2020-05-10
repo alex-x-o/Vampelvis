@@ -107,6 +107,20 @@ namespace Engine
             m_SubmenuOpened = true;
             m_SelectableMenuItems[0]->DeSelectItem();
         }
+        else if (m_SelectableMenuItems[m_SelectedItem]->m_Label == "Game Instructions")
+        {
+            std::vector<std::string> instructions = { "Instructions", "You have awakened from your slumber!", 
+                                                      "Fly through the SPACE, SHIFT into a terrifying",
+                                                      "creature of the night by drinking Red Blood Vials or put",
+                                                      "your death under CONTROL by drinking Blue Blood", 
+                                                      "Vials and becoming immune to damage for a short period.",
+                                                      "Press BACKSPACE to return"};
+
+            ChangeMenu(instructions, static_cast<int>(instructions.size()) - 1, 0);
+        
+            m_SubmenuOpened = true;
+            m_SelectableMenuItems[0]->DeSelectItem();
+        }
     }
 
     void MenuItemsManager::LeaveSubmenu()

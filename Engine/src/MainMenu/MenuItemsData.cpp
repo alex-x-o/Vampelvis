@@ -12,8 +12,8 @@ namespace Engine
 			LOG_CRITICAL("Unable to initialize SDL_ttf in MenuItemsManager::Init()");
 		}
 
-		m_TitleFont = TTF_OpenFont("./menuFont.ttf", 160);
-		m_ItemsFont = TTF_OpenFont("./menuFont.ttf", 50);
+		m_TitleFont = TTF_OpenFont("./menuFont.ttf", 150);
+		m_ItemsFont = TTF_OpenFont("./menuFont.ttf", 45);
 
 		if (!m_TitleFont || !m_ItemsFont)
 		{
