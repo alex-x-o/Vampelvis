@@ -13,6 +13,10 @@ namespace Engine
 		TTF_Font* m_TitleFont;
 		TTF_Font* m_ItemsFont;
 
+		SDL_Texture* m_RepoQRTexture;
+		void CreateQRTexture(SDL_Renderer* menuRenderer_);
+		void DestroyQRTexture();
+
 		MenuItemsData();
 		~MenuItemsData();
 	};

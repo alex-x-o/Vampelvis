@@ -40,7 +40,7 @@ namespace Engine
             LOG_CRITICAL("Unable to initialize SDL_ttf");
         }
 
-        m_ScoreFont = TTF_OpenFont("./menuFont.ttf", 30);
+        m_ScoreFont = TTF_OpenFont("./Data/menuFont.ttf", 30);
 
         if (!m_ScoreFont)
         {
