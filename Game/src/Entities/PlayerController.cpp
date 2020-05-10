@@ -60,18 +60,7 @@ namespace Game
         auto powerups = entity->GetComponent<Engine::PowerupComponent>();
         auto collision = entity->GetComponent<Engine::CollisionComponent>();
 
-        // Animate player
-        auto frameCurrent = sprite->m_AnimationCurrentFrame;
-        auto frameNum = sprite->m_AnimationFrames;
-
-        if (frameCurrent < frameNum - 1)
-        {
-            sprite->m_AnimationCurrentFrame = sprite->m_AnimationCurrentFrame + 1;
-        }
-        else
-        {
-            sprite->m_AnimationCurrentFrame = 0;
-        }
+        AnimatePlayer(sprite);
 
         // Move player
         bool jumpInput = Engine::InputManager::IsActionActive(input, "MainGameBtn");
@@ -301,6 +290,21 @@ namespace Game
             {
                 activePowerups[Game::Immortality] = std::numeric_limits<float>::infinity();
             }
+        }
+    }
+
+    void PlayerController::AnimatePlayer(Engine::SpriteComponent* sprite_)
+    {
+        auto frameCurrent = sprite_->m_AnimationCurrentFrame;
+        auto frameNum = sprite_->m_AnimationFrames;
+
+        if (frameCurrent < frameNum - 1)
+        {
+            sprite_->m_AnimationCurrentFrame = sprite_->m_AnimationCurrentFrame + 1;
+        }
+        else
+        {
+            sprite_->m_AnimationCurrentFrame = 0;
         }
     }
 

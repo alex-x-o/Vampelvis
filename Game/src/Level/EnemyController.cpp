@@ -47,24 +47,9 @@ namespace Game
         {
             auto move = enemy->GetComponent<Engine::MoverComponent>();
             move->m_TranslationSpeed.x = -speed_;
-        }
 
-        // Animate enemies
-        for (auto& enemy : enemies)
-        {
             auto sprite = enemy->GetComponent<Engine::SpriteComponent>();
-            
-            auto frameCurrent = sprite->m_AnimationCurrentFrame;
-            auto frameNum = sprite->m_AnimationFrames;
-
-            if (frameCurrent < frameNum - 1)
-            {
-                sprite->m_AnimationCurrentFrame = sprite->m_AnimationCurrentFrame + 1;
-            }
-            else
-            {
-                sprite->m_AnimationCurrentFrame = 0;
-            }
+            AnimateEnemies(sprite);
         }
     }
 
@@ -83,6 +68,21 @@ namespace Game
             {
                 entityManager_->RemoveEntityById(enemy->GetId());
             }
+        }
+    }
+
+    void EnemyController::AnimateEnemies(Engine::SpriteComponent* sprite_)
+    {
+        auto frameCurrent = sprite_->m_AnimationCurrentFrame;
+        auto frameNum = sprite_->m_AnimationFrames;
+
+        if (frameCurrent < frameNum - 1)
+        {
+            sprite_->m_AnimationCurrentFrame = sprite_->m_AnimationCurrentFrame + 1;
+        }
+        else
+        {
+            sprite_->m_AnimationCurrentFrame = 0;
         }
     }
 

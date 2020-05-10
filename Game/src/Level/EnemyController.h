@@ -9,5 +9,6 @@ namespace Game
 		void MoveEnemies(Engine::EntityManager* entityManager_, float speed_);
 		
 		void RemovePastEnemies(Engine::EntityManager* entityManager_, float boundary_);
+		void AnimateEnemies(Engine::SpriteComponent* sprite_);
 	};
 }
