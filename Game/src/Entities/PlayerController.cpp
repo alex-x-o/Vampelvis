@@ -87,7 +87,7 @@ namespace Game
         CastPowerups(powerups, input, inventory, m_PlayerPositionX);
         Shapeshift(textureManager_, collision, position, sprite);
         
-        KeepPlayerOnScreen(collision, move);
+        KeepPlayerOnScreen(collision, position);
 
         bool shouldContinueGame = !CheckIfCollided(collision, powerups);
         return shouldContinueGame;
@@ -255,26 +255,11 @@ namespace Game
         m_ReadyToShapeshift = false;
     }
 
-    void PlayerController::KeepPlayerOnScreen(Engine::CollisionComponent* collisionComponent_, Engine::MoverComponent* move_)
+    void PlayerController::KeepPlayerOnScreen(Engine::CollisionComponent* collisionComponent_, Engine::TransformComponent* transform)
     {
-        for (auto& collision : collisionComponent_->m_CollidedWith)
-        {
-            if (collision->HasComponents<Game::WallComponent, Engine::TransformComponent>())
-            {
-                move_->m_TranslationSpeed.y = -move_->m_TranslationSpeed.y;
-                /*
-                if (collision->GetComponent<Engine::TransformComponent>()->m_Position.y > 0)
-                {
-                    //Player has touched bottom wall
-                    
-                }
-                else
-                {
-
-                }
-                */
-            }
-        }
+        float boundary = (GameConstants::SCREEN_HEIGHT - transform->m_Size.y) / 2 - GameConstants::WALL_HEIGHT;
+        transform->m_Position.y = transform->m_Position.y < -boundary ? -boundary : transform->m_Position.y;
+        transform->m_Position.y = transform->m_Position.y > boundary ? boundary : transform->m_Position.y;
     }
 
     bool PlayerController::CheckIfCollided(Engine::CollisionComponent* collisionComponent_, Engine::PowerupComponent* powerups_)
