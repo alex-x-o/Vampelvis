@@ -19,6 +19,8 @@ namespace Game
         float GetPlayerPositionX() const;
         float GetPlayerStartingPositionX() const;
 
+        bool CheckIfCheated();
+
         const static float Height;
         const static float Width;
 
@@ -30,6 +32,7 @@ namespace Game
         float m_CurrentSpeed{ 100.0f };
 
         bool m_ReadyToShapeshift = false;
+        bool m_HasCheated = false;
 
         void InitInventory(Engine::InventoryComponent* inventory_);
         void PickUpPowerups(Engine::CollisionComponent* collision_, Engine::InventoryComponent* inventory_);
@@ -39,5 +42,8 @@ namespace Game
         bool isActivePowerup(Engine::PowerupComponent* powerups, Game::Powerup power);
         void RemoveExpiredPowerups(Engine::PowerupComponent* powerups_, float playerPositionX_);
         void Shapeshift(Engine::TextureManager* textureManager_, Engine::CollisionComponent* collision_, Engine::TransformComponent* transformer_, Engine::SpriteComponent* sprite_);
+        void KeepPlayerOnScreen(Engine::CollisionComponent* collisionComponent_, Engine::MoverComponent* move_);
+        bool CheckIfCollided(Engine::CollisionComponent* collisionComponent_, Engine::PowerupComponent* powerups_);
+        void ToggleGodMode(Engine::InputComponent* input_, Engine::PowerupComponent* powerups_);
     };
 }

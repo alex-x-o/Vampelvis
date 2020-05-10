@@ -101,7 +101,7 @@ namespace Engine
         m_InputActions["PanCameraDown"] = 'Y';
         m_InputActions["PanCameraRight"] = 'Y';
 
-        m_InputActions["ToggleImmortality"] = VK_F12;
+        m_InputActions["ToggleImmortality"] = VK_F9;
         m_InputActions["Player1BatMode"] = VK_CONTROL;
         m_InputActions["Player1Immortality"] = VK_SHIFT;
 

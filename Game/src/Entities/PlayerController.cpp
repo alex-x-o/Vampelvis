@@ -1,5 +1,6 @@
 #include "precomp.h"
 #include "PlayerController.h"
+#include "GameComponents.h"
 #include "Core/GameConstants.h"
 
 
@@ -78,7 +79,7 @@ namespace Game
 
         // Update position
         m_PlayerPositionX = position->m_Position.x;
-
+        ToggleGodMode(input, powerups);
         PickUpPowerups(collision, inventory);
         RemoveExpiredPowerups(powerups, m_PlayerPositionX);
         Shapeshift(textureManager_, collision, position, sprite);
@@ -86,18 +87,10 @@ namespace Game
         CastPowerups(powerups, input, inventory, m_PlayerPositionX);
         Shapeshift(textureManager_, collision, position, sprite);
         
+        KeepPlayerOnScreen(collision, move);
 
-        bool immortal = powerups->m_ActivePowers.find(Game::Immortality) != powerups->m_ActivePowers.end();
-
-        // Check if hit
-        if (collision->m_CollidedWith.size() > 0 && !immortal)
-        {
-            LOG_INFO("Player hit something in PlayerController::Update");
-
-            return false;
-        }
-
-        return true;
+        bool shouldContinueGame = !CheckIfCollided(collision, powerups);
+        return shouldContinueGame;
     }
 
     float PlayerController::GetPlayerPositionX() const
@@ -262,4 +255,71 @@ namespace Game
         m_ReadyToShapeshift = false;
     }
 
+    void PlayerController::KeepPlayerOnScreen(Engine::CollisionComponent* collisionComponent_, Engine::MoverComponent* move_)
+    {
+        for (auto& collision : collisionComponent_->m_CollidedWith)
+        {
+            if (collision->HasComponents<Game::WallComponent, Engine::TransformComponent>())
+            {
+                move_->m_TranslationSpeed.y = -move_->m_TranslationSpeed.y;
+                /*
+                if (collision->GetComponent<Engine::TransformComponent>()->m_Position.y > 0)
+                {
+                    //Player has touched bottom wall
+                    
+                }
+                else
+                {
+
+                }
+                */
+            }
+        }
+    }
+
+    bool PlayerController::CheckIfCollided(Engine::CollisionComponent* collisionComponent_, Engine::PowerupComponent* powerups_)
+                                           
+    {
+        bool immortal = powerups_->m_ActivePowers.find(Game::Immortality) != powerups_->m_ActivePowers.end();
+
+        if (collisionComponent_->m_CollidedWith.size() > 0 && !immortal)
+        {
+            LOG_INFO("Player hit something in PlayerController::Update");
+
+            return true;
+        }
+
+        return false;
+    }
+
+    void PlayerController::ToggleGodMode(Engine::InputComponent* input_, Engine::PowerupComponent* powerups_)
+    {
+        if (Engine::InputManager::IsActionActive(input_, "ToggleImmortality"))
+        {
+            m_HasCheated = true;
+            auto& activePowerups = powerups_->m_ActivePowers;
+            auto finder = activePowerups.find(Game::Immortality);
+
+            if (finder != activePowerups.end())
+            {
+                if (finder->second == std::numeric_limits<float>::infinity())
+                {
+                    activePowerups.erase(Game::Immortality);
+                }
+                else
+                {
+                    activePowerups[Game::Immortality] = std::numeric_limits<float>::infinity();
+                }
+            }
+            else
+            {
+                activePowerups[Game::Immortality] = std::numeric_limits<float>::infinity();
+            }
+        }
+    }
+
+    bool PlayerController::CheckIfCheated()
+    {
+        return m_HasCheated;
+    }
 }
