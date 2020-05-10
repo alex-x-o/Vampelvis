@@ -113,10 +113,10 @@ namespace Engine
             if (sprite->m_Animation == true)
             {
                 SDL_Rect src;
-                int frame = sprite->m_AnimationCurrentFrame;
+                int numFrames = sprite->m_AnimationFrames;
                 int height = sprite->m_Height;
 
-                src.x = height * frame;
+                src.x = height * static_cast<int>((SDL_GetTicks() / 150) % numFrames);
                 src.y = 0;
                 src.w = height;
                 src.h = height;
