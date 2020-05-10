@@ -1,13 +1,15 @@
 #include "precomp.h"
 
 #include "GameApp.h"
-#include "../Engine/src/MainMenu/HighScoreData.h"
+#include "MainMenu/HighScoreData.h"
+#include "MainMenu/GameMenu.h"
 #include "Entities/CameraController.h"
 #include "Entities/PlayerController.h"
 #include "Entities/LevelController.h"
 #include "Entities/StaticImage.h"
 
 #include <nlohmann/json.hpp>
+
 
 void Game::GameApp::GameSpecificWindowData()
 {
@@ -22,6 +24,14 @@ void Game::GameApp::GameSpecificWindowData()
 
 bool Game::GameApp::GameSpecificInit()
 {
+    // Main Menu initialize
+    m_MainMenu = std::make_unique<Game::GameMenu>();
+    if (!m_MainMenu->Init())
+    {
+        LOG_CRITICAL("Failed to initialize MainMenu");
+        return false;
+    }
+
     this->LoadGameTextures();
 
     m_CameraController = std::make_unique<CameraController>();
@@ -45,7 +55,7 @@ void Game::GameApp::GameSpecificUpdate(float dt_)
     if (playerHit && !m_GodMode)
     {
         m_ShowMenu = m_GameOver = true;
-        m_MainMenu->m_MenuItemsManager->GameOver(GetPlayerScore());
+        m_MainMenu->GameOver(GetPlayerScore());
         UpdateHighScore();
 
         return;
@@ -55,7 +65,11 @@ void Game::GameApp::GameSpecificUpdate(float dt_)
     m_Level->Update(dt_, m_EntityManager.get(), m_TextureManager.get());
 }
 
-void Game::GameApp::GameSpecificShutdown() {}
+void Game::GameApp::GameSpecificShutdown() 
+{
+    m_MainMenu->Shutdown();
+    m_MainMenu.reset();
+}
 
 void Game::GameApp::LoadGameTextures()
 {

@@ -2,7 +2,7 @@
 #include <SDL_ttf.h>
 
 
-namespace Engine
+namespace Game
 {
 	class MenuItemsData
 	{

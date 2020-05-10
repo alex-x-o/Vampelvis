@@ -5,7 +5,7 @@
 
 using json = nlohmann::json;
 
-namespace
+namespace Game
 {
 	class HighScoreData
 	{
@@ -84,6 +84,6 @@ namespace
 		int m_HighScore{ 0 };
 		std::string fileName{ "score.json" };
 	};
-		
-	extern HighScoreData scoreData = HighScoreData::GetData();
+
+	extern HighScoreData scoreData;
 }

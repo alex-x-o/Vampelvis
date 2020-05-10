@@ -1,11 +1,11 @@
 #include "precomp.h"
 #include "MenuItemsManager.h"
 #include "MenuItem.h"
-#include "Core/Application.h"
 #include "HighScoreData.h"
+#include "Core\GameConstants.h"
 
 
-namespace Engine
+namespace Game
 {
     void MenuItemsManager::Init(SDL_Renderer* menuRenderer_)
     {
@@ -14,7 +14,7 @@ namespace Engine
         m_MenuRenderer = menuRenderer_;
 
         scoreData.LoadHighScore();
-        m_BeginingLabels = { Application::m_WindowData.m_Title, "Best score: " + std::to_string(scoreData.GetHighScore()),
+        m_BeginingLabels = { "Vampelvis", "Best score: " + std::to_string(scoreData.GetHighScore()),
                              "Hall of Fame", "Sound : on", "How to play", "About us", "Press ENTER to open or SPACE to Play" };
 
         ChangeMenu(m_BeginingLabels, 2, 1);
@@ -31,7 +31,7 @@ namespace Engine
 
     }
 
-    void Engine::MenuItemsManager::CreateMenuItems(std::vector<std::string>& labels_)
+    void MenuItemsManager::CreateMenuItems(std::vector<std::string>& labels_)
     {
         m_NumOfItems = static_cast<unsigned>(labels_.size());
         m_MenuItems.reserve(m_NumOfItems);
@@ -54,7 +54,7 @@ namespace Engine
         ChangeSelectedItem(0);
     }
 
-    void Engine::MenuItemsManager::Update()
+    void MenuItemsManager::Update()
     {
         // Render all Menu Items
         for (auto& item : m_MenuItems)
@@ -64,14 +64,14 @@ namespace Engine
 
         if (m_ItemsData.m_RepoQRTexture)
         {
-            SDL_Rect qrRect = { Application::m_WindowData.m_Width/2-100, Application::m_WindowData.m_Height/2-80, 200, 200 };
+            SDL_Rect qrRect = { GameConstants::SCREEN_WIDTH/2-100, GameConstants::SCREEN_HEIGHT/2-80, 200, 200 };
             SDL_RenderCopy(m_MenuRenderer, m_ItemsData.m_RepoQRTexture, NULL, &qrRect);
         }
     }
 
-    void Engine::MenuItemsManager::Shutdown() {}
+    void MenuItemsManager::Shutdown() {}
 
-    void Engine::MenuItemsManager::GoUp()
+    void MenuItemsManager::GoUp()
     {
         if (m_SubmenuOpened) return;
 
@@ -80,7 +80,7 @@ namespace Engine
         ChangeSelectedItem(newIndex);
     }
 
-    void Engine::MenuItemsManager::GoDown()
+    void MenuItemsManager::GoDown()
     {
         if (m_SubmenuOpened) return;
 
@@ -154,7 +154,7 @@ namespace Engine
         }
     }
 
-    void Engine::MenuItemsManager::ChangeSelectedItem(int newIndex_)
+    void MenuItemsManager::ChangeSelectedItem(int newIndex_)
     {
         m_SelectableMenuItems[m_SelectedItem]->DeSelectItem();
 
@@ -162,9 +162,9 @@ namespace Engine
         m_SelectedItem = newIndex_;
     }
 
-    void Engine::MenuItemsManager::GameOver(int playerScore_)
+    void MenuItemsManager::GameOver(int playerScore_)
     {
-        std::vector<std::string> newLabels = { Application::m_WindowData.m_Title, " " ,"GAME OVER", 
+        std::vector<std::string> newLabels = { "Vampelvis", " " ,"GAME OVER", 
                                                "Your score: " + std::to_string(playerScore_),
                                                "Press SPACE to return to Main Menu" };
 

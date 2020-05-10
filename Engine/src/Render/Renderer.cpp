@@ -253,13 +253,24 @@ namespace Engine
 
     void Renderer::ShowWindow()
     {
-        SDL_ShowWindow(m_Window->GetNativeWindowHandle());
-        SDL_RaiseWindow(m_Window->GetNativeWindowHandle());
+        if (!m_Visible)
+        {
+            SDL_ShowWindow(m_Window->GetNativeWindowHandle());
+            SDL_RaiseWindow(m_Window->GetNativeWindowHandle());
+
+            m_Visible = true;
+        }
     }
 
     void Renderer::HideWindow()
     {
-        SDL_HideWindow(m_Window->GetNativeWindowHandle());
+        if (m_Visible)
+        {
+            SDL_HideWindow(m_Window->GetNativeWindowHandle());
+
+            m_Visible = false;
+        }
+        
     }
 
     Renderer::~Renderer()

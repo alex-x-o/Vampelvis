@@ -3,7 +3,7 @@
 #include "MenuItemsData.h"
 
 
-namespace Engine
+namespace Game
 {
 	class MenuItemsManager
 	{

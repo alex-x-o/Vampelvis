@@ -3,7 +3,7 @@
 
 #include <SDL_image.h>
 
-namespace Engine
+namespace Game
 {
 	MenuItemsData::MenuItemsData()
 	{

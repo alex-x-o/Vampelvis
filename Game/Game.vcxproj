@@ -172,6 +172,11 @@
     <ClInclude Include="src\Level\ObstacleController.h" />
     <ClInclude Include="src\Level\PickupController.h" />
     <ClInclude Include="src\Level\WallController.h" />
+    <ClInclude Include="src\MainMenu\HighScoreData.h" />
+    <ClInclude Include="src\MainMenu\GameMenu.h" />
+    <ClInclude Include="src\MainMenu\MenuItem.h" />
+    <ClInclude Include="src\MainMenu\MenuItemsData.h" />
+    <ClInclude Include="src\MainMenu\MenuItemsManager.h" />
     <ClInclude Include="src\precomp.h" />
   </ItemGroup>
   <ItemGroup>
@@ -184,8 +189,13 @@
     <ClCompile Include="src\Level\EnemyController.cpp" />
     <ClCompile Include="src\Level\Level.cpp" />
     <ClCompile Include="src\Level\ObstacleController.cpp" />
-	<ClCompile Include="src\Level\PickupController.cpp" />
+    <ClCompile Include="src\Level\PickupController.cpp" />
     <ClCompile Include="src\Level\WallController.cpp" />
+    <ClCompile Include="src\MainMenu\GameMenu.cpp" />
+    <ClCompile Include="src\MainMenu\HighScoreData.cpp" />
+    <ClCompile Include="src\MainMenu\MenuItem.cpp" />
+    <ClCompile Include="src\MainMenu\MenuItemsData.cpp" />
+    <ClCompile Include="src\MainMenu\MenuItemsManager.cpp" />
     <ClCompile Include="src\precomp.cpp" />
   </ItemGroup>
   <ItemGroup>

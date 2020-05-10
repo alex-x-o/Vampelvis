@@ -31,14 +31,6 @@ namespace Engine {
             return false;
         }
 
-        // Main Menu initialize
-        m_MainMenu = std::make_unique<MainMenu>();
-        if (!m_MainMenu->Init())
-        {
-            LOG_CRITICAL("Failed to initialize MainMenu");
-            return false;
-        }
-
         // Texture Manager create
         m_TextureManager = std::make_unique<TextureManager>();
 
@@ -84,9 +76,6 @@ namespace Engine {
         m_RenderSystem->Shutdown();
         m_RenderSystem.reset();
 
-        m_MainMenu->Shutdown();
-        m_MainMenu.reset();
-
         return true;
     }
 
@@ -105,13 +94,9 @@ namespace Engine {
                 {
                     m_Running = false;
                 }
-                else if (event.type == SDL_KEYDOWN && m_ShowMenu)
+                else if (event.type == SDL_KEYDOWN)
                 {
-                    ProcessInput(event.key.keysym.sym);
-                }
-                else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
-                {
-                    m_ShowMenu = true;
+                    m_ShowMenu = m_MainMenu->ProcessInput(event.key.keysym.sym, m_ShowMenu);
                 }
             }
 
@@ -124,35 +109,23 @@ namespace Engine {
             // Restart game
             if (m_GameOver && !m_ShowMenu) return true;
 
-            m_ShowMenu ? m_MainMenu->Update(m_RenderSystem->GetRenderer()) : Update(deltaTime);
+            if (m_ShowMenu)
+            {
+                m_RenderSystem->GetRenderer()->HideWindow();
+                m_MainMenu->ShowMenu();
+                m_MainMenu->Update();
+            }
+            else
+            {
+                m_RenderSystem->GetRenderer()->ShowWindow();
+                m_MainMenu->HideMenu();
+                Update(deltaTime);
+            }
 
             previousFrameTime = frameTime;
         }
 
         return false;
-    }
-
-    void Application::ProcessInput(SDL_Keycode key_)
-    {
-        switch (key_)
-        {
-            case SDLK_SPACE: if (m_MainMenu->m_MenuItemsManager->m_SubmenuOpened) return;
-                             if (m_ShowMenu) m_ShowMenu = false;
-                             m_MainMenu->HideMenu(m_RenderSystem->GetRenderer());
-                             break;
-
-            case SDLK_UP: m_MainMenu->m_MenuItemsManager->GoUp();
-                          break;
-
-            case SDLK_DOWN: m_MainMenu->m_MenuItemsManager->GoDown();
-                            break;
-
-            case SDLK_RETURN: m_MainMenu->m_MenuItemsManager->EnterSubMenu();
-                              break;
-
-            case SDLK_BACKSPACE: m_MainMenu->m_MenuItemsManager->LeaveSubmenu();
-                                 break;
-        }
     }
 
     void Application::Update(float dt)

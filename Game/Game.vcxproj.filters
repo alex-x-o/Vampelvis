@@ -37,6 +37,21 @@
     <ClCompile Include="src\Level\PickupController.cpp">
       <Filter>src\Level</Filter>
     </ClCompile>
+    <ClCompile Include="src\MainMenu\MenuItem.cpp">
+      <Filter>src\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenu\MenuItemsData.cpp">
+      <Filter>src\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenu\MenuItemsManager.cpp">
+      <Filter>src\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenu\GameMenu.cpp">
+      <Filter>src\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainMenu\HighScoreData.cpp">
+      <Filter>src\MainMenu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Helper\CameraBoundry.h">
@@ -84,6 +99,21 @@
     <ClInclude Include="src\Level\PickupController.h">
       <Filter>src\Level</Filter>
     </ClInclude>
+    <ClInclude Include="src\MainMenu\HighScoreData.h">
+      <Filter>src\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenu\MenuItem.h">
+      <Filter>src\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenu\MenuItemsData.h">
+      <Filter>src\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenu\MenuItemsManager.h">
+      <Filter>src\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MainMenu\GameMenu.h">
+      <Filter>src\MainMenu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -103,6 +133,9 @@
     </Filter>
     <Filter Include="src\Helper">
       <UniqueIdentifier>{1120b6b5-c6ef-431b-811f-b5e41b2de1a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\MainMenu">
+      <UniqueIdentifier>{5654f838-93a6-4b24-b661-a6f5f4c7f925}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

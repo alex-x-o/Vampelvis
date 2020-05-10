@@ -1,5 +1,7 @@
 #pragma once
 
+#include "precomp.h"
+
 namespace GameConstants
 {
 	const int SCREEN_WIDTH = 800;

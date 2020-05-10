@@ -1,11 +1,11 @@
 #include "precomp.h"
 #include "MenuItem.h"
-#include "Core/Application.h"
+#include "Core\GameConstants.h"
 
 #include <SDL_ttf.h>
 
 
-namespace Engine
+namespace Game
 {
     int MenuItem::numOfItems = 0;
 
@@ -27,7 +27,7 @@ namespace Engine
         
         m_Texture = SDL_CreateTextureFromSurface(m_ItemRenderer, itemSurface);
 
-        m_Rect = CalculateRect(Application::m_WindowData.m_Width, Application::m_WindowData.m_Height,
+        m_Rect = CalculateRect(GameConstants::SCREEN_WIDTH, GameConstants::SCREEN_HEIGHT,
                                itemSurface->w, itemSurface->h, m_ItemId);
 
         SDL_FreeSurface(itemSurface);
@@ -60,7 +60,7 @@ namespace Engine
         SDL_Surface* itemSurface = TTF_RenderText_Solid(m_Data->m_ItemsFont, m_Label.c_str(), color_);
         m_Texture = SDL_CreateTextureFromSurface(m_ItemRenderer, itemSurface);
 
-        m_Rect = CalculateRect(Application::m_WindowData.m_Width, Application::m_WindowData.m_Height,
+        m_Rect = CalculateRect(GameConstants::SCREEN_WIDTH, GameConstants::SCREEN_HEIGHT,
                                itemSurface->w, itemSurface->h, m_ItemId);
 
         SDL_FreeSurface(itemSurface);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Render/WindowData.h"
-#include "MainMenu/MainMenu.h"
+#include "MainMenu.h"
 
 #include <SDL.h>
 
@@ -47,7 +47,6 @@ namespace Engine {
         virtual const std::unordered_map<int, int>& GetPlayerInventory() = 0;
 
         void Update(float dt);
-        void ProcessInput(SDL_Keycode key_);
 
         Application(const Application& other) = delete;
         Application& operator=(Application& other) = delete;

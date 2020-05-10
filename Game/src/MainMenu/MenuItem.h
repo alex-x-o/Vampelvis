@@ -2,7 +2,7 @@
 #include "MenuItemsData.h"
 #include <SDL.h>
 
-namespace Engine
+namespace Game
 {
 	class MenuItem
 	{

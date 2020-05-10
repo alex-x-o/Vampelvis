@@ -42,5 +42,7 @@ namespace Engine
         Color m_BackgroundColor{ };
 
         TTF_Font* m_ScoreFont{};
+
+        bool m_Visible{ false };
     };
 }
