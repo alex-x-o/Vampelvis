@@ -76,13 +76,13 @@ namespace Game
         auto frameCurrent = sprite_->m_AnimationCurrentFrame;
         auto frameNum = sprite_->m_AnimationFrames;
 
-        if (frameCurrent < frameNum - 1)
+        if (frameCurrent >= frameNum)
         {
-            sprite_->m_AnimationCurrentFrame = sprite_->m_AnimationCurrentFrame + 1;
+            sprite_->m_AnimationCurrentFrame = 0;
         }
         else
         {
-            sprite_->m_AnimationCurrentFrame = 0;
+            sprite_->m_AnimationCurrentFrame = sprite_->m_AnimationCurrentFrame + 1;
         }
     }
 

@@ -45,6 +45,7 @@ namespace Game
         void KeepPlayerOnScreen(Engine::CollisionComponent* collisionComponent_, Engine::TransformComponent* transform_);
         bool CheckIfCollided(Engine::CollisionComponent* collisionComponent_, Engine::PowerupComponent* powerups_);
         void ToggleGodMode(Engine::InputComponent* input_, Engine::PowerupComponent* powerups_);
+        void UpdateAnimationInfo(Engine::TextureManager* textureManager_, Engine::SpriteComponent* sprite_);
         void AnimatePlayer(Engine::SpriteComponent* sprite_);
     };
 }

@@ -60,6 +60,7 @@ namespace Game
         auto powerups = entity->GetComponent<Engine::PowerupComponent>();
         auto collision = entity->GetComponent<Engine::CollisionComponent>();
 
+        UpdateAnimationInfo(textureManager_, sprite);
         AnimatePlayer(sprite);
 
         // Move player
@@ -293,18 +294,34 @@ namespace Game
         }
     }
 
+    void PlayerController::UpdateAnimationInfo(Engine::TextureManager* textureManager_, Engine::SpriteComponent* sprite_)
+    {
+        if (sprite_->m_Image == textureManager_->GetCommonTexture(Game::TEX_PLAYER, "bat"))
+        {
+            sprite_->m_AnimationFrames = 2;
+            sprite_->m_Height = 48;
+            sprite_->m_AnimationCurrentFrame = 0;
+        }
+        else
+        {
+            sprite_->m_AnimationFrames = 9;
+            sprite_->m_AnimationCurrentFrame = 0;
+            sprite_->m_Height = 64;
+        }
+    }
+
     void PlayerController::AnimatePlayer(Engine::SpriteComponent* sprite_)
     {
         auto frameCurrent = sprite_->m_AnimationCurrentFrame;
         auto frameNum = sprite_->m_AnimationFrames;
 
-        if (frameCurrent < frameNum - 1)
+        if (frameCurrent >= frameNum)
         {
-            sprite_->m_AnimationCurrentFrame = sprite_->m_AnimationCurrentFrame + 1;
+            sprite_->m_AnimationCurrentFrame = 0;
         }
         else
         {
-            sprite_->m_AnimationCurrentFrame = 0;
+            sprite_->m_AnimationCurrentFrame = sprite_->m_AnimationCurrentFrame + 1;
         }
     }
 
