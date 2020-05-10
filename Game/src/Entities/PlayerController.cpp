@@ -43,7 +43,7 @@ namespace Game
         return !(entityManager_->GetAllEntitiesWithComponent<Engine::PlayerComponent>().empty());
     }
 
-    bool PlayerController::Update(Engine::EntityManager* entityManager_)
+    bool PlayerController::Update(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_)
     {
         auto entityToMove = entityManager_->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::MoverComponent, Engine::InputComponent, Engine::TransformComponent>();
         ASSERT(entityToMove.size() == 1, "Must be only one entity with Player, Mover, Input and Transform Component in PlayerController::Update()");
@@ -81,7 +81,11 @@ namespace Game
 
         PickUpPowerups(collision, inventory);
         RemoveExpiredPowerups(powerups, m_PlayerPositionX);
+        Shapeshift(textureManager_, collision, position, sprite);
+
         CastPowerups(powerups, input, inventory, m_PlayerPositionX);
+        Shapeshift(textureManager_, collision, position, sprite);
+        
 
         bool immortal = powerups->m_ActivePowers.find(Game::Immortality) != powerups->m_ActivePowers.end();
 
@@ -199,6 +203,7 @@ namespace Game
             if (powerUsed)
             {
                 activePowerups->m_ActivePowers[Game::BatMode] = playerPositionX_ + GameConstants::BATMODE_DURATION;
+                m_ReadyToShapeshift = true;
             }
         }
 
@@ -226,7 +231,35 @@ namespace Game
             if (expiry < playerPositionX_)
             {
                 powerups_->m_ActivePowers.erase(power);
+                if (power == Game::BatMode)
+                    m_ReadyToShapeshift = true;
             }
         }
     }
+
+    void PlayerController::Shapeshift(Engine::TextureManager* textureManager_,  Engine::CollisionComponent* collision_,
+                                      Engine::TransformComponent* transformer_, Engine::SpriteComponent* sprite_)
+    {
+        if (!m_ReadyToShapeshift)
+        {
+            return;
+        }
+
+        if (transformer_->m_Size.x == GameConstants::BAT_WIDTH)
+        {
+            transformer_->m_Size = vec2(GameConstants::PLAYER_WIDTH, GameConstants::PLAYER_HEIGHT);
+            collision_->m_Size = vec2(GameConstants::PLAYER_WIDTH, GameConstants::PLAYER_HEIGHT);
+            sprite_->m_Image = textureManager_->GetCommonTexture(Game::TEX_PLAYER, "vampire");
+        }
+        else
+        {
+            transformer_->m_Size = vec2(GameConstants::BAT_WIDTH, GameConstants::BAT_HEIGHT);
+            collision_->m_Size = vec2(GameConstants::BAT_WIDTH, GameConstants::BAT_HEIGHT);
+            sprite_->m_Image = textureManager_->GetCommonTexture(Game::TEX_PLAYER, "bat");
+        }
+
+
+        m_ReadyToShapeshift = false;
+    }
+
 }

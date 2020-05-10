@@ -13,7 +13,7 @@ namespace Game
     {
     public:
         bool Init(Engine::EntityManager* entityManager_, Engine::Texture* texture_);
-        bool Update(Engine::EntityManager* entityManager_);
+        bool Update(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_);
         void UpdateSpeed(float speedCoef_);
 
         float GetPlayerPositionX() const;
@@ -29,6 +29,8 @@ namespace Game
         float m_BaseSpeed{ 100.0f };
         float m_CurrentSpeed{ 100.0f };
 
+        bool m_ReadyToShapeshift = false;
+
         void InitInventory(Engine::InventoryComponent* inventory_);
         void PickUpPowerups(Engine::CollisionComponent* collision_, Engine::InventoryComponent* inventory_);
         void PickUpItem(Engine::InventoryComponent* inventory_, Engine::PickupComponent* item_);
@@ -36,5 +38,6 @@ namespace Game
         void CastPowerups(Engine::PowerupComponent* activePowerups, Engine::InputComponent* input, Engine::InventoryComponent* inventory, float playerPositionX_);
         bool isActivePowerup(Engine::PowerupComponent* powerups, Game::Powerup power);
         void RemoveExpiredPowerups(Engine::PowerupComponent* powerups_, float playerPositionX_);
+        void Shapeshift(Engine::TextureManager* textureManager_, Engine::CollisionComponent* collision_, Engine::TransformComponent* transformer_, Engine::SpriteComponent* sprite_);
     };
 }
