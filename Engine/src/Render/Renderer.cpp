@@ -114,11 +114,12 @@ namespace Engine
             {
                 SDL_Rect src;
                 int frame = sprite->m_AnimationCurrentFrame;
+                int height = sprite->m_Height;
 
-                src.x = 64 * frame;
+                src.x = height * frame;
                 src.y = 0;
-                src.w = 64;
-                src.h = 64;
+                src.w = height;
+                src.h = height;
 
                 SDL_RenderCopyEx(
                     m_NativeRenderer,

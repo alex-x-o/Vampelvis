@@ -29,6 +29,7 @@ namespace Game
         spriteComp->m_Animation = true;
         spriteComp->m_AnimationFrames = 9;
         spriteComp->m_AnimationCurrentFrame = 0;
+        spriteComp->m_Height = 64;
 
         auto inputComp = player->GetComponent<Engine::InputComponent>();
         inputComp->inputActions.push_back({ "MainGameBtn" });

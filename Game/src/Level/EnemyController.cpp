@@ -28,6 +28,12 @@ namespace Game
             enemy->AddComponent<Engine::SpriteComponent>().m_Image = t;
             enemy->AddComponent<Engine::MoverComponent>();
 
+            auto spriteComp = enemy->GetComponent<Engine::SpriteComponent>();
+            spriteComp->m_Animation = true;
+            spriteComp->m_AnimationFrames = 2;
+            spriteComp->m_AnimationCurrentFrame = 0;
+            spriteComp->m_Height = 48;
+
             entityManager_->AddEntity(std::move(enemy));
         }
 
@@ -41,6 +47,24 @@ namespace Game
         {
             auto move = enemy->GetComponent<Engine::MoverComponent>();
             move->m_TranslationSpeed.x = -speed_;
+        }
+
+        // Animate enemies
+        for (auto& enemy : enemies)
+        {
+            auto sprite = enemy->GetComponent<Engine::SpriteComponent>();
+            
+            auto frameCurrent = sprite->m_AnimationCurrentFrame;
+            auto frameNum = sprite->m_AnimationFrames;
+
+            if (frameCurrent < frameNum - 1)
+            {
+                sprite->m_AnimationCurrentFrame = sprite->m_AnimationCurrentFrame + 1;
+            }
+            else
+            {
+                sprite->m_AnimationCurrentFrame = 0;
+            }
         }
     }
 

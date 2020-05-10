@@ -77,6 +77,7 @@ namespace Engine
         bool m_Animation{ false };
         int m_AnimationFrames{0};
         int m_AnimationCurrentFrame{0};
+        int m_Height;
     };
 
     struct PlayerComponent : public Component

@@ -64,7 +64,7 @@ void Game::GameApp::LoadGameTextures()
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_PLAYER, "bat", "./Textures/bat.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_PICKUP, "immortality", "./Textures/testTubeBlue.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_PICKUP, "batMode", "./Textures/testTubeRed.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_ENEMY, "ghost", "./Textures/ghost.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_ENEMY, "ghost", "./Textures/ghostSprites.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_ENEMY, "bat", "./Textures/bat.png");
 
     /*
