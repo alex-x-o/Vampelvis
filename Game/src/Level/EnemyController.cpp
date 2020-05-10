@@ -14,7 +14,7 @@ namespace Game
         std::uniform_int_distribution<> EnemyChance(0, 1000);
 
         if (EnemyChance(rd) == 0) {
-            Engine::Texture* t = textureManager_->GetTexture("blank");
+            Engine::Texture* t = textureManager_->GetCommonTexture(Game::TEX_ENEMY, "ghost");
             float width = GameConstants::PLAYER_WIDTH;
             float height = GameConstants::PLAYER_HEIGHT;
             auto enemy = std::make_unique<Engine::Entity>();

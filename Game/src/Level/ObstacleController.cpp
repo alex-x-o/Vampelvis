@@ -61,13 +61,13 @@ namespace Game
         float xObstacle = ceil(boundary + obstacleWidth / 2);
         float floorObstacleHeight = heights(rd);
         float floorObstaclePos = (windowHeight - floorObstacleHeight) / 2 - GameConstants::WALL_HEIGHT;
-        Engine::Texture* floorTex = textureManager_->GetTexture("chandelier");
+        Engine::Texture* floorTex = textureManager_->GetCommonTexture(Game::TEX_FLOOR, "table");
         CreateFloorObstacle(entityManager_, floorTex, xObstacle, floorObstaclePos, obstacleWidth, floorObstacleHeight);
 
 
         float ceilingObstacleHeight = windowHeight - 2 * GameConstants::WALL_HEIGHT - obstacleGap - floorObstacleHeight;
         float ceilgPos = -(windowHeight - ceilingObstacleHeight) / 2 + GameConstants::WALL_HEIGHT;
-        Engine::Texture* ceilingTex = textureManager_->GetTexture("chandelier");
+        Engine::Texture* ceilingTex = textureManager_->GetCommonTexture(Game::TEX_CEILING, "chandelier");
         CreateCeilingObstacle(entityManager_, ceilingTex, xObstacle, ceilgPos, obstacleWidth, ceilingObstacleHeight);
 
         this->m_LastObstaclePos = xObstacle;

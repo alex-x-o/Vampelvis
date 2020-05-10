@@ -20,7 +20,7 @@ namespace Game
 
         float backgroundHeigt = GameConstants::SCREEN_HEIGHT - 2 * GameConstants::WALL_HEIGHT;
         m_Background = std::make_unique <ScrollingBackground>();
-        m_Background->Init(entityManager_, textureManager_->GetTexture("background"), GameConstants::SCREEN_WIDTH, backgroundHeigt);
+        m_Background->Init(entityManager_, textureManager_->GetCommonTexture(TEX_BACKGROUND, "background"), GameConstants::SCREEN_WIDTH, backgroundHeigt);
 
         m_WallController = std::make_unique<Game::WallController>();
         m_WallController->Init(entityManager_, textureManager_);

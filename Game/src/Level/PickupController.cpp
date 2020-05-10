@@ -29,9 +29,9 @@ namespace Game
 			Game::Powerup powerup = ChooseRandomPowerup();
 			Engine::Texture* pickupTexture;
 			if (powerup == Game::Immortality)
-				pickupTexture = textureManager_->GetTexture("immortality");
+				pickupTexture = textureManager_->GetCommonTexture(Game::TEX_PICKUP, "immortality");
 			else 
-				pickupTexture = textureManager_->GetTexture("batMode");
+				pickupTexture = textureManager_->GetCommonTexture(Game::TEX_PICKUP, "batMode");
 
 			CreatePowerupPickup(entityManager_, pickupTexture, pickupPosX, pickupPosY, powerup);
 		}	

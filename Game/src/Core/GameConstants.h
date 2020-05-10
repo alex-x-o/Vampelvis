@@ -27,4 +27,19 @@ namespace Game
 		BatMode
 	};
 
+	enum Levels {
+		CASTLE = 1,
+		CAVE
+	};
+
+	enum TextureCategories {
+		TEX_PLAYER,
+		TEX_PICKUP,
+		TEX_CEILING,
+		TEX_FLOOR,
+		TEX_BACKGROUND,
+		TEX_WALL,
+		TEX_ENEMY
+	};
+
 }

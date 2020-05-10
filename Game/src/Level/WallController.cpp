@@ -19,7 +19,7 @@ namespace Game
         wall->AddComponent<Game::WallComponent>();
         wall->AddComponent<Engine::TransformComponent>(0.f, wallPosition, GameConstants::SCREEN_WIDTH, GameConstants::WALL_HEIGHT);
         wall->AddComponent<Engine::CollisionComponent>(GameConstants::SCREEN_WIDTH, GameConstants::WALL_HEIGHT);
-        wall->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetTexture("floor");
+        wall->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetCommonTexture(Game::TEX_WALL, "floor");
         wall->AddComponent<Engine::MoverComponent>();
 
         entityManager_->AddEntity(std::move(wall));
@@ -30,7 +30,7 @@ namespace Game
         wall->AddComponent<Game::WallComponent>();
         wall->AddComponent<Engine::TransformComponent>(0.f, -wallPosition, GameConstants::SCREEN_WIDTH, GameConstants::WALL_HEIGHT);
         wall->AddComponent<Engine::CollisionComponent>(GameConstants::SCREEN_WIDTH, GameConstants::WALL_HEIGHT);
-        wall->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetTexture("ceiling");
+        wall->AddComponent<Engine::SpriteComponent>().m_Image = textureManager_->GetCommonTexture(Game::TEX_WALL, "ceiling");
         wall->AddComponent<Engine::MoverComponent>();
 
         entityManager_->AddEntity(std::move(wall));
