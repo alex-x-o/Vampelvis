@@ -106,9 +106,13 @@ void Game::GameApp::LoadGameTextures()
 void Game::GameApp::ChangetGameSpeed()
 {
     float coef = 1.0f + static_cast<float>(GetPlayerScore()) / 100.0f;
-    m_CameraController->UpdateSpeed(coef);
-    m_PlayerController->UpdateSpeed(coef);
-    m_Level->UpdateSpeed(coef);
+    if (coef <= GameConstants::MAX_SPEED_COEF)
+    {
+        m_CameraController->UpdateSpeed(coef);
+        m_PlayerController->UpdateSpeed(coef);
+        m_Level->UpdateSpeed(coef);
+    }
+
 }
 
 const std::unordered_map<int, int>& Game::GameApp::GetPlayerInventory()

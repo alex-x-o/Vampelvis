@@ -18,6 +18,8 @@ namespace GameConstants
 
 	const int IMMORTAITY_PICKUP_CHANCE = 1;
 	const int BATMODE_PICKUP_CHANCE = 4;
+
+	const float MAX_SPEED_COEF = 4.5f;
 }
 
 namespace Game
