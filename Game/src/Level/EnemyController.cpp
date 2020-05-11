@@ -19,14 +19,14 @@ namespace Game
         level_->enemyLastPosition = enemyPosX;
 
         std::random_device rd;
-        std::uniform_int_distribution<> EnemyChance(0, level_->enemySpawnChance);
+        std::uniform_int_distribution<> EnemyChance(1, level_->enemySpawnChance);
 
-        if (EnemyChance(rd) == 0) {
+        if (EnemyChance(rd) == 1) {
             Engine::Texture* t = textureManager_->GetCommonTexture(Game::TEX_ENEMY, "ghost");
             float width = GameConstants::PLAYER_WIDTH;
             float height = GameConstants::PLAYER_HEIGHT;
             auto enemy = std::make_unique<Engine::Entity>();
-            float availableSpace = ceil((GameConstants::SCREEN_HEIGHT - GameConstants::WALL_HEIGHT - height / 2) / 2);
+            float availableSpace = ceil(GameConstants::SCREEN_HEIGHT / 2 - GameConstants::WALL_HEIGHT - height / 2);
 
             std::uniform_int_distribution<> yPositions(-availableSpace, availableSpace);
 

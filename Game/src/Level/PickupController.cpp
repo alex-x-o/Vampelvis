@@ -17,21 +17,21 @@ namespace Game
 		level_->pickupLastPosition = pickupPosX;
 
 		std::random_device rd;
-		std::uniform_int_distribution<> rollForPickup(0, level_->pickupSpawnChance);
+		std::uniform_int_distribution<> rollForPickup(1, level_->pickupSpawnChance);
 
-		if (rollForPickup(rd) == 0)
+		if (rollForPickup(rd) == 1)
 		{
-			float space = static_cast<int>(GameConstants::SCREEN_HEIGHT / 2 - GameConstants::WALL_HEIGHT);
-			std::uniform_int_distribution<> yPos(-space, space);
-
-			float pickupPosY = yPos(rd);
-
 			Game::Powerup powerup = ChooseRandomPowerup();
 			Engine::Texture* pickupTexture;
 			if (powerup == Game::Immortality)
 				pickupTexture = textureManager_->GetCommonTexture(Game::TEX_PICKUP, "immortality");
 			else 
 				pickupTexture = textureManager_->GetCommonTexture(Game::TEX_PICKUP, "batMode");
+
+			float space = static_cast<int>(GameConstants::SCREEN_HEIGHT / 2 - GameConstants::WALL_HEIGHT - pickupTexture->GetTextureSize().y/2);
+			std::uniform_int_distribution<> yPos(-space, space);
+
+			float pickupPosY = ceil(yPos(rd));
 
 			CreatePowerupPickup(entityManager_, pickupTexture, pickupPosX, pickupPosY, powerup);
 		}	
@@ -60,7 +60,7 @@ namespace Game
 		vec2 pickupSize = texture_->GetTextureSize();
 
 		auto pickup = std::make_unique<Engine::Entity>();
-		pickup->AddComponent<Engine::TransformComponent>(x_, y_, pickupSize.x, pickupSize.y);
+		pickup->AddComponent<Engine::TransformComponent>(floor(x_), floor(y_), pickupSize.x, pickupSize.y);
 		pickup->AddComponent<Engine::CollisionComponent>(pickupSize.x, pickupSize.y);
 		pickup->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
 		pickup->AddComponent<Engine::PickupComponent>(type_);
