@@ -21,7 +21,7 @@ namespace Engine
      
         std::unordered_map<SDL_Texture*, SDL_Rect> m_ScreenTextures;
         void DrawTextOnGameScreen(std::string text_, int posX_, int posY_, TTF_Font* font_, SDL_Color color_ = { 255, 255, 255 });
-        void DrawTextureOnGameScreen(std::string fileName_, int posX_, int posY_, int width_, int height_);
+        void DrawBlinkingTextureOnGameScreen(bool active_, std::string fileName_, int posX_, int posY_, int width_, int height_);
 
         void BeginScene() const;
         void EndScene() const;
@@ -42,5 +42,7 @@ namespace Engine
         Color m_BackgroundColor{ };
 
         bool m_Visible{ false };
+
+        int m_BlinkingRate{ 0 };
     };
 }

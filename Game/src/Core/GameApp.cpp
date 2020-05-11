@@ -154,7 +154,20 @@ void Game::GameApp::DrawPlayerInventory()
         m_RenderSystem->GetRenderer()->DrawTextOnGameScreen(std::to_string(inv.second), 750 - i*90, -3, m_ScoreFont);
 
         std::string fileName = inv.first == Game::Powerup::BatMode ? "./Textures/testTubeRed.png" : "./Textures/testTubeBlue.png";
-        m_RenderSystem->GetRenderer()->DrawTextureOnGameScreen(fileName, 800 - (i + 1) * 90, -3, 30, 30);
+        
+        // Count how much of powerup left, and if it is less than 0.2 blink text
+
+        bool active = false;
+        auto& activePowers = GetActivePowers();
+        if (activePowers.find(inv.first) != std::end(activePowers))
+        {
+            float left = (activePowers.at(inv.first) - m_PlayerController->GetPlayerPositionX());
+            left /= inv.first == Game::Powerup::BatMode ? GameConstants::BATMODE_DURATION : GameConstants::IMMORTALITY_DURATION;
+
+            active = left < 0.2 ? true : false;
+        }
+        
+        m_RenderSystem->GetRenderer()->DrawBlinkingTextureOnGameScreen(active, fileName, 800 - (i + 1) * 90, -3, 30, 30);
 
         ++i;
     }
@@ -166,6 +179,14 @@ const std::unordered_map<int, int>& Game::GameApp::GetPlayerInventory()
     ASSERT(player.size() == 1, "Must be only one Player");
 
     return player.front()->GetComponent<Engine::InventoryComponent>()->m_Inventory;
+}
+
+const std::unordered_map<int, float>& Game::GameApp::GetActivePowers()
+{
+    auto player = m_EntityManager.get()->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::PowerupComponent>();
+    ASSERT(player.size() == 1, "Must be only one Player");
+
+    return player.front()->GetComponent<Engine::PowerupComponent>()->m_ActivePowers;
 }
 
 int Game::GameApp::GetPlayerScore()

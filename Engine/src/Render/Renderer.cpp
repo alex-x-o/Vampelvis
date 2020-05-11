@@ -166,15 +166,22 @@ namespace Engine
         SDL_FreeSurface(textSurface);
     }
 
-    void Renderer::DrawTextureOnGameScreen(std::string fileName_, int posX_, int posY_, int width_, int height_)
+    void Renderer::DrawBlinkingTextureOnGameScreen(bool active_, std::string fileName_, int posX_, int posY_, int width_, int height_)
     {
-        SDL_Texture* screenTexture = IMG_LoadTexture(m_NativeRenderer, fileName_.c_str());
+        const int MAX_RATE = 10;
+        active_ ? m_BlinkingRate++ : 0;
+        m_BlinkingRate %= MAX_RATE;
 
-        if (screenTexture)
+        if (!active_ || !m_BlinkingRate)
         {
-            SDL_Rect rect = { posX_, posY_, width_, height_ };
-            
-            m_ScreenTextures[screenTexture] = rect;
+            SDL_Texture* screenTexture = IMG_LoadTexture(m_NativeRenderer, fileName_.c_str());
+
+            if (screenTexture)
+            {
+                SDL_Rect rect = { posX_, posY_, width_, height_ };
+
+                m_ScreenTextures[screenTexture] = rect;
+            }
         }
     }
 
