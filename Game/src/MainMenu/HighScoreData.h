@@ -28,7 +28,6 @@ namespace Game
 		void SetHighScore(int score_);
 
 		void LoadHighScore();
-		void StoreHighScore(int value_);
 
 		HighScoreData(const HighScoreData& other) = delete;
 		HighScoreData& operator=(HighScoreData& other) = delete;
@@ -37,9 +36,10 @@ namespace Game
 		static HighScoreData* instance;
 
 		void CreateHighScoreData();
+		void StoreHighScore(int value_);
 
 		int m_HighScore{ 0 };
-		std::string fileName{ "score.json" };
+		std::string m_FileName{ "hallOfFame.json" };
 	};
 
 	extern HighScoreData* scoreData;

@@ -101,7 +101,6 @@ namespace Game
             // Switch back to first selectable Item
             m_MenuItemsManager->ChangeSelectedItem(0);
 
-
             m_Visible = false;
         }
     }

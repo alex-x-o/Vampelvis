@@ -9,7 +9,7 @@ namespace Game
 	HighScoreData::HighScoreData()
 	{
 		// Get current High score from file
-		if (std::filesystem::exists(fileName))
+		if (std::filesystem::exists(m_FileName))
 		{
 			LoadHighScore();
 		}
@@ -21,7 +21,7 @@ namespace Game
 
 	std::map<std::string, int> HighScoreData::GetHallOfFame()
 	{
-		std::ifstream inputFile(fileName);
+		std::ifstream inputFile(m_FileName);
 		json scoreObject = json::parse(inputFile);
 
 		return scoreObject["hallOfFame"];
@@ -47,20 +47,36 @@ namespace Game
 
 	void HighScoreData::LoadHighScore()
 	{
-		std::ifstream inputFile(fileName);
+		std::ifstream inputFile(m_FileName);
 		json scoreObject = json::parse(inputFile);
 		m_HighScore = scoreObject.at("score");
 	}
 
 	void HighScoreData::StoreHighScore(int value_)
 	{
-		std::ifstream inputFile(fileName);
+		std::ifstream inputFile(m_FileName);
 		nlohmann::json scoreObject;
 		inputFile >> scoreObject;
 
 		scoreObject["score"] = value_;
 
-		std::ofstream outputFile(fileName);
+		// Check if player is better than famous vampires
+		std::map<int, std::string> sortedMap;
+
+		for (auto& it : GetHallOfFame())
+			sortedMap[it.second] = it.first;
+
+		if (value_ > sortedMap.begin()->first)
+		{
+			int id = scoreObject["numOfFamousPlayers"];
+			scoreObject["hallOfFame"]["Vampelvis" + std::to_string(++id)] = value_;
+			
+			scoreObject["hallOfFame"].erase(sortedMap.begin()->second);
+
+			scoreObject["numOfFamousPlayers"] = id;
+		}
+
+		std::ofstream outputFile(m_FileName);
 		outputFile << scoreObject;
 	}
 
@@ -68,12 +84,13 @@ namespace Game
 	{
 		json scoreObject;
 		scoreObject["score"] = 0;
+		scoreObject["numOfFamousPlayers"] = 0;
 		scoreObject["hallOfFame"] = { {"Dracula", 1000},
 									  {"Sava Savanovic", 700},
-									  {"Damon Salvatore", 500},
-									  {"Edward Cullen", 300} };
+									  {"Damon Salvatore", 3},
+									  {"Edward Cullen", 1} };
 
-		std::ofstream output(fileName);
+		std::ofstream output(m_FileName);
 		output << scoreObject.dump();
 	}
 }
