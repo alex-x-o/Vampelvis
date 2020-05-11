@@ -3,6 +3,8 @@
 
 #include "Entities/GameComponents.h"
 #include "Core/GameConstants.h"
+#include "Level.h"
+
 #include <random>
 
 
@@ -40,10 +42,10 @@ namespace Game
 
     }
 
-    void ObstacleController::GenerateObstacles(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, float boundary)
+    void ObstacleController::GenerateObstacles(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, Game::Level* level_, float boundary_)
     {
 
-        if (boundary < this->m_LastObstaclePos + this->m_MinObstacleDist)
+        if (boundary_ < level_->obstacleLastPosition + level_->obstacleMinDistance)
             return;
 
         float obstacleGap = GameConstants::PLAYER_HEIGHT * 2.5f;
@@ -58,19 +60,19 @@ namespace Game
         std::uniform_real_distribution<float> heights(minObstacleHeight, maxObstacleHeight);
 
 
-        float xObstacle = ceil(boundary + obstacleWidth / 2);
+        float xObstacle = ceil(boundary_ + obstacleWidth / 2);
         float floorObstacleHeight = heights(rd);
         float floorObstaclePos = (windowHeight - floorObstacleHeight) / 2 - GameConstants::WALL_HEIGHT;
-        Engine::Texture* floorTex = textureManager_->GetCommonTexture(Game::TEX_FLOOR, "table");
+        Engine::Texture* floorTex = textureManager_->GetRandomTexture(level_->levelId, Game::TEX_FLOOR);
         CreateFloorObstacle(entityManager_, floorTex, xObstacle, floorObstaclePos, obstacleWidth, floorObstacleHeight);
 
 
         float ceilingObstacleHeight = windowHeight - 2 * GameConstants::WALL_HEIGHT - obstacleGap - floorObstacleHeight;
         float ceilgPos = -(windowHeight - ceilingObstacleHeight) / 2 + GameConstants::WALL_HEIGHT;
-        Engine::Texture* ceilingTex = textureManager_->GetCommonTexture(Game::TEX_CEILING, "chandelier");
+        Engine::Texture* ceilingTex = textureManager_->GetRandomTexture(level_->levelId, Game::TEX_CEILING);
         CreateCeilingObstacle(entityManager_, ceilingTex, xObstacle, ceilgPos, obstacleWidth, ceilingObstacleHeight);
 
-        this->m_LastObstaclePos = xObstacle;
+        level_->obstacleLastPosition = xObstacle;
     }
 
 

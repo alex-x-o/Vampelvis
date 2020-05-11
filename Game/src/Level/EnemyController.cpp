@@ -3,15 +3,23 @@
 
 #include "Entities/GameComponents.h"
 #include "Core/GameConstants.h"
+#include "Level.h"
+
 #include <random>
 
 
 namespace Game
 {
-    void EnemyController::GenerateEnemies(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, float boundary)
+    void EnemyController::GenerateEnemies(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, Game::Level* level_, float boundary_)
     {
+        if (boundary_ < level_->enemyLastPosition + level_->enemyMinDistance)
+            return;
+
+        float enemyPosX = ceil(level_->obstacleLastPosition + level_->obstacleMinDistance / 2);
+        level_->enemyLastPosition = enemyPosX;
+
         std::random_device rd;
-        std::uniform_int_distribution<> EnemyChance(0, 1000);
+        std::uniform_int_distribution<> EnemyChance(0, level_->enemySpawnChance);
 
         if (EnemyChance(rd) == 0) {
             Engine::Texture* t = textureManager_->GetCommonTexture(Game::TEX_ENEMY, "ghost");
@@ -23,7 +31,7 @@ namespace Game
             std::uniform_int_distribution<> yPositions(-availableSpace, availableSpace);
 
             enemy->AddComponent<Game::GlidingEnemyComponent>();
-            enemy->AddComponent<Engine::TransformComponent>(boundary + width, yPositions(rd), width, height);
+            enemy->AddComponent<Engine::TransformComponent>(enemyPosX, yPositions(rd), width, height);
             enemy->AddComponent<Engine::CollisionComponent>(width, height);
             enemy->AddComponent<Engine::SpriteComponent>().m_Image = t;
             enemy->AddComponent<Engine::MoverComponent>();
@@ -49,7 +57,7 @@ namespace Game
             move->m_TranslationSpeed.x = -speed_;
 
             auto sprite = enemy->GetComponent<Engine::SpriteComponent>();
-            AnimateEnemies(sprite);
+            AnimateEnemy(sprite);
         }
     }
 
@@ -71,7 +79,7 @@ namespace Game
         }
     }
 
-    void EnemyController::AnimateEnemies(Engine::SpriteComponent* sprite_)
+    void EnemyController::AnimateEnemy(Engine::SpriteComponent* sprite_)
     {
         auto frameCurrent = sprite_->m_AnimationCurrentFrame;
         auto frameNum = sprite_->m_AnimationFrames;

@@ -20,13 +20,16 @@ namespace Game
     private:
         float m_BaseSpeed{ 100.0f };
         float m_CurrentSpeed{ 100.0f };
+        int m_CurrentLevelIndex{ 0 };
 
         CameraBoundary getCurrentBoundaries(Engine::EntityManager* entityManager_);
 
+        void InitLevels();
+        Level* GetCurrentLevel();
         void MoveLevelObjects(Engine::EntityManager* entityManager_);
         void RemovePastLevelObjects(Engine::EntityManager* entityManager_, float boundary_);
 
-        
+        std::vector<std::unique_ptr<Level>> m_Levels;
 
         std::unique_ptr<ScrollingBackground> m_Background{};
         std::unique_ptr<WallController> m_WallController{};
