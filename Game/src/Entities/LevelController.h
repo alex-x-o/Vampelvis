@@ -17,12 +17,14 @@ namespace Game
         void Update(float dt, Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_);
         void UpdateSpeed(float speedCoef_);
 
+        void ChangeLevel(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, float boundary_);
+
     private:
         float m_BaseSpeed{ 100.0f };
         float m_CurrentSpeed{ 100.0f };
         int m_CurrentLevelIndex{ 0 };
 
-        CameraBoundary getCurrentBoundaries(Engine::EntityManager* entityManager_);
+        CameraBoundary GetCurrentBoundaries(Engine::EntityManager* entityManager_);
 
         void InitLevels();
         Level* GetCurrentLevel();

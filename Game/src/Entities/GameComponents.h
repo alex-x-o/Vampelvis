@@ -2,17 +2,33 @@
 
 namespace Game
 {
-    struct BallComponent : public Engine::Component
-    {
-
-    };
 
     struct Background : public Engine::Component
     {
 
     };
 
+    struct BackgroundSwitcher : public Engine::Component
+    {
+
+    };
+
+    struct WallSwitcher : public Engine::Component
+    {
+
+    };
+
     struct WallComponent : public Engine::Component
+    {
+
+    };
+
+    struct FloorComponent : public Engine::Component
+    {
+
+    };
+
+    struct CeilingComponent : public Engine::Component
     {
 
     };
