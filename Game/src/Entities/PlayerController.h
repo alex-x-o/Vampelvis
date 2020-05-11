@@ -38,7 +38,7 @@ namespace Game
         void PickUpPowerups(Engine::CollisionComponent* collision_, Engine::InventoryComponent* inventory_);
         void PickUpItem(Engine::InventoryComponent* inventory_, Engine::PickupComponent* item_);
         bool UseItem(Engine::InventoryComponent* inventory_, int id_);
-        void CastPowerups(Engine::PowerupComponent* activePowerups, Engine::InputComponent* input, Engine::InventoryComponent* inventory, float playerPositionX_);
+        void CastPowerups(Engine::PowerupComponent* activePowerups, Engine::InputComponent* input, Engine::InventoryComponent* inventory, Engine::SpriteComponent* sprite_, float playerPositionX_);
         bool isActivePowerup(Engine::PowerupComponent* powerups, Game::Powerup power);
         void RemoveExpiredPowerups(Engine::PowerupComponent* powerups_, float playerPositionX_);
         void Shapeshift(Engine::TextureManager* textureManager_, Engine::CollisionComponent* collision_, Engine::TransformComponent* transformer_, Engine::SpriteComponent* sprite_);
