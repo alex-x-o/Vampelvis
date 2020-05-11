@@ -1,23 +1,23 @@
 #include "precomp.h"
 #include "PickupController.h"
 
-#include "Core/GameConstants.h"
 #include "Entities/GameComponents.h"
+#include "Level.h"
+
 #include <random>
 
 namespace Game 
 {
-	void PickupController::GeneratePickups(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, float boundary_,
-										   float minObstDist_, float lastObstPos_)
+	void PickupController::GeneratePickups(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, Game::Level* level_, float boundary_)
 	{
-		if (boundary_ < m_LastPickupPos + m_MinPickupDist)
+		if (boundary_ < level_->pickupLastPosition + level_->pickupMinDistance)
 			return;
 
-		float pickupPosX = lastObstPos_ + minObstDist_ / 2;
-		m_LastPickupPos = pickupPosX;
+		float pickupPosX = ceil(level_->obstacleLastPosition + level_->obstacleMinDistance / 2);
+		level_->pickupLastPosition = pickupPosX;
 
 		std::random_device rd;
-		std::uniform_int_distribution<> rollForPickup(0, 1);
+		std::uniform_int_distribution<> rollForPickup(0, level_->pickupSpawnChance);
 
 		if (rollForPickup(rd) == 0)
 		{

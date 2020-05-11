@@ -14,16 +14,19 @@ namespace Game
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to entitymanager to LevelController::Init()");
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to texturemanager to LevelController::Init()");
 
+        InitLevels();
+        Level* currentLevel = GetCurrentLevel();
+
         m_ObstacleController = std::make_unique<Game::ObstacleController>();
         m_EnemyController = std::make_unique<Game::EnemyController>();
         m_PickupController = std::make_unique<Game::PickupController>();
 
         float backgroundHeigt = GameConstants::SCREEN_HEIGHT - 2 * GameConstants::WALL_HEIGHT;
         m_Background = std::make_unique <ScrollingBackground>();
-        m_Background->Init(entityManager_, textureManager_->GetCommonTexture(TEX_BACKGROUND, "background"), GameConstants::SCREEN_WIDTH, backgroundHeigt);
+        m_Background->Init(entityManager_, textureManager_->GetLevelOrCommonTexture(currentLevel->levelId, TEX_BACKGROUND, "background"), GameConstants::SCREEN_WIDTH, backgroundHeigt);
 
         m_WallController = std::make_unique<Game::WallController>();
-        m_WallController->Init(entityManager_, textureManager_);
+        m_WallController->Init(entityManager_, textureManager_, currentLevel);
 
         return true;
     }
@@ -34,10 +37,11 @@ namespace Game
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to texturemanager to LevelController::Update()");
 
         Game::CameraBoundary boundary = getCurrentBoundaries(entityManager_);
+        Level* currentLevel = GetCurrentLevel();
 
-        m_EnemyController->GenerateEnemies(entityManager_, textureManager_, boundary.right);
-        m_ObstacleController->GenerateObstacles(entityManager_, textureManager_, boundary.right);
-        m_PickupController->GeneratePickups(entityManager_, textureManager_, boundary.right, 300.f, m_ObstacleController->m_LastObstaclePos);
+        m_ObstacleController->GenerateObstacles(entityManager_, textureManager_, currentLevel, boundary.right);
+        m_EnemyController->GenerateEnemies(entityManager_, textureManager_, currentLevel, boundary.right);
+        m_PickupController->GeneratePickups(entityManager_, textureManager_, currentLevel, boundary.right);
 
         MoveLevelObjects(entityManager_);
         
@@ -45,7 +49,22 @@ namespace Game
         RemovePastLevelObjects(entityManager_, boundary.left);
     }
 
+    void LevelController::InitLevels()
+    {
+        auto level = std::make_unique<Game::Level>(LVL_CASTLE);
+        level->spawnBats = false;
+        m_Levels.push_back(std::move(level));
 
+        level = std::make_unique<Game::Level>(LVL_CAVE);
+        level->spawnGhosts = false;
+        m_Levels.push_back(std::move(level));
+    }
+
+    Level* LevelController::GetCurrentLevel()
+    {
+        Level* level = m_Levels.at(m_CurrentLevelIndex).get();
+        return level;
+    }
 
     void LevelController::RemovePastLevelObjects(Engine::EntityManager* entityManager_, float boundary_)
     {

@@ -32,8 +32,8 @@ namespace Game
 	};
 
 	enum Levels {
-		CASTLE = 1,
-		CAVE
+		LVL_CASTLE = 1,
+		LVL_CAVE
 	};
 
 	enum TextureCategories {

@@ -81,40 +81,33 @@ void Game::GameApp::LoadGameTextures()
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_ENEMY, "ghost", "./Textures/ghostSprites.png");
     m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_ENEMY, "bat", "./Textures/batSprites.png");
 
-    /*
+
     // Level 1 Backgrounds
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 1, "blank", "./Textures/blank.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 1, "woodenTexture", "./Textures/woodenTexture.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 1, "woodenTexture1", "./Textures/woodenTexture1.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 1, "woodenTextureLong", "./Textures/woodenTextureLong.png");
-    */
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_BACKGROUND, "background", "./Textures/background.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_WALL, "floor", "./Textures/floorLong.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_WALL, "ceiling", "./Textures/ceilingLong.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CASTLE, TEX_BACKGROUND, "background", "./Textures/background.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CASTLE, TEX_WALL, "floor", "./Textures/floorLong.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CASTLE, TEX_WALL, "ceiling", "./Textures/ceilingLong.png");
 
     // Level 1 Obstacles
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_FLOOR, "chair", "./Textures/chair.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_FLOOR, "table", "./Textures/table.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), TEX_CEILING, "chandelier", "./Textures/chandelier.png");
-    /*
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 1, "chandelier2", "./Textures/chandelier2.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 1, "chandelier3", "./Textures/chandelier3.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 1, "chanSil", "./Textures/chanSil.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CASTLE, TEX_FLOOR, "chair", "./Textures/chair.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CASTLE, TEX_FLOOR, "table", "./Textures/table.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CASTLE, TEX_FLOOR, "chanSil", "./Textures/chanSil.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CASTLE, TEX_CEILING, "chandelier", "./Textures/chandelier.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CASTLE, TEX_CEILING, "chandelier2", "./Textures/chandelier2.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CASTLE, TEX_CEILING, "chandelier3", "./Textures/chandelier3.png");
+    
 
     // Level 2 Backgrounds
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 2, "backCave", "./Textures/backCave.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 2, "floorCave", "./Textures/ceilingCave.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 2, "ceilingCave", "./Textures/floorCave.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CAVE, TEX_BACKGROUND, "background", "./Textures/backCave.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CAVE, TEX_WALL, "ceiling", "./Textures/ceilingCave.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CAVE, TEX_WALL, "floor", "./Textures/floorCave.png");
 
     // Level 2 Obstacles
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 2, "stalactite", "./Textures/stalactite.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 2, "stalactite2", "./Textures/stalactite2.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 2, "stalactite3", "./Textures/stalactite3.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 2, "stalagmite", "./Textures/stalagmite.png");
-    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), 2, "stalagmite2", "./Textures/stalagmite2.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CAVE, TEX_CEILING, "stalactite", "./Textures/stalactite.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CAVE, TEX_CEILING, "stalactite2", "./Textures/stalactite2.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CAVE, TEX_CEILING, "stalactite3", "./Textures/stalactite3.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CAVE, TEX_FLOOR, "stalagmite", "./Textures/stalagmite.png");
+    m_TextureManager->CreateTexture(m_RenderSystem->GetRenderer(), LVL_CAVE, TEX_FLOOR, "stalagmite2", "./Textures/stalagmite2.png");
 
-    //m_TextureManager->WriteTextures();
-    */
 }
 
 void Game::GameApp::ChangetGameSpeed()
