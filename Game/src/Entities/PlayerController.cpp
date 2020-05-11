@@ -75,7 +75,7 @@ namespace Game
         RemoveExpiredPowerups(powerups, m_PlayerPositionX);
         Shapeshift(textureManager_, collision, position, sprite);
 
-        CastPowerups(powerups, input, inventory, m_PlayerPositionX);
+        CastPowerups(powerups, input, inventory, sprite, m_PlayerPositionX);
         Shapeshift(textureManager_, collision, position, sprite);
         
         KeepPlayerOnScreen(collision, position);
@@ -159,7 +159,7 @@ namespace Game
 
 
     void PlayerController::CastPowerups(Engine::PowerupComponent* activePowerups, Engine::InputComponent* input,
-                                       Engine::InventoryComponent* inventory, float playerPositionX_)
+                                       Engine::InventoryComponent* inventory, Engine::SpriteComponent* sprite_, float playerPositionX_)
     {
         if (Engine::InputManager::IsActionActive(input, "Player1Immortality"))
         {
@@ -187,6 +187,8 @@ namespace Game
             if (powerUsed)
             {
                 activePowerups->m_ActivePowers[Game::BatMode] = playerPositionX_ + GameConstants::BATMODE_DURATION;
+                sprite_->m_SmokePosition = playerPositionX_ + 14.f;
+                std::cout << sprite_->m_SmokePosition << std::endl;
                 m_ReadyToShapeshift = true;
             }
         }
@@ -226,6 +228,15 @@ namespace Game
     {
         if (!m_ReadyToShapeshift)
         {
+            return;
+        }
+
+        auto posOfActivation = sprite_->m_SmokePosition - 14.f;
+        auto batDuration = GameConstants::BATMODE_DURATION;
+
+        if (m_PlayerPositionX < sprite_->m_SmokePosition || ((m_PlayerPositionX > (posOfActivation + batDuration)) && (m_PlayerPositionX < (posOfActivation + batDuration + 28.f))))
+        {
+            sprite_->m_Image = textureManager_->GetCommonTexture(Game::TEX_PLAYER, "smoke");
             return;
         }
 
@@ -302,16 +313,26 @@ namespace Game
             sprite_->m_Height = 48;
             sprite_->m_AnimationCurrentFrame = 0;
         }
-        else
+        else if (sprite_->m_Image == textureManager_->GetCommonTexture(Game::TEX_PLAYER, "vampire"))
         {
             sprite_->m_AnimationFrames = 9;
             sprite_->m_AnimationCurrentFrame = 0;
             sprite_->m_Height = 64;
         }
+        else
+        {
+            sprite_->m_AnimationFrames = 1;
+            sprite_->m_AnimationCurrentFrame = 0;
+            sprite_->m_Height = 48;
+        }
     }
 
     void PlayerController::AnimatePlayer(Engine::SpriteComponent* sprite_)
     {
+        if (!(sprite_->m_Animation))
+        {
+            return;
+        }
         auto frameCurrent = sprite_->m_AnimationCurrentFrame;
         auto frameNum = sprite_->m_AnimationFrames;
 
