@@ -100,7 +100,7 @@ namespace Engine {
                     {
                         m_ShowMenu = true;
                     }
-                    else
+                    else if (m_ShowMenu)
                     {
                         m_ShowMenu = m_MainMenu->ProcessInput(event.key.keysym.sym);
                     }
