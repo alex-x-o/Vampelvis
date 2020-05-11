@@ -114,6 +114,9 @@
     <ClInclude Include="src\MainMenu\GameMenu.h">
       <Filter>src\MainMenu</Filter>
     </ClInclude>
+    <ClInclude Include="src\MainMenu\MenuLabelsData.h">
+      <Filter>src\MainMenu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

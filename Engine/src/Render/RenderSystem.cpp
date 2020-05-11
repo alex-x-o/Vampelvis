@@ -47,7 +47,7 @@ namespace Engine
         return true;
     }
 
-    void RenderSystem::Update(float dt_, EntityManager* entityManager, int playerScore_, const std::unordered_map<int, int>& playerInventory_)
+    void RenderSystem::Update(float dt_, EntityManager* entityManager)
     {
         m_Renderer->BeginScene();
 
@@ -62,8 +62,13 @@ namespace Engine
         auto renderables = entityManager->GetAllEntitiesWithComponents<TransformComponent, SpriteComponent>();
         m_Renderer->DrawEntities(renderables, camera);
 
-        m_Renderer->DrawPlayerScore(playerScore_);
-        m_Renderer->DrawPlayerInventory(playerInventory_);
+        for (auto& tex : m_Renderer->m_ScreenTextures)
+        {
+            SDL_RenderCopy(m_Renderer->GetNativeRenderer(), tex.first, NULL, &tex.second);
+            SDL_DestroyTexture(tex.first);
+        }
+
+        m_Renderer->m_ScreenTextures.clear();
 
         m_Renderer->EndScene();
     }

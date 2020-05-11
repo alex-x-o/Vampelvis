@@ -15,7 +15,7 @@
 namespace Engine {
 
     Application::~Application() = default;
-    WindowData Application::m_WindowData{};
+
 
     bool Application::Init()
     {
@@ -96,7 +96,14 @@ namespace Engine {
                 }
                 else if (event.type == SDL_KEYDOWN)
                 {
-                    m_ShowMenu = m_MainMenu->ProcessInput(event.key.keysym.sym, m_ShowMenu);
+                    if (event.key.keysym.sym == m_MainMenu->m_MenuInput["PauseGame"] && !m_ShowMenu)
+                    {
+                        m_ShowMenu = true;
+                    }
+                    else
+                    {
+                        m_ShowMenu = m_MainMenu->ProcessInput(event.key.keysym.sym);
+                    }
                 }
             }
 
@@ -134,7 +141,7 @@ namespace Engine {
         m_InputManager->Update(dt, m_EntityManager.get());
         m_PhysicsSystem->Update(dt, m_EntityManager.get());
         m_EntityManager->Update(dt);
-        m_RenderSystem->Update(dt, m_EntityManager.get(), GetPlayerScore(), GetPlayerInventory());
+        m_RenderSystem->Update(dt, m_EntityManager.get());
 
         GameSpecificUpdate(dt);
     }

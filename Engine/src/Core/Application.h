@@ -3,8 +3,6 @@
 #include "Render/WindowData.h"
 #include "MainMenu.h"
 
-#include <SDL.h>
-
 namespace Engine {
 
     class RenderSystem;
@@ -23,13 +21,14 @@ namespace Engine {
         virtual ~Application();
         Application() = default;
 
-        static WindowData m_WindowData;
-
     protected:
+        void SetWindowData(const WindowData& windowData_) { m_WindowData = windowData_; }
+
         bool m_Running{ false };
         bool m_ShowMenu{ true };
         bool m_GameOver{ false };
 
+        WindowData m_WindowData{};
         std::unique_ptr<RenderSystem> m_RenderSystem{};
         std::unique_ptr<MainMenu> m_MainMenu{};
         std::unique_ptr<PhysicsSystem> m_PhysicsSystem{};
@@ -43,8 +42,6 @@ namespace Engine {
         virtual bool GameSpecificInit() = 0;
         virtual void GameSpecificShutdown() = 0;
         virtual void GameSpecificUpdate(float dt) = 0;
-        virtual int GetPlayerScore() = 0;
-        virtual const std::unordered_map<int, int>& GetPlayerInventory() = 0;
 
         void Update(float dt);
 

@@ -3,8 +3,6 @@
 
 #include <SDL_ttf.h>
 
-struct SDL_Renderer;
-
 namespace Engine
 {
     struct WindowData;
@@ -20,8 +18,10 @@ namespace Engine
 
         void DrawEntities(const std::vector<Entity*> renderables_, const Entity* camera);
         void DrawEntity(const Entity* r, const Entity* camera);
-        void DrawPlayerScore(int score_);
-        void DrawPlayerInventory(const std::unordered_map<int, int>& playerInventory_);
+     
+        std::unordered_map<SDL_Texture*, SDL_Rect> m_ScreenTextures;
+        void DrawTextOnGameScreen(std::string text_, int posX_, int posY_, TTF_Font* font_, SDL_Color color_ = { 255, 255, 255 });
+        void DrawTextureOnGameScreen(std::string fileName_, int posX_, int posY_, int width_, int height_);
 
         void BeginScene() const;
         void EndScene() const;
@@ -40,8 +40,6 @@ namespace Engine
         std::unique_ptr<Window> m_Window;
         SDL_Renderer* m_NativeRenderer{ };
         Color m_BackgroundColor{ };
-
-        TTF_Font* m_ScoreFont{};
 
         bool m_Visible{ false };
     };

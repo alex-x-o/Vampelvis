@@ -1,6 +1,8 @@
 #pragma once
-
 #include <Core\Application.h>
+
+#include <SDL_ttf.h>
+
 
 namespace Game
 {
@@ -14,6 +16,7 @@ namespace Game
     public:
         const static int WindowWidth{ 800 };
         const static int WindowHeight{ 600 };
+
     private:
         bool m_GodMode{ false };
 
@@ -23,6 +26,10 @@ namespace Game
         void GameSpecificShutdown() override;
         void LoadGameTextures();
         void ChangetGameSpeed();
+
+        TTF_Font* m_ScoreFont{};
+        void DrawPlayerScore();
+        void DrawPlayerInventory();
 
         const std::unordered_map<int, int>& GetPlayerInventory();
         int GetPlayerScore();

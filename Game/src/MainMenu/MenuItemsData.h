@@ -19,5 +19,9 @@ namespace Game
 
 		MenuItemsData();
 		~MenuItemsData();
+	
+	private:
+		MenuItemsData(const MenuItemsData& other) = delete;
+		MenuItemsData& operator=(MenuItemsData& other) = delete;
 	};
 }
