@@ -14,7 +14,7 @@ namespace Engine
     public:
         bool Init(const WindowData& windowData_ = WindowData());
         bool Shutdown();
-        void Update(float dt_, EntityManager* entityManager, int playerScore_, const std::unordered_map<int, int>& playerInventory_);
+        void Update(float dt_, EntityManager* entityManager);
         Renderer* GetRenderer();
         void SetBackgroundColor(unsigned char bgR_, unsigned char bgG_, unsigned char bgB_, unsigned char bgA_);
         void SetBackgroundColor(const Color& col_);

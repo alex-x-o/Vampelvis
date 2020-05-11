@@ -20,7 +20,6 @@ namespace Game
           m_Label(label_),
           m_ItemRenderer(menuRenderer_)
     {
-        LOG_INFO(fmt::format("Initializing Item number {}", m_ItemId));
 
         SDL_Surface* itemSurface = TTF_RenderText_Solid(m_ItemId == 0 ? m_Data->m_TitleFont: m_Data->m_ItemsFont,
                                                         m_Label.c_str(), m_Data->m_DefaultColor);
@@ -59,9 +58,6 @@ namespace Game
 
         SDL_Surface* itemSurface = TTF_RenderText_Solid(m_Data->m_ItemsFont, m_Label.c_str(), color_);
         m_Texture = SDL_CreateTextureFromSurface(m_ItemRenderer, itemSurface);
-
-        m_Rect = CalculateRect(GameConstants::SCREEN_WIDTH, GameConstants::SCREEN_HEIGHT,
-                               itemSurface->w, itemSurface->h, m_ItemId);
 
         SDL_FreeSurface(itemSurface);
     }

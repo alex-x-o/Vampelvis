@@ -7,6 +7,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 namespace Engine
 {
@@ -37,25 +38,18 @@ namespace Engine
 
         SetBackgroundColor(100, 150, 236, SDL_ALPHA_OPAQUE);
 
-        if (TTF_Init() == -1)
-        {
-            LOG_CRITICAL("Unable to initialize SDL_ttf");
-        }
-
-        m_ScoreFont = TTF_OpenFont("./Data/menuFont.ttf", 30);
-
-        if (!m_ScoreFont)
-        {
-            LOG_ERROR("Failed to initialize Score Font: ");
-            LOG_ERROR(TTF_GetError());
-        }
-
         return true;
     }
 
     bool Renderer::Shutdown()
     {
         LOG_INFO("Shutting down Renderer");
+
+        for (auto& tex : m_ScreenTextures)
+        {
+            SDL_DestroyTexture(tex.first);
+        }
+        m_ScreenTextures.clear();
 
         if (m_NativeRenderer != nullptr)
         {
@@ -65,8 +59,6 @@ namespace Engine
         m_NativeRenderer = nullptr;
 
         m_Window.reset();
-
-        TTF_CloseFont(m_ScoreFont);
 
         return true;
     }
@@ -162,58 +154,36 @@ namespace Engine
         }
     }
 
-    void DrawString(SDL_Renderer* windowRenderer_, std::string text_, TTF_Font* font_, int x_)
+    void Renderer::DrawTextOnGameScreen(std::string text_, int posX_, int posY_, TTF_Font* font_, SDL_Color color_)
     {
-        SDL_Surface* scoreSurface = TTF_RenderText_Solid(font_, text_.c_str(), { 255, 255, 255 });
-        SDL_Texture* scoreTexture = SDL_CreateTextureFromSurface(windowRenderer_, scoreSurface);
+        SDL_Surface* textSurface = TTF_RenderText_Solid(font_, text_.c_str(), color_);
+        SDL_Texture* textTexture = SDL_CreateTextureFromSurface(m_NativeRenderer, textSurface);
 
-        SDL_Rect scoreRect = { x_, -3, scoreSurface->w, scoreSurface->h };
+        SDL_Rect scoreRect = { posX_, posY_, textSurface->w, textSurface->h };
 
-        SDL_RenderCopy(windowRenderer_, scoreTexture, NULL, &scoreRect);
-
-        SDL_DestroyTexture(scoreTexture);
-        SDL_FreeSurface(scoreSurface);
+        if (textTexture) m_ScreenTextures[textTexture] = scoreRect;
+        
+        SDL_FreeSurface(textSurface);
     }
 
-	void Renderer::DrawPlayerScore(int score_)
-	{
-        DrawString(m_NativeRenderer, fmt::format("Score: {}", score_), m_ScoreFont, 20);
-	}
+    void Renderer::DrawBlinkingTextureOnGameScreen(bool active_, std::string fileName_, int posX_, int posY_, int width_, int height_)
+    {
+        const int MAX_RATE = 10;
+        active_ ? m_BlinkingRate++ : 0;
+        m_BlinkingRate %= MAX_RATE;
 
-	void Renderer::DrawPlayerInventory(const std::unordered_map<int, int>& playerInventory_)
-	{
-        int i = 0;
-        for (auto& inv : playerInventory_)
+        if (!active_ || !m_BlinkingRate)
         {
-            DrawString(m_NativeRenderer, std::to_string(inv.second), m_ScoreFont, 800 - 60 - i*100);
-            
-            if (inv.first == Game::Powerup::BatMode)
+            SDL_Texture* screenTexture = IMG_LoadTexture(m_NativeRenderer, fileName_.c_str());
+
+            if (screenTexture)
             {
-                SDL_Texture* batPowerup = IMG_LoadTexture(m_NativeRenderer, "./Textures/testTubeRed.png");
+                SDL_Rect rect = { posX_, posY_, width_, height_ };
 
-                if (batPowerup)
-                {
-                    SDL_Rect rect = { 800 - (i + 1) * 100, -3, 30, 30 };
-                    SDL_RenderCopy(m_NativeRenderer, batPowerup, NULL, &rect);
-                    SDL_DestroyTexture(batPowerup);
-                }
+                m_ScreenTextures[screenTexture] = rect;
             }
-            else
-            {
-                SDL_Texture* imortality = IMG_LoadTexture(m_NativeRenderer, "./Textures/testTubeBlue.png");
-
-                if (imortality)
-                {
-                    SDL_Rect rect = { 800 - (i + 1) * 100, -3, 30, 30 };
-                    SDL_RenderCopy(m_NativeRenderer, imortality, NULL, &rect);
-                    SDL_DestroyTexture(imortality);
-                }
-
-            }
-
-            i++;
         }
-	}
+    }
 
     void Renderer::SetBackgroundColor(unsigned char bgR_, unsigned char bgG_, unsigned char bgB_, unsigned char bgA_)
     {
@@ -232,12 +202,7 @@ namespace Engine
 
     void Renderer::SetBackgroundTexture(Engine::Texture* texture_)
     {
-        // SDL_RenderClear( m_NativeRenderer );
-        SDL_Rect loc;
-        loc.x = 0;
-        loc.y = 0;
-        loc.h = 256;
-        loc.w = 128;
+        SDL_Rect loc = {0, 0, 256, 128};
         SDL_RenderCopy(m_NativeRenderer, texture_->m_Texture, NULL, &loc);
     }
 

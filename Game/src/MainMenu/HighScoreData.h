@@ -5,85 +5,42 @@
 
 using json = nlohmann::json;
 
+
 namespace Game
 {
 	class HighScoreData
 	{
 	public:
-		static HighScoreData& GetData()
+		static HighScoreData* GetData()
 		{
-			static HighScoreData data;
-			return data;
-		}
+			if (!instance)
+			{
+				instance = new HighScoreData();
+			}
 
-		std::map<std::string, int> GetHallOfFame()
-		{
-			std::ifstream inputFile(fileName);
-			json scoreObject = json::parse(inputFile);
-
-			return scoreObject["hallOfFame"];
+			return instance;
 		}
 
 		int GetHighScore() const { return m_HighScore; }
+		std::map<std::string, int> GetHallOfFame();
+		std::map<int, std::string, std::greater<int>> GetSortedHallOfFame();
 
-		void SetHighScore(int score_) 
-		{ 
-			m_HighScore = score_; 
-			StoreHighScore(score_);
-		}
+		void SetHighScore(int score_);
 
-		void LoadHighScore() 
-		{
-			std::ifstream inputFile(fileName);
-			json scoreObject = json::parse(inputFile);
-			m_HighScore = scoreObject.at("score");
-		}
+		void LoadHighScore();
 
-		void StoreHighScore(int value_)
-		{
-			std::ifstream inputFile(fileName);
-			nlohmann::json scoreObject;
-			inputFile >> scoreObject;
-
-			scoreObject["score"] = value_;
-
-			std::ofstream outputFile(fileName);
-			outputFile << scoreObject;
-		}
-
+		HighScoreData(const HighScoreData& other) = delete;
 		HighScoreData& operator=(HighScoreData& other) = delete;
 	private:
-		HighScoreData() 
-		{
-			// Get current High score from file
-			if (std::filesystem::exists(fileName))
-			{
-				LoadHighScore();
-			}
-			else
-			{
-				CreateHighScoreData();
-			}
-		}
+		HighScoreData();
+		static HighScoreData* instance;
 
-		void CreateHighScoreData()
-		{
-			json scoreObject;
-			scoreObject["score"] = 0;
-			scoreObject["hallOfFame"] = {
-											{"Dracula", 1000},
-											{"Sava Savanovic", 700},
-											{"Damon Salvatore", 500},
-											{"Edward Cullen", 300}
-										};
-
-			std::ofstream output(fileName);
-			output << scoreObject.dump(); 
-		}
+		void CreateHighScoreData();
+		void StoreHighScore(int value_);
 
 		int m_HighScore{ 0 };
-		std::string fileName{ "score.json" };
+		std::string m_FileName{ "hallOfFame.json" };
 	};
 
-	extern HighScoreData scoreData;
+	extern HighScoreData* scoreData;
 }

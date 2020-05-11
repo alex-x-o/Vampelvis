@@ -1,6 +1,8 @@
 #pragma once
-
+#include "precomp.h"
 #include <SDL.h>
+
+using KeyboardButton = int;
 
 namespace Engine
 {
@@ -15,8 +17,10 @@ namespace Engine
 		virtual void HideMenu() = 0;
 		virtual void GameOver(int score_) = 0;
 
-		virtual bool ProcessInput(SDL_Keycode key_, bool showMenu_) = 0;
+		virtual bool ProcessInput(SDL_Keycode key_) = 0;
 
 		virtual ~MainMenu() = default;
+
+		std::unordered_map<std::string, KeyboardButton> m_MenuInput{ { "PauseGame", SDLK_ESCAPE } };
 	};
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include "MenuItemsData.h"
+
 #include <SDL.h>
+
 
 namespace Game
 {

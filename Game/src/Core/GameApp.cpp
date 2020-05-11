@@ -1,8 +1,10 @@
 #include "precomp.h"
 
 #include "GameApp.h"
+#include "GameConstants.h"
 #include "MainMenu/HighScoreData.h"
 #include "MainMenu/GameMenu.h"
+#include "MainMenu/MenuLabelsData.h"
 #include "Entities/CameraController.h"
 #include "Entities/PlayerController.h"
 #include "Entities/LevelController.h"
@@ -14,12 +16,12 @@
 void Game::GameApp::GameSpecificWindowData()
 {
     Engine::WindowData gameSpecificWindowData;
-    gameSpecificWindowData.m_Title = "Vampelvis";
+    gameSpecificWindowData.m_Title = GameConstants::GAME_TITLE;
     gameSpecificWindowData.m_Width = GameApp::WindowWidth;
     gameSpecificWindowData.m_Height = GameApp::WindowHeight;
     gameSpecificWindowData.m_Vsync = true;
-    gameSpecificWindowData.m_Icon = "./Textures/testTubeRed.png";
-    m_WindowData = gameSpecificWindowData;
+    gameSpecificWindowData.m_Icon = GameConstants::GAME_ICON;
+    SetWindowData(gameSpecificWindowData);
 }
 
 bool Game::GameApp::GameSpecificInit()
@@ -44,12 +46,29 @@ bool Game::GameApp::GameSpecificInit()
     bool playerStatus = m_PlayerController->Init(m_EntityManager.get(), m_TextureManager->GetCommonTexture(TEX_PLAYER, "vampire"));
     ASSERT(playerStatus, "Player initialization failed in GameApp::GameSpecificInit()");
 
+    if (TTF_Init() == -1)
+    {
+        LOG_CRITICAL("Unable to initialize SDL_ttf in MenuItemsManager::Init()");
+    }
+
+    m_ScoreFont = TTF_OpenFont("./Data/menuFont.ttf", 30);
+
+    if (!m_ScoreFont)
+    {
+        LOG_ERROR("Failed to initialize Menu Fonts: ");
+        LOG_ERROR(TTF_GetError());
+
+        return false;
+    }
+
     return true;
 }
 
 void Game::GameApp::GameSpecificUpdate(float dt_)
 {
     this->ChangetGameSpeed();
+    DrawPlayerScore();
+    DrawPlayerInventory();
 
     bool playerHit = !m_PlayerController->Update(m_EntityManager.get(), m_TextureManager.get());
     if (playerHit && !m_GodMode)
@@ -127,12 +146,52 @@ void Game::GameApp::ChangetGameSpeed()
 
 }
 
+void Game::GameApp::DrawPlayerScore()
+{
+    m_RenderSystem->GetRenderer()->DrawTextOnGameScreen(fmt::format("Score: {}", GetPlayerScore()), 30, -3, m_ScoreFont);
+}
+
+void Game::GameApp::DrawPlayerInventory()
+{
+    int i = 0;
+    for (auto& inv : GetPlayerInventory())
+    {
+        m_RenderSystem->GetRenderer()->DrawTextOnGameScreen(std::to_string(inv.second), 750 - i*90, -3, m_ScoreFont);
+
+        std::string fileName = inv.first == Game::Powerup::BatMode ? "./Textures/testTubeRed.png" : "./Textures/testTubeBlue.png";
+        
+        // Count how much of powerup left, and if it is less than 0.2 blink text
+
+        bool active = false;
+        auto& activePowers = GetActivePowers();
+        if (activePowers.find(inv.first) != std::end(activePowers))
+        {
+            float left = (activePowers.at(inv.first) - m_PlayerController->GetPlayerPositionX());
+            left /= inv.first == Game::Powerup::BatMode ? GameConstants::BATMODE_DURATION : GameConstants::IMMORTALITY_DURATION;
+
+            active = left < 0.2 ? true : false;
+        }
+        
+        m_RenderSystem->GetRenderer()->DrawBlinkingTextureOnGameScreen(active, fileName, 800 - (i + 1) * 90, -3, 30, 30);
+
+        ++i;
+    }
+}
+
 const std::unordered_map<int, int>& Game::GameApp::GetPlayerInventory()
 {
     auto player = m_EntityManager.get()->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::InventoryComponent>();
     ASSERT(player.size() == 1, "Must be only one Player");
 
     return player.front()->GetComponent<Engine::InventoryComponent>()->m_Inventory;
+}
+
+const std::unordered_map<int, float>& Game::GameApp::GetActivePowers()
+{
+    auto player = m_EntityManager.get()->GetAllEntitiesWithComponents<Engine::PlayerComponent, Engine::PowerupComponent>();
+    ASSERT(player.size() == 1, "Must be only one Player");
+
+    return player.front()->GetComponent<Engine::PowerupComponent>()->m_ActivePowers;
 }
 
 int Game::GameApp::GetPlayerScore()
@@ -144,8 +203,8 @@ int Game::GameApp::GetPlayerScore()
 void Game::GameApp::UpdateHighScore()
 {
     int newScore = GetPlayerScore();
-    if (newScore > scoreData.GetHighScore())
+    if (newScore > scoreData->GetHighScore())
     {
-        scoreData.SetHighScore(newScore);
+        scoreData->SetHighScore(newScore);
     }
 }

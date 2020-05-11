@@ -1,11 +1,9 @@
 #pragma once
-#include "Core\MainMenu.h"
 #include "MenuItemsManager.h"
 
 
 namespace Game
 {
-	class Renderer;
 
 	class GameMenu : public Engine::MainMenu
 	{
@@ -19,7 +17,7 @@ namespace Game
 		void GameOver(int playerScore_);
 
 		std::unique_ptr<MenuItemsManager> m_MenuItemsManager;
-		bool ProcessInput(SDL_Keycode key_, bool showMenu_);
+		bool ProcessInput(SDL_Keycode key_);
 
 		GameMenu() = default;
 
@@ -30,7 +28,7 @@ namespace Game
 		SDL_Renderer* m_MenuRenderer{};
 
 		void setBackground() const;
-		void setIcon() const;
+		void setIcon(std::string icon_) const;
 
 		GameMenu(const GameMenu& other) = delete;
 		GameMenu& operator=(GameMenu& other) = delete;

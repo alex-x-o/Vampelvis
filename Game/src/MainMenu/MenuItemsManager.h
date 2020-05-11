@@ -27,11 +27,8 @@ namespace Game
 		bool m_SubmenuOpened{ false };
 
 	private:
-		int m_HighScore{ 0 };
-
 		unsigned m_NumOfItems{ 0 };
 		std::vector<std::shared_ptr<MenuItem>> m_MenuItems;
-		std::vector<std::string> m_BeginingLabels;
 
 		MenuItemsData m_ItemsData{};
 		SDL_Renderer* m_MenuRenderer{};
@@ -39,6 +36,7 @@ namespace Game
 		void ChangeMenu(std::vector<std::string>& labels_, int selectableBegining_, int selectableEnd_);
 		void CreateMenuItems(std::vector<std::string>& labels);
 		void SetSelectableItems(std::vector<std::shared_ptr<MenuItem>>::iterator begining_, std::vector<std::shared_ptr<MenuItem>>::iterator end_);
+		void SubmenuDeselectItems();
 
 		MenuItemsManager(const MenuItemsManager& other) = delete;
 		MenuItemsManager& operator=(MenuItemsManager& other) = delete;
