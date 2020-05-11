@@ -78,7 +78,6 @@ namespace Engine
         int m_AnimationFrames{0};
         int m_AnimationCurrentFrame{0};
         int m_Height;
-        float m_SmokePosition;
     };
 
     struct PlayerComponent : public Component

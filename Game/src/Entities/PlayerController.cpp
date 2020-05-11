@@ -187,8 +187,7 @@ namespace Game
             if (powerUsed)
             {
                 activePowerups->m_ActivePowers[Game::BatMode] = playerPositionX_ + GameConstants::BATMODE_DURATION;
-                sprite_->m_SmokePosition = playerPositionX_ + 14.f;
-                std::cout << sprite_->m_SmokePosition << std::endl;
+                m_SmokePosition = playerPositionX_ + 14.f;
                 m_ReadyToShapeshift = true;
             }
         }
@@ -231,10 +230,10 @@ namespace Game
             return;
         }
 
-        auto posOfActivation = sprite_->m_SmokePosition - 14.f;
+        auto posOfActivation = m_SmokePosition - 14.f;
         auto batDuration = GameConstants::BATMODE_DURATION;
 
-        if (m_PlayerPositionX < sprite_->m_SmokePosition || ((m_PlayerPositionX > (posOfActivation + batDuration)) && (m_PlayerPositionX < (posOfActivation + batDuration + 28.f))))
+        if (m_PlayerPositionX < m_SmokePosition || ((m_PlayerPositionX > (posOfActivation + batDuration)) && (m_PlayerPositionX < (posOfActivation + batDuration + 28.f))))
         {
             sprite_->m_Image = textureManager_->GetCommonTexture(Game::TEX_PLAYER, "smoke");
             return;
@@ -281,9 +280,14 @@ namespace Game
 
     void PlayerController::ToggleGodMode(Engine::InputComponent* input_, Engine::PowerupComponent* powerups_)
     {
+        if (m_PlayerPositionX - m_CheatLocation < 50.f)
+        {
+            return;
+        }
         if (Engine::InputManager::IsActionActive(input_, "ToggleImmortality"))
         {
             m_HasCheated = true;
+            m_CheatLocation = m_PlayerPositionX;
             auto& activePowerups = powerups_->m_ActivePowers;
             auto finder = activePowerups.find(Game::Immortality);
 

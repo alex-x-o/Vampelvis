@@ -31,8 +31,11 @@ namespace Game
         float m_BaseSpeed{ 100.0f };
         float m_CurrentSpeed{ 100.0f };
 
+        float m_SmokePosition;
         bool m_ReadyToShapeshift = false;
+
         bool m_HasCheated = false;
+        float m_CheatLocation{ -300.f };
 
         void InitInventory(Engine::InventoryComponent* inventory_);
         void PickUpPowerups(Engine::CollisionComponent* collision_, Engine::InventoryComponent* inventory_);
