@@ -81,8 +81,8 @@ namespace Game
         auto floorObstacle = std::make_unique<Engine::Entity>();
 
         floorObstacle->AddComponent<Game::FloorObstacleComponent>();
-        floorObstacle->AddComponent<Engine::TransformComponent>(x, y, w, h);
-        floorObstacle->AddComponent<Engine::CollisionComponent>(w, h);
+        floorObstacle->AddComponent<Engine::TransformComponent>(ceil(x), ceil(y), ceil(w), ceil(h));
+        floorObstacle->AddComponent<Engine::CollisionComponent>(ceil(w), ceil(h));
         floorObstacle->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
 
         entityManager_->AddEntity(std::move(floorObstacle));
@@ -93,10 +93,27 @@ namespace Game
         auto ceilingObstacle = std::make_unique<Engine::Entity>();
 
         ceilingObstacle->AddComponent<Game::CeilingObstacleComponent>();
-        ceilingObstacle->AddComponent<Engine::TransformComponent>(x, y, w, h);
-        ceilingObstacle->AddComponent<Engine::CollisionComponent>(w, h);
+        ceilingObstacle->AddComponent<Engine::TransformComponent>(ceil(x), ceil(y), ceil(w), ceil(h));
+        ceilingObstacle->AddComponent<Engine::CollisionComponent>(ceil(w), ceil(h));
         ceilingObstacle->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
 
         entityManager_->AddEntity(std::move(ceilingObstacle));
+    }
+
+    void ObstacleController::GenerateLevelBoundary(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, Game::Level* level_)
+    {
+        float obstacleGap = GameConstants::PLAYER_HEIGHT * 3.5f;
+        float obstacleHeight = (GameConstants::SCREEN_HEIGHT  - obstacleGap )  / 2;
+
+        float obstaclePosX = level_->levelStart + GameConstants::LEVEL_BOUNDARY_WIDTH / 2;
+        float obstaclePosY = (GameConstants::SCREEN_HEIGHT - obstacleHeight) / 2;
+
+        auto texture = textureManager_->GetLevelOrCommonTexture(level_->levelId, TEX_FLOOR, "boundary");
+        CreateFloorObstacle(entityManager_, texture, obstaclePosX, obstaclePosY, GameConstants::LEVEL_BOUNDARY_WIDTH, obstacleHeight);
+    
+        texture = textureManager_->GetLevelOrCommonTexture(level_->levelId, TEX_CEILING, "boundary");
+        CreateCeilingObstacle(entityManager_, texture, obstaclePosX, -obstaclePosY, GameConstants::LEVEL_BOUNDARY_WIDTH, obstacleHeight);
+
+        level_->obstacleLastPosition = obstaclePosX;
     }
 }

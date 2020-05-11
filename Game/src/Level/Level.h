@@ -13,14 +13,14 @@ namespace Game
 
         float enemyMinDistance{ 300 };
         float enemyLastPosition{ 0 };
-        int enemySpawnChance{ 5 };
+        int enemySpawnChance{ 5 }; // 1 in x
 
         bool spawnBats{ true };
         bool spawnGhosts{ true };
 
         float pickupMinDistance{ 300 };
         float pickupLastPosition{ 0 };
-        int pickupSpawnChance{ 5 };
+        int pickupSpawnChance{ 5 }; // 1 in x
 
         Level(int levelId_) :levelId(levelId_) {}
     };

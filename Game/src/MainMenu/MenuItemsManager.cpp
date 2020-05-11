@@ -105,6 +105,10 @@ namespace Game
             ChangeMenu(bestVampires, static_cast<int>(bestVampires.size()) - 1, 0);
             SubmenuDeselectItems();
         }
+        else if (m_SelectableMenuItems[m_SelectedItem]->m_Label == MenuLabelsData::BEGINING_LABELS[3])
+        {
+            // TOGGLE SOUND
+        }
         else if (m_SelectableMenuItems[m_SelectedItem]->m_Label == MenuLabelsData::BEGINING_LABELS[4])
         {
             ChangeMenu(MenuLabelsData::INSTRUCTION_LABELS, static_cast<int>(MenuLabelsData::INSTRUCTION_LABELS.size()) - 1, 0);

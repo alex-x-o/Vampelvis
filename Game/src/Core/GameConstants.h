@@ -11,6 +11,7 @@ namespace GameConstants
 	const int SCREEN_HEIGHT = 600;
 
 	const int WALL_HEIGHT = 30;
+	const int LEVEL_BOUNDARY_WIDTH = 100;
 
 	const int PLAYER_WIDTH = 80;
 	const int PLAYER_HEIGHT = 100;

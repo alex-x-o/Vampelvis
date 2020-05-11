@@ -36,16 +36,26 @@ namespace Game
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to entitymanager to LevelController::Update()");
         ASSERT(entityManager_ != nullptr, "Must pass valid pointer to texturemanager to LevelController::Update()");
 
-        Game::CameraBoundary boundary = getCurrentBoundaries(entityManager_);
+        Game::CameraBoundary boundary = GetCurrentBoundaries(entityManager_);
         Level* currentLevel = GetCurrentLevel();
 
-        m_ObstacleController->GenerateObstacles(entityManager_, textureManager_, currentLevel, boundary.right);
-        m_EnemyController->GenerateEnemies(entityManager_, textureManager_, currentLevel, boundary.right);
-        m_PickupController->GeneratePickups(entityManager_, textureManager_, currentLevel, boundary.right);
+
+        if (currentLevel->levelStart + currentLevel->levelLength < floor(boundary.right))
+        {
+            ChangeLevel(entityManager_, textureManager_, boundary.right);
+        }
+        else
+        {
+            m_ObstacleController->GenerateObstacles(entityManager_, textureManager_, currentLevel, boundary.right);
+            m_EnemyController->GenerateEnemies(entityManager_, textureManager_, currentLevel, boundary.right);
+            m_PickupController->GeneratePickups(entityManager_, textureManager_, currentLevel, boundary.right);
+
+            m_WallController->SwitchWalls(entityManager_, textureManager_, currentLevel, boundary.left);
+        }
+
+        m_Background->Update(entityManager_, boundary.left);
 
         MoveLevelObjects(entityManager_);
-        
-        m_Background->Update(dt, entityManager_, boundary.left);
         RemovePastLevelObjects(entityManager_, boundary.left);
     }
 
@@ -53,10 +63,12 @@ namespace Game
     {
         auto level = std::make_unique<Game::Level>(LVL_CASTLE);
         level->spawnBats = false;
+        level->levelLength = 2400.f;
         m_Levels.push_back(std::move(level));
 
         level = std::make_unique<Game::Level>(LVL_CAVE);
         level->spawnGhosts = false;
+        level->levelLength = 2400.f;
         m_Levels.push_back(std::move(level));
     }
 
@@ -84,7 +96,26 @@ namespace Game
         m_CurrentSpeed = m_BaseSpeed * speedCoef_;
     }
 
-    CameraBoundary LevelController::getCurrentBoundaries(Engine::EntityManager* entityManager_)
+    void LevelController::ChangeLevel(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, float boundary_)
+    {
+        auto currentLevel = GetCurrentLevel();
+        m_CurrentLevelIndex ? m_CurrentLevelIndex = 0 : m_CurrentLevelIndex = 1;
+        auto newLevel = GetCurrentLevel();
+
+        newLevel->levelStart = currentLevel->levelStart + currentLevel->levelLength;
+        newLevel->enemyLastPosition = currentLevel->enemyLastPosition;
+        newLevel->pickupLastPosition = currentLevel->pickupLastPosition;
+        newLevel->obstacleLastPosition = currentLevel->obstacleLastPosition;
+        
+        auto newBackground = textureManager_->GetLevelOrCommonTexture(newLevel->levelId, TEX_BACKGROUND, "background");
+        m_Background->ChangeAtX(entityManager_, newBackground, newLevel->levelStart);
+
+        m_WallController->StartSwitchingWalls(entityManager_, textureManager_, newLevel);
+
+        m_ObstacleController->GenerateLevelBoundary(entityManager_, textureManager_, newLevel);
+    }
+
+    CameraBoundary LevelController::GetCurrentBoundaries(Engine::EntityManager* entityManager_)
     {
         auto boundary = CameraBoundary();
 

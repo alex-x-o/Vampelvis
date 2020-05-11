@@ -32,6 +32,7 @@ namespace Game
         void DrawPlayerInventory();
 
         const std::unordered_map<int, int>& GetPlayerInventory();
+        const std::unordered_map<int, float>& GetActivePowers();
         int GetPlayerScore();
         void UpdateHighScore();
 
