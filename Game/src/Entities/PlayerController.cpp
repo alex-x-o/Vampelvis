@@ -68,6 +68,29 @@ namespace Game
         move->m_TranslationSpeed.x = m_CurrentSpeed;
         move->m_TranslationSpeed.y = speed * (jumpInput ? -0.5f : 0.2f);
 
+        // Changing Rotation
+        if (jumpInput)
+        {
+                if(position->m_Rotation > 0)
+                    position->m_Rotation -= 15;
+        }
+        else
+        {
+            if (position->m_Rotation < 180)
+                position->m_Rotation += 5;
+        }
+        move->m_RotationSpeed = jumpInput ? 0.6f : -0.2f;
+        
+        // Rotate Collision Box
+        if (position->m_Rotation > 60 && position->m_Rotation < 120)
+        {
+            collision->m_Size = vec2(Height, Width);
+        }
+        else
+        {
+            collision->m_Size = vec2(Width, Height);
+        }
+
         // Update position
         m_PlayerPositionX = position->m_Position.x;
         ToggleGodMode(input, powerups);
