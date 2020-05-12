@@ -78,7 +78,6 @@ void Game::GameApp::GameSpecificUpdate(float dt_)
 
     if (m_Level->GetCurrentLevelIndex() == 0)
     {
-        LOG_INFO(r);
         if (r < 0.002f) m_AudioManager->PlaySound("GhostSound");
     }
     else if (m_Level->GetCurrentLevelIndex() == 1)
