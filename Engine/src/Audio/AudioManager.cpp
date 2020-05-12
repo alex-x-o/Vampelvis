@@ -36,15 +36,20 @@ void Engine::AudioManager::PlayMusic()
 	}
 }
 
-void Engine::AudioManager::StopMusic()
+void Engine::AudioManager::PauseMusic()
 {
-	Mix_HaltMusic();
+	Mix_PauseMusic();
+}
+
+void Engine::AudioManager::ResumePlayingMusic()
+{
+	Mix_ResumeMusic();
 }
 
 void Engine::AudioManager::ToggleMusicPlaying()
 {
-	if (m_IsPlaying) StopMusic();
-	else PlayMusic();
+	if (m_IsPlaying) PauseMusic();
+	else ResumePlayingMusic();
 
 	m_IsPlaying = !m_IsPlaying;
 }

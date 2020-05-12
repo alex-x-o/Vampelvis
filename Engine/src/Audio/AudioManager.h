@@ -13,10 +13,11 @@ namespace Engine
 
 		bool LoadMusic(std::string path_);
 		void PlayMusic();
-		void StopMusic();
+		void PauseMusic();
+		void ResumePlayingMusic();
 
 		void ToggleMusicPlaying();
-		bool m_IsPlaying{ false };
+		bool m_IsPlaying{ true };
 
 		void LoadSound(std::string soundName_, std::string path_);
 		void PlaySound(std::string soundName_);
