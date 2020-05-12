@@ -21,10 +21,10 @@ namespace Game
         MenuLabelsData::BEGINING_LABELS[1] = "Best score: " + std::to_string(scoreData->GetHighScore());
 
         m_AudioManager->LoadMusic("./Audio/MainTheme.wav");
-        if (MenuLabelsData::BEGINING_LABELS[3] == "Sound : on")
+        m_AudioManager->PlayMusic();
+        if (MenuLabelsData::BEGINING_LABELS[3] == "Sound : off")
         {
-            m_AudioManager->PlayMusic();
-            m_AudioManager->m_IsPlaying = true;
+            m_AudioManager->ToggleMusicPlaying();
         }
 
         ChangeMenu(MenuLabelsData::BEGINING_LABELS, 2, 1);
