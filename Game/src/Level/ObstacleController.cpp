@@ -82,7 +82,7 @@ namespace Game
 
         floorObstacle->AddComponent<Game::FloorObstacleComponent>();
         floorObstacle->AddComponent<Engine::TransformComponent>(ceil(x), ceil(y), ceil(w), ceil(h));
-        floorObstacle->AddComponent<Engine::CollisionComponent>(ceil(w), ceil(h));
+        floorObstacle->AddComponent<Engine::CollisionComponent>(ceil(0.9f * w), ceil(0.9f * h));
         floorObstacle->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
 
         entityManager_->AddEntity(std::move(floorObstacle));
@@ -94,7 +94,7 @@ namespace Game
 
         ceilingObstacle->AddComponent<Game::CeilingObstacleComponent>();
         ceilingObstacle->AddComponent<Engine::TransformComponent>(ceil(x), ceil(y), ceil(w), ceil(h));
-        ceilingObstacle->AddComponent<Engine::CollisionComponent>(ceil(w), ceil(h));
+        ceilingObstacle->AddComponent<Engine::CollisionComponent>(ceil(0.9f * w), ceil(0.9f * h));
         ceilingObstacle->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
 
         entityManager_->AddEntity(std::move(ceilingObstacle));

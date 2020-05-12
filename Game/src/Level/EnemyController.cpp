@@ -130,7 +130,7 @@ namespace Game
         auto enemy = std::make_unique<Engine::Entity>();
         enemy->AddComponent<Game::GlidingEnemyComponent>();
         enemy->AddComponent<Engine::TransformComponent>(x_, y_, w_, h_);
-        enemy->AddComponent<Engine::CollisionComponent>(w_, h_);
+        enemy->AddComponent<Engine::CollisionComponent>(0.8f*w_, 0.8f * h_);
         enemy->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
         enemy->AddComponent<Engine::MoverComponent>();
 
@@ -150,7 +150,7 @@ namespace Game
         auto enemy = std::make_unique<Engine::Entity>();
         enemy->AddComponent<Game::GlidingEnemyComponent>();
         enemy->AddComponent<Engine::TransformComponent>(x_, y_, w_, h_);
-        enemy->AddComponent<Engine::CollisionComponent>(w_, h_);
+        enemy->AddComponent<Engine::CollisionComponent>(w_);
         enemy->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
         enemy->AddComponent<Engine::MoverComponent>();
 
