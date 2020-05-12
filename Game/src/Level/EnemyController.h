@@ -14,5 +14,7 @@ namespace Game
 		
 	private:
 		void AnimateEnemy(Engine::SpriteComponent* sprite_);
+		void CreateGhost(Engine::EntityManager* entityManager_, Engine::Texture* texture_, float x, float y, float w, float h);
+		void CreateBat(Engine::EntityManager* entityManager_, Engine::Texture* texture_, float x, float y, float w, float h);
 	};
 }
