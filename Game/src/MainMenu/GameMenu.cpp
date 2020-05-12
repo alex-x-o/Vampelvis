@@ -8,7 +8,7 @@
 
 namespace Game
 {
-    bool GameMenu::Init()
+    bool GameMenu::Init(Engine::AudioManager* audioManager_)
     {
         LOG_INFO("Initializing Main Menu");
         
@@ -19,7 +19,7 @@ namespace Game
         setIcon(GameConstants::GAME_ICON);
 
         m_MenuItemsManager = std::make_unique<MenuItemsManager>();
-        m_MenuItemsManager->Init(m_MenuRenderer);
+        m_MenuItemsManager->Init(m_MenuRenderer, audioManager_);
 
         return !createWindow;
     }

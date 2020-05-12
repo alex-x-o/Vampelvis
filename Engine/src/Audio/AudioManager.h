@@ -14,6 +14,9 @@ namespace Engine
 		void PlayMusic();
 		void StopMusic();
 
+		void ToggleMusicPlaying();
+		bool m_IsPlaying{ false };
+
 		AudioManager() = default;
 	private:
 		std::unique_ptr<Music> m_MusicTrack;

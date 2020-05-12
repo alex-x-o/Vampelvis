@@ -1,5 +1,6 @@
 #pragma once
 #include "precomp.h"
+#include "Audio/AudioManager.h"
 #include <SDL.h>
 
 using KeyboardButton = int;
@@ -9,7 +10,7 @@ namespace Engine
 	class MainMenu
 	{
 	public:
-		virtual bool Init() = 0;
+		virtual bool Init(AudioManager* audioManager_) = 0;
 		virtual void Update() = 0;
 		virtual void Shutdown() = 0;
 

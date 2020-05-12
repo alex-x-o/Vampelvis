@@ -38,3 +38,11 @@ void Engine::AudioManager::StopMusic()
 {
 	Mix_HaltMusic();
 }
+
+void Engine::AudioManager::ToggleMusicPlaying()
+{
+	if (m_IsPlaying) StopMusic();
+	else PlayMusic();
+
+	m_IsPlaying = !m_IsPlaying;
+}

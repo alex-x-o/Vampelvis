@@ -87,8 +87,8 @@ namespace Game
 		scoreObject["numOfFamousPlayers"] = 0;
 		scoreObject["hallOfFame"] = { {"Dracula", 1000},
 									  {"Sava Savanovic", 700},
-									  {"Damon Salvatore", 3},
-									  {"Edward Cullen", 1} };
+									  {"Damon Salvatore", 500},
+									  {"Edward Cullen", 300} };
 
 		std::ofstream output(m_FileName);
 		output << scoreObject.dump();

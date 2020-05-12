@@ -1,5 +1,6 @@
 #pragma once
 #include "MenuItemsManager.h"
+#include "Audio/AudioManager.h"
 
 
 namespace Game
@@ -8,7 +9,7 @@ namespace Game
 	class GameMenu : public Engine::MainMenu
 	{
 	public:
-		bool Init();
+		bool Init(Engine::AudioManager* audioManager_);
 		void Update();
 		void Shutdown();
 

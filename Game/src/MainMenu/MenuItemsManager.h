@@ -1,6 +1,7 @@
 #pragma once
 #include "MenuItem.h"
 #include "MenuItemsData.h"
+#include "Audio/AudioManager.h"
 
 
 namespace Game
@@ -8,7 +9,7 @@ namespace Game
 	class MenuItemsManager
 	{
 	public:
-		void Init(SDL_Renderer* menuRenderer_);
+		void Init(SDL_Renderer* menuRenderer_, Engine::AudioManager* audioManager_);
 		void Update();
 		void Shutdown();
 	
@@ -32,6 +33,8 @@ namespace Game
 
 		MenuItemsData m_ItemsData{};
 		SDL_Renderer* m_MenuRenderer{};
+		Engine::AudioManager* m_AudioManager{};
+
 
 		void ChangeMenu(std::vector<std::string>& labels_, int selectableBegining_, int selectableEnd_);
 		void CreateMenuItems(std::vector<std::string>& labels);
