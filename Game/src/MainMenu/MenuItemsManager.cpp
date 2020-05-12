@@ -89,7 +89,7 @@ namespace Game
         ChangeSelectedItem(newIndex);
     }
 
-    void MenuItemsManager::EnterSubMenu()
+    void MenuItemsManager::EnterSubMenu(Engine::AudioManager* audioManager_)
     {
         if (m_SelectableMenuItems[m_SelectedItem]->m_Label == MenuLabelsData::BEGINING_LABELS[2])
         {
@@ -107,7 +107,14 @@ namespace Game
         }
         else if (m_SelectableMenuItems[m_SelectedItem]->m_Label == MenuLabelsData::BEGINING_LABELS[3])
         {
-            // TOGGLE SOUND
+            audioManager_->ToggleMusicPlaying();
+
+            if (m_MenuItems[3]->m_Label == "Sound : on") MenuLabelsData::BEGINING_LABELS[3] = "Sound : off";
+            else MenuLabelsData::BEGINING_LABELS[3] = "Sound : on";
+
+            m_MenuItems[3]->m_Label = MenuLabelsData::BEGINING_LABELS[3];
+            m_MenuItems[3]->ChangeMenuItem(m_ItemsData.m_SelectedColor);
+
         }
         else if (m_SelectableMenuItems[m_SelectedItem]->m_Label == MenuLabelsData::BEGINING_LABELS[4])
         {

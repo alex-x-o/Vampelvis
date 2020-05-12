@@ -1,5 +1,6 @@
 #pragma once
 #include "MenuItemsManager.h"
+#include "Audio/AudioManager.h"
 
 
 namespace Game
@@ -17,7 +18,7 @@ namespace Game
 		void GameOver(int playerScore_);
 
 		std::unique_ptr<MenuItemsManager> m_MenuItemsManager;
-		bool ProcessInput(SDL_Keycode key_);
+		bool ProcessInput(SDL_Keycode key_, Engine::AudioManager* audioManager_);
 
 		GameMenu() = default;
 

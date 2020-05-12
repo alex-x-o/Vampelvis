@@ -105,7 +105,7 @@ namespace Game
         }
     }
 
-    bool GameMenu::ProcessInput(SDL_Keycode key_)
+    bool GameMenu::ProcessInput(SDL_Keycode key_, Engine::AudioManager* audioManager_)
     {
         switch (key_)
         {
@@ -117,7 +117,7 @@ namespace Game
         case SDLK_DOWN: m_MenuItemsManager->GoDown();
                         break;
 
-        case SDLK_RETURN: m_MenuItemsManager->EnterSubMenu();
+        case SDLK_RETURN: m_MenuItemsManager->EnterSubMenu(audioManager_);
                           break;
 
         case SDLK_ESCAPE: m_MenuItemsManager->LeaveSubmenu();

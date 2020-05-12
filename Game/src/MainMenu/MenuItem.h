@@ -18,6 +18,8 @@ namespace Game
 		void DeSelectItem();
 
 		std::string m_Label;
+		void ChangeMenuItem(SDL_Color color_);
+
 		static int numOfItems;
 
 	private:
@@ -28,8 +30,6 @@ namespace Game
 		
 		SDL_Texture* m_Texture;
 		SDL_Rect m_Rect;
-
-		void ChangeMenuItem(SDL_Color color_);
 
 		MenuItem(const MenuItem& other) = delete;
 		MenuItem& operator=(MenuItem& other) = delete;

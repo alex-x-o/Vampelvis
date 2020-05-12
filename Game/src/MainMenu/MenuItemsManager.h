@@ -16,7 +16,7 @@ namespace Game
 
 		void GoUp();
 		void GoDown();
-		void EnterSubMenu();
+		void EnterSubMenu(Engine::AudioManager* audioManager_);
 		void LeaveSubmenu();
 		void GameOver(int playerScore_);
 
