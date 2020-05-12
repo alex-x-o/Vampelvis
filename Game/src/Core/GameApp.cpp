@@ -61,6 +61,9 @@ bool Game::GameApp::GameSpecificInit()
         return false;
     }
 
+    m_AudioManager->LoadMusic("./Audio/MainTheme.wav");
+    m_AudioManager->PlayMusic();
+
     return true;
 }
 
