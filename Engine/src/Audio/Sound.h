@@ -11,7 +11,6 @@ namespace Engine
 
 		bool LoadSound(std::string soundName_, std::string path_);
 
-		Sound() = default;
 		Sound(std::string soundName_, std::string path_);
 		~Sound();
 	};

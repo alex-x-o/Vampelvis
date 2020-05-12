@@ -13,6 +13,8 @@ bool Engine::AudioManager::Init()
 		return false;
 	}
 
+	m_Sounds.reserve(5);
+
 	return true;
 }
 
@@ -70,8 +72,11 @@ void Engine::AudioManager::PlaySound(std::string soundName_)
 		return;
 	}
 
-	if (-1 == Mix_PlayChannel(-1, foundPlace->m_Sound, 0))
+	int channelNo = Mix_PlayChannel(-1, foundPlace->m_Sound, 0);
+	if (-1 == channelNo)
 	{
 		LOG_WARNING(fmt::format("Play {} failed! ", Mix_GetError()));
 	}
+
+	Mix_Volume(-1, 128);
 }

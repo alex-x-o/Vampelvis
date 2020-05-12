@@ -12,6 +12,7 @@
 #include "MainMenu/MenuLabelsData.h"
 
 #include <nlohmann/json.hpp>
+#include <ctime>
 
 
 void Game::GameApp::GameSpecificWindowData()
@@ -62,6 +63,8 @@ bool Game::GameApp::GameSpecificInit()
         return false;
     }
 
+    srand(time(NULL));
+
     return true;
 }
 
@@ -71,10 +74,23 @@ void Game::GameApp::GameSpecificUpdate(float dt_)
     DrawPlayerScore();
     DrawPlayerInventory();
 
+    float r = rand() / static_cast<float>(RAND_MAX);
+
+    if (m_Level->GetCurrentLevelIndex() == 0)
+    {
+        LOG_INFO(r);
+        if (r < 0.002f) m_AudioManager->PlaySound("GhostSound");
+    }
+    else if (m_Level->GetCurrentLevelIndex() == 1)
+    {
+        if (r < 0.002f) m_AudioManager->PlaySound("BatWings");
+    }
+
     bool playerHit = !m_PlayerController->Update(m_EntityManager.get(), m_TextureManager.get());
     if (playerHit && !m_GodMode)
     {
         m_ShowMenu = m_GameOver = true;
+        m_AudioManager->PlaySound("GameOver");
         m_MainMenu->GameOver(GetPlayerScore());
         UpdateHighScore();
 

@@ -35,6 +35,9 @@ namespace Game
         }
 
         m_AudioManager->LoadSound("MenuChange", "Audio/MenuChange.wav");
+        m_AudioManager->LoadSound("GameOver", "Audio/GameOver.wav");
+        m_AudioManager->LoadSound("BatWings", "Audio/BatWings.wav");
+        m_AudioManager->LoadSound("GhostSound", "Audio/GhostSound.wav");
     }
 
     void MenuItemsManager::ChangeMenu(std::vector<std::string>& labels_, int selectableBegining_, int selectableEnd_)

@@ -19,6 +19,8 @@ namespace Game
 
         void ChangeLevel(Engine::EntityManager* entityManager_, Engine::TextureManager* textureManager_, float boundary_);
 
+        int GetCurrentLevelIndex() { return m_CurrentLevelIndex; }
+
     private:
         float m_BaseSpeed{ 100.0f };
         float m_CurrentSpeed{ 100.0f };
