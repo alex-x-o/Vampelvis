@@ -123,16 +123,18 @@ namespace Game
     {
         int id = item_->m_Type;
         auto finder = inventory_->m_Inventory.find(id);
-        if (finder != inventory_->m_Inventory.end())
+        if (finder != inventory_->m_Inventory.end() && finder->second < GameConstants::MAX_VIALS_IN_INVENTORY)
         {
             finder->second++;
+            item_->m_PickedUp = true;
         }
-        else
+        else if(finder == inventory_->m_Inventory.end())
         {
             inventory_->m_Inventory[id] = 1;
+            item_->m_PickedUp = true;
         }
 
-        item_->m_PickedUp = true;
+        
     }
 
     bool PlayerController::UseItem(Engine::InventoryComponent* inventory_, int id_)
