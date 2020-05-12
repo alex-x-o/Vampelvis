@@ -21,6 +21,7 @@ namespace Engine
 
 		void LoadSound(std::string soundName_, std::string path_);
 		void PlaySound(std::string soundName_);
+		void StopSound(std::string soundName_);
 
 		AudioManager() = default;
 	private:

@@ -89,7 +89,11 @@ void Game::GameApp::GameSpecificUpdate(float dt_)
     if (playerHit && !m_GodMode)
     {
         m_ShowMenu = m_GameOver = true;
+
         m_AudioManager->PlaySound("GameOver");
+        m_AudioManager->StopSound("GhostSound");
+        m_AudioManager->StopSound("BatWings");
+
         m_MainMenu->GameOver(GetPlayerScore());
         UpdateHighScore();
 

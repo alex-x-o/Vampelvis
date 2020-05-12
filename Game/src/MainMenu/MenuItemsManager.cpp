@@ -83,7 +83,7 @@ namespace Game
 
         if (m_ItemsData.m_RepoQRTexture)
         {
-            SDL_Rect qrRect = { GameConstants::SCREEN_WIDTH/2-100, GameConstants::SCREEN_HEIGHT/2-80, 200, 200 };
+            SDL_Rect qrRect = { GameConstants::SCREEN_WIDTH/2-125, GameConstants::SCREEN_HEIGHT/2-105, 250, 225 };
             SDL_RenderCopy(m_MenuRenderer, m_ItemsData.m_RepoQRTexture, NULL, &qrRect);
         }
     }

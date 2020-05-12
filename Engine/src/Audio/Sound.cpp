@@ -10,7 +10,7 @@ bool Engine::Sound::LoadSound(std::string soundName_, std::string path_)
         LOG_WARNING("Overwriting already loaded sound with: {}", path_);
         Mix_FreeChunk(m_Sound);
     }
-
+    
     m_Sound = Mix_LoadWAV(path_.c_str());
 
     if (m_Sound == nullptr)

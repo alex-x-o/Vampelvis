@@ -80,3 +80,17 @@ void Engine::AudioManager::PlaySound(std::string soundName_)
 
 	Mix_Volume(-1, 128);
 }
+
+void Engine::AudioManager::StopSound(std::string soundName_)
+{
+	auto foundPlace = std::find_if(std::begin(m_Sounds), std::end(m_Sounds),
+		[soundName_](Sound& sound) {return sound.m_SoundName == soundName_; });
+
+	if (foundPlace == std::end(m_Sounds))
+	{
+		LOG_INFO(fmt::format("There is not such sound loaded: {}", soundName_));
+		return;
+	}
+
+	foundPlace->m_Sound->volume = 0;
+}
