@@ -114,7 +114,7 @@ namespace Engine {
                     }
                     else if (m_ShowMenu)
                     {
-                        m_ShowMenu = m_MainMenu->ProcessInput(event.key.keysym.sym, m_AudioManager.get());
+                        m_ShowMenu = m_MainMenu->ProcessInput(event.key.keysym.sym);
                     }
                 }
             }

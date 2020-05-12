@@ -10,7 +10,7 @@ namespace Engine
 	class MainMenu
 	{
 	public:
-		virtual bool Init() = 0;
+		virtual bool Init(AudioManager* audioManager_) = 0;
 		virtual void Update() = 0;
 		virtual void Shutdown() = 0;
 
@@ -18,7 +18,7 @@ namespace Engine
 		virtual void HideMenu() = 0;
 		virtual void GameOver(int score_) = 0;
 
-		virtual bool ProcessInput(SDL_Keycode key_, AudioManager* audioManager_) = 0;
+		virtual bool ProcessInput(SDL_Keycode key_) = 0;
 
 		virtual ~MainMenu() = default;
 

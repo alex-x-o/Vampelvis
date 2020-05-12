@@ -9,7 +9,7 @@ namespace Game
 	class GameMenu : public Engine::MainMenu
 	{
 	public:
-		bool Init();
+		bool Init(Engine::AudioManager* audioManager_);
 		void Update();
 		void Shutdown();
 
@@ -18,7 +18,7 @@ namespace Game
 		void GameOver(int playerScore_);
 
 		std::unique_ptr<MenuItemsManager> m_MenuItemsManager;
-		bool ProcessInput(SDL_Keycode key_, Engine::AudioManager* audioManager_);
+		bool ProcessInput(SDL_Keycode key_);
 
 		GameMenu() = default;
 

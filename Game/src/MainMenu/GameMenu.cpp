@@ -8,7 +8,7 @@
 
 namespace Game
 {
-    bool GameMenu::Init()
+    bool GameMenu::Init(Engine::AudioManager* audioManager_)
     {
         LOG_INFO("Initializing Main Menu");
         
@@ -19,7 +19,7 @@ namespace Game
         setIcon(GameConstants::GAME_ICON);
 
         m_MenuItemsManager = std::make_unique<MenuItemsManager>();
-        m_MenuItemsManager->Init(m_MenuRenderer);
+        m_MenuItemsManager->Init(m_MenuRenderer, audioManager_);
 
         return !createWindow;
     }
@@ -105,7 +105,7 @@ namespace Game
         }
     }
 
-    bool GameMenu::ProcessInput(SDL_Keycode key_, Engine::AudioManager* audioManager_)
+    bool GameMenu::ProcessInput(SDL_Keycode key_)
     {
         switch (key_)
         {
@@ -117,7 +117,7 @@ namespace Game
         case SDLK_DOWN: m_MenuItemsManager->GoDown();
                         break;
 
-        case SDLK_RETURN: m_MenuItemsManager->EnterSubMenu(audioManager_);
+        case SDLK_RETURN: m_MenuItemsManager->EnterSubMenu();
                           break;
 
         case SDLK_ESCAPE: m_MenuItemsManager->LeaveSubmenu();

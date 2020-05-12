@@ -29,7 +29,7 @@ bool Game::GameApp::GameSpecificInit()
 {
     // Main Menu initialize
     m_MainMenu = std::make_unique<Game::GameMenu>();
-    if (!m_MainMenu->Init())
+    if (!m_MainMenu->Init(m_AudioManager.get()))
     {
         LOG_CRITICAL("Failed to initialize MainMenu");
         return false;
@@ -61,9 +61,6 @@ bool Game::GameApp::GameSpecificInit()
 
         return false;
     }
-
-    m_AudioManager->LoadMusic("./Audio/MainTheme.wav");
-    m_AudioManager->PlayMusic();
 
     return true;
 }
@@ -165,7 +162,6 @@ void Game::GameApp::DrawPlayerInventory()
         std::string fileName = inv.first == Game::Powerup::BatMode ? "./Textures/testTubeRed.png" : "./Textures/testTubeBlue.png";
         
         // Count how much of powerup left, and if it is less than 0.2 blink text
-
         bool active = false;
         auto& activePowers = GetActivePowers();
         if (activePowers.find(inv.first) != std::end(activePowers))
@@ -173,7 +169,7 @@ void Game::GameApp::DrawPlayerInventory()
             float left = (activePowers.at(inv.first) - m_PlayerController->GetPlayerPositionX());
             left /= inv.first == Game::Powerup::BatMode ? GameConstants::BATMODE_DURATION : GameConstants::IMMORTALITY_DURATION;
 
-            active = left < 0.2 ? true : false;
+            active = left < 0.2? true : false;
         }
         
         m_RenderSystem->GetRenderer()->DrawBlinkingTextureOnGameScreen(active, fileName, 800 - (i + 1) * 90, -3, 30, 30);

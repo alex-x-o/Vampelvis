@@ -4,20 +4,28 @@
 #include "HighScoreData.h"
 #include "MenuLabelsData.h"
 #include "Core\GameConstants.h"
+#include "Audio/AudioManager.h"
 
 
 namespace Game
 {
-    void MenuItemsManager::Init(SDL_Renderer* menuRenderer_)
+    void MenuItemsManager::Init(SDL_Renderer* menuRenderer_, Engine::AudioManager* audioManager_)
     {
         LOG_INFO("Initializing Menu Items Manager");
 
         m_MenuRenderer = menuRenderer_;
+        m_AudioManager = audioManager_;
 
         // Update High Score from file
         scoreData->LoadHighScore();
         MenuLabelsData::BEGINING_LABELS[1] = "Best score: " + std::to_string(scoreData->GetHighScore());
-        MenuLabelsData::BEGINING_LABELS[3] = "Sound : on";
+
+        m_AudioManager->LoadMusic("./Audio/MainTheme.wav");
+        if (MenuLabelsData::BEGINING_LABELS[3] == "Sound : on")
+        {
+            m_AudioManager->PlayMusic();
+            m_AudioManager->m_IsPlaying = true;
+        }
 
         ChangeMenu(MenuLabelsData::BEGINING_LABELS, 2, 1);
     }
@@ -90,7 +98,7 @@ namespace Game
         ChangeSelectedItem(newIndex);
     }
 
-    void MenuItemsManager::EnterSubMenu(Engine::AudioManager* audioManager_)
+    void MenuItemsManager::EnterSubMenu()
     {
         if (m_SelectableMenuItems[m_SelectedItem]->m_Label == MenuLabelsData::BEGINING_LABELS[2])
         {
@@ -108,7 +116,7 @@ namespace Game
         }
         else if (m_SelectableMenuItems[m_SelectedItem]->m_Label == MenuLabelsData::BEGINING_LABELS[3])
         {
-            audioManager_->ToggleMusicPlaying();
+            m_AudioManager->ToggleMusicPlaying();
 
             if (m_MenuItems[3]->m_Label == "Sound : on") MenuLabelsData::BEGINING_LABELS[3] = "Sound : off";
             else MenuLabelsData::BEGINING_LABELS[3] = "Sound : on";
