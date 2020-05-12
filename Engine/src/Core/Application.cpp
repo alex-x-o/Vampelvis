@@ -17,7 +17,6 @@ namespace Engine {
 
     Application::~Application() = default;
 
-
     bool Application::Init()
     {
         LOG_INFO("Initializing application");
@@ -59,14 +58,14 @@ namespace Engine {
             return false;
         }
 
+        // Initialize Audio system
         m_AudioManager = std::make_unique<AudioManager>();
-        /*
-        if (!m_PhysicsSystem->Init())
+        if (!m_AudioManager->Init())
         {
             LOG_CRITICAL("Failed to initialize PhysicsSystem");
             return false;
         }
-        */
+        
 
         if (GameSpecificInit() != true)
         {
@@ -82,6 +81,9 @@ namespace Engine {
         LOG_INFO("Shutting down application");
 
         GameSpecificShutdown();
+
+        m_AudioManager->Shutdown();
+        m_AudioManager.reset();
 
         m_RenderSystem->Shutdown();
         m_RenderSystem.reset();

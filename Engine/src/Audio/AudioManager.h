@@ -7,6 +7,9 @@ namespace Engine
 	class AudioManager
 	{
 	public:
+		bool Init();
+		void Shutdown();
+
 		bool LoadMusic(std::string path_);
 		void PlayMusic();
 		void StopMusic();
