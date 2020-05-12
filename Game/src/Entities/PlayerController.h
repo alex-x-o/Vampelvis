@@ -50,5 +50,6 @@ namespace Game
         void ToggleGodMode(Engine::InputComponent* input_, Engine::PowerupComponent* powerups_);
         void UpdateAnimationInfo(Engine::TextureManager* textureManager_, Engine::SpriteComponent* sprite_);
         void AnimatePlayer(Engine::SpriteComponent* sprite_);
+        void BatRotation(Engine::SpriteComponent* sprite_, Engine::MoverComponent* move_, Engine::TransformComponent* position_, Engine::InputComponent* input_);
     };
 }

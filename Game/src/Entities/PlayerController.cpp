@@ -68,26 +68,7 @@ namespace Game
         move->m_TranslationSpeed.x = m_CurrentSpeed;
         move->m_TranslationSpeed.y = speed * (jumpInput ? -0.5f : 0.2f);
 
-        // Changing Rotation
-        if (position->m_Size.x == GameConstants::BAT_WIDTH)
-        {
-            if (jumpInput)
-            {
-                if (position->m_Rotation > 30)
-                    position->m_Rotation -= 30;
-            }
-            else
-            {
-                if (position->m_Rotation < 150)
-                    position->m_Rotation += 1;
-            }
-            move->m_RotationSpeed = jumpInput ? 0.6f : -0.2f;
-        }
-        else
-        {
-            position->m_Rotation = 0;
-        }
-
+        BatRotation(sprite, move, position, input);
 
         // Update position
         m_PlayerPositionX = position->m_Position.x;
@@ -375,6 +356,34 @@ namespace Game
         else
         {
             sprite_->m_AnimationCurrentFrame = sprite_->m_AnimationCurrentFrame + 1;
+        }
+    }
+
+    void PlayerController::BatRotation(Engine::SpriteComponent* sprite_, Engine::MoverComponent* move_, Engine::TransformComponent* position_, Engine::InputComponent* input_)
+    {
+        bool jumpInput = Engine::InputManager::IsActionActive(input_, "MainGameBtn");
+
+        if (position_->m_Size.x == GameConstants::BAT_WIDTH)
+        {
+            if (jumpInput)
+            {
+                if (position_->m_Rotation > 15)
+                    position_->m_Rotation -= 25;
+                sprite_->m_AnimationFrames = 2;
+                sprite_->m_AnimationCurrentFrame = 0;
+            }
+            else
+            {
+                if (position_->m_Rotation < 150)
+                    position_->m_Rotation += 1;
+                sprite_->m_AnimationFrames = 1;
+                sprite_->m_AnimationCurrentFrame = 1;
+            }
+            move_->m_RotationSpeed = jumpInput ? 0.6f : -0.2f;
+        }
+        else
+        {
+            position_->m_Rotation = 0;
         }
     }
 
