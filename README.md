@@ -9,7 +9,7 @@ The game was developed by a three-person team (coden-amed Team Bird) consisting 
 * [Aleksandra Stojanović](https://github.com/alex-x-o)
 * [Konstantin Klima](https://github.com/konstantin-klima)
 
-The mentor for this project was [Nikola Šobajić](https://github.com/sobajic), a game developer from Ubisoft and the lecturer on this course. 
+The mentor for this project was [Nikola Šobajić](https://github.com/sobajic), a game developer at Ubisoft and the lecturer on this course. 
 
 ## The Goal
 
