@@ -9,6 +9,7 @@
 #include "Entities/PlayerController.h"
 #include "Entities/LevelController.h"
 #include "Entities/StaticImage.h"
+#include "MainMenu/MenuLabelsData.h"
 
 #include <nlohmann/json.hpp>
 

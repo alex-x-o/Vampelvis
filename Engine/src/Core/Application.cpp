@@ -58,11 +58,11 @@ namespace Engine {
             return false;
         }
 
-        // Initialize Audio system
+        // Initialize Audio manager
         m_AudioManager = std::make_unique<AudioManager>();
         if (!m_AudioManager->Init())
         {
-            LOG_CRITICAL("Failed to initialize PhysicsSystem");
+            LOG_CRITICAL("Failed to initialize AudioManager");
             return false;
         }
         
@@ -114,7 +114,7 @@ namespace Engine {
                     }
                     else if (m_ShowMenu)
                     {
-                        m_ShowMenu = m_MainMenu->ProcessInput(event.key.keysym.sym);
+                        m_ShowMenu = m_MainMenu->ProcessInput(event.key.keysym.sym, m_AudioManager.get());
                     }
                 }
             }
@@ -123,7 +123,7 @@ namespace Engine {
 
             float deltaTime = (frameTime - previousFrameTime) / static_cast<float>(SDL_GetPerformanceFrequency());
 
-            //LOG_INFO("Current FPS: {}", 1.f / deltaTime);
+            LOG_INFO("Current FPS: {}", 1.f / deltaTime);
 
             // Restart game
             if (m_GameOver && !m_ShowMenu) return true;

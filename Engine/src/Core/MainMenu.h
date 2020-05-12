@@ -1,5 +1,6 @@
 #pragma once
 #include "precomp.h"
+#include "Audio/AudioManager.h"
 #include <SDL.h>
 
 using KeyboardButton = int;
@@ -17,7 +18,7 @@ namespace Engine
 		virtual void HideMenu() = 0;
 		virtual void GameOver(int score_) = 0;
 
-		virtual bool ProcessInput(SDL_Keycode key_) = 0;
+		virtual bool ProcessInput(SDL_Keycode key_, AudioManager* audioManager_) = 0;
 
 		virtual ~MainMenu() = default;
 

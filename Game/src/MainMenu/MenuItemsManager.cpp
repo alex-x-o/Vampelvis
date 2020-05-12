@@ -17,6 +17,7 @@ namespace Game
         // Update High Score from file
         scoreData->LoadHighScore();
         MenuLabelsData::BEGINING_LABELS[1] = "Best score: " + std::to_string(scoreData->GetHighScore());
+        MenuLabelsData::BEGINING_LABELS[3] = "Sound : on";
 
         ChangeMenu(MenuLabelsData::BEGINING_LABELS, 2, 1);
     }
