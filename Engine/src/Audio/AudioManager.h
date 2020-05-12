@@ -1,5 +1,6 @@
 #pragma once
 #include "Music.h"
+#include "Sound.h"
 
 namespace Engine
 {
@@ -17,9 +18,13 @@ namespace Engine
 		void ToggleMusicPlaying();
 		bool m_IsPlaying{ false };
 
+		void LoadSound(std::string soundName_, std::string path_);
+		void PlaySound(std::string soundName_);
+
 		AudioManager() = default;
 	private:
 		std::unique_ptr<Music> m_MusicTrack;
+		std::vector<Sound> m_Sounds;
 
 		AudioManager(const AudioManager& other) = delete;
 		AudioManager& operator=(AudioManager& other) = delete;

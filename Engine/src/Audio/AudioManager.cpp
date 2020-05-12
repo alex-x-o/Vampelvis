@@ -19,6 +19,8 @@ bool Engine::AudioManager::Init()
 void Engine::AudioManager::Shutdown()
 {
 	Mix_CloseAudio();
+
+	m_Sounds.clear();
 }
 
 bool Engine::AudioManager::LoadMusic(std::string path_)
@@ -45,4 +47,26 @@ void Engine::AudioManager::ToggleMusicPlaying()
 	else PlayMusic();
 
 	m_IsPlaying = !m_IsPlaying;
+}
+
+void Engine::AudioManager::LoadSound(std::string soundName_, std::string path_)
+{
+	m_Sounds.emplace_back(soundName_, path_);
+}
+
+void Engine::AudioManager::PlaySound(std::string soundName_)
+{
+	auto foundPlace = std::find_if(std::begin(m_Sounds), std::end(m_Sounds), 
+					  [soundName_](Sound& sound) {return sound.m_SoundName == soundName_; });
+
+	if (foundPlace == std::end(m_Sounds))
+	{
+		LOG_INFO(fmt::format("There is not such sound loaded: {}", soundName_));
+		return;
+	}
+
+	if (-1 == Mix_PlayChannel(-1, foundPlace->m_Sound, 0))
+	{
+		LOG_WARNING(fmt::format("Play {} failed! ", Mix_GetError()));
+	}
 }

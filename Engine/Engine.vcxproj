@@ -111,6 +111,7 @@
     </ClCompile>
     <ClCompile Include="src\Audio\AudioManager.cpp" />
     <ClCompile Include="src\Audio\Music.cpp" />
+    <ClCompile Include="src\Audio\Sound.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\EntryPoint.h" />
     <ClCompile Include="src\ECS\Component.cpp" />
@@ -429,6 +430,7 @@
     <ClInclude Include="precomp.h" />
     <ClInclude Include="src\Audio\AudioManager.h" />
     <ClInclude Include="src\Audio\Music.h" />
+    <ClInclude Include="src\Audio\Sound.h" />
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Core\MainMenu.h" />
     <ClInclude Include="src\ECS\Component.h" />
