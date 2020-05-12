@@ -20,14 +20,21 @@ namespace Game
         scoreData->LoadHighScore();
         MenuLabelsData::BEGINING_LABELS[1] = "Best score: " + std::to_string(scoreData->GetHighScore());
 
-        m_AudioManager->LoadMusic("./Audio/MainTheme.wav");
+        LoadAudio();
+        
+        ChangeMenu(MenuLabelsData::BEGINING_LABELS, 2, 1);
+    }
+
+    void MenuItemsManager::LoadAudio()
+    {
+        m_AudioManager->LoadMusic("Audio/MainTheme.wav");
         m_AudioManager->PlayMusic();
         if (MenuLabelsData::BEGINING_LABELS[3] == "Sound : off")
         {
             m_AudioManager->ToggleMusicPlaying();
         }
 
-        ChangeMenu(MenuLabelsData::BEGINING_LABELS, 2, 1);
+        m_AudioManager->LoadSound("MenuChange", "Audio/MenuChange.wav");
     }
 
     void MenuItemsManager::ChangeMenu(std::vector<std::string>& labels_, int selectableBegining_, int selectableEnd_)
@@ -84,6 +91,8 @@ namespace Game
     {
         if (m_SubmenuOpened) return;
 
+        if (m_SelectableMenuItems.size() > 1) m_AudioManager->PlaySound("MenuChange");
+
         int newIndex = m_SelectedItem - 1 < 0 ? static_cast<int>(m_SelectableMenuItems.size()) - 1 : m_SelectedItem - 1;
  
         ChangeSelectedItem(newIndex);
@@ -92,6 +101,8 @@ namespace Game
     void MenuItemsManager::GoDown()
     {
         if (m_SubmenuOpened) return;
+
+        if (m_SelectableMenuItems.size() > 1) m_AudioManager->PlaySound("MenuChange");
 
         int newIndex = (m_SelectedItem + 1) % static_cast<int>(m_SelectableMenuItems.size());
 

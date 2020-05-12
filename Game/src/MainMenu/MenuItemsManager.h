@@ -35,6 +35,7 @@ namespace Game
 		SDL_Renderer* m_MenuRenderer{};
 		Engine::AudioManager* m_AudioManager{};
 
+		void LoadAudio();
 
 		void ChangeMenu(std::vector<std::string>& labels_, int selectableBegining_, int selectableEnd_);
 		void CreateMenuItems(std::vector<std::string>& labels);
