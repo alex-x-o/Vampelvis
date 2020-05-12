@@ -44,7 +44,7 @@ namespace Game
         void CastPowerups(Engine::PowerupComponent* activePowerups, Engine::InputComponent* input, Engine::InventoryComponent* inventory, Engine::SpriteComponent* sprite_, float playerPositionX_);
         bool isActivePowerup(Engine::PowerupComponent* powerups, Game::Powerup power);
         void RemoveExpiredPowerups(Engine::PowerupComponent* powerups_, float playerPositionX_);
-        void Shapeshift(Engine::TextureManager* textureManager_, Engine::CollisionComponent* collision_, Engine::TransformComponent* transformer_, Engine::SpriteComponent* sprite_);
+        void Shapeshift(Engine::TextureManager* textureManager_, Engine::CollisionComponent* collision_, Engine::TransformComponent* transformer_, Engine::SpriteComponent* sprite_, Engine::PowerupComponent* powers_);
         void KeepPlayerOnScreen(Engine::CollisionComponent* collisionComponent_, Engine::TransformComponent* transform_);
         bool CheckIfCollided(Engine::CollisionComponent* collisionComponent_, Engine::PowerupComponent* powerups_);
         void ToggleGodMode(Engine::InputComponent* input_, Engine::PowerupComponent* powerups_);

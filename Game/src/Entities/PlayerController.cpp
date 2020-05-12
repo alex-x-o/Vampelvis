@@ -73,10 +73,10 @@ namespace Game
         ToggleGodMode(input, powerups);
         PickUpPowerups(collision, inventory);
         RemoveExpiredPowerups(powerups, m_PlayerPositionX);
-        Shapeshift(textureManager_, collision, position, sprite);
+        Shapeshift(textureManager_, collision, position, sprite, powerups);
 
         CastPowerups(powerups, input, inventory, sprite, m_PlayerPositionX);
-        Shapeshift(textureManager_, collision, position, sprite);
+        Shapeshift(textureManager_, collision, position, sprite, powerups);
         
         KeepPlayerOnScreen(collision, position);
 
@@ -189,7 +189,7 @@ namespace Game
             if (powerUsed)
             {
                 activePowerups->m_ActivePowers[Game::BatMode] = playerPositionX_ + GameConstants::BATMODE_DURATION;
-                m_SmokePosition = playerPositionX_ + 14.f;
+                m_SmokePosition = playerPositionX_ + GameConstants::SMOKE_DURATION;
                 m_ReadyToShapeshift = true;
             }
         }
@@ -225,17 +225,18 @@ namespace Game
     }
 
     void PlayerController::Shapeshift(Engine::TextureManager* textureManager_,  Engine::CollisionComponent* collision_,
-                                      Engine::TransformComponent* transformer_, Engine::SpriteComponent* sprite_)
+                                      Engine::TransformComponent* transformer_, Engine::SpriteComponent* sprite_,
+                                      Engine::PowerupComponent* powers_)
     {
         if (!m_ReadyToShapeshift)
         {
             return;
         }
 
-        auto posOfActivation = m_SmokePosition - 14.f;
+        auto posOfActivation = m_SmokePosition - GameConstants::SMOKE_DURATION;
         auto batDuration = GameConstants::BATMODE_DURATION;
 
-        if (m_PlayerPositionX < m_SmokePosition || ((m_PlayerPositionX > (posOfActivation + batDuration)) && (m_PlayerPositionX < (posOfActivation + batDuration + 28.f))))
+        if (m_PlayerPositionX < m_SmokePosition || ((m_PlayerPositionX > (posOfActivation + batDuration)) && (m_PlayerPositionX < (posOfActivation + batDuration + 2* GameConstants::SMOKE_DURATION))))
         {
             sprite_->m_Image = textureManager_->GetCommonTexture(Game::TEX_PLAYER, "smoke");
             return;
@@ -246,6 +247,10 @@ namespace Game
             transformer_->m_Size = vec2(GameConstants::PLAYER_WIDTH, GameConstants::PLAYER_HEIGHT);
             collision_->m_Size = vec2(GameConstants::PLAYER_WIDTH, GameConstants::PLAYER_HEIGHT);
             sprite_->m_Image = textureManager_->GetCommonTexture(Game::TEX_PLAYER, "vampire");
+
+            if (!isActivePowerup(powers_, Game::Immortality)) {
+                powers_->m_ActivePowers[Game::Immortality] = m_PlayerPositionX + GameConstants::IMMORTALITY_DURATION / 5;
+            }
         }
         else
         {

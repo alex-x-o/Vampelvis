@@ -28,6 +28,7 @@ namespace GameConstants
 	const int MAX_VIALS_IN_INVENTORY = 3;
 
 	const float MAX_SPEED_COEF = 4.5f;
+	const float SMOKE_DURATION = 14.f;
 }
 
 namespace Game
