@@ -4,7 +4,7 @@ Vampelvis was created as an end-of-semester project for the course "Game Develop
 
 ## The Team
 
-The game was developed by a three-person team (coden-amed Team Bird) consisting of:
+The game was developed by a three-person team (code-named Team Bird) consisting of:
 * [Olivera Popović](https://github.com/popovic-olivera)
 * [Aleksandra Stojanović](https://github.com/alex-x-o)
 * [Konstantin Klima](https://github.com/konstantin-klima)
