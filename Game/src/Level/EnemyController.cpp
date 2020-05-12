@@ -19,30 +19,59 @@ namespace Game
         level_->enemyLastPosition = enemyPosX;
 
         std::random_device rd;
-        std::uniform_int_distribution<> EnemyChance(0, level_->enemySpawnChance);
+        std::uniform_int_distribution<> EnemyChance(1, level_->enemySpawnChance);
 
-        if (EnemyChance(rd) == 0) {
-            Engine::Texture* t = textureManager_->GetCommonTexture(Game::TEX_ENEMY, "ghost");
-            float width = GameConstants::PLAYER_WIDTH;
-            float height = GameConstants::PLAYER_HEIGHT;
-            auto enemy = std::make_unique<Engine::Entity>();
-            float availableSpace = ceil((GameConstants::SCREEN_HEIGHT - GameConstants::WALL_HEIGHT - height / 2) / 2);
+        if (EnemyChance(rd) == 1) {
+            
+            bool spawnGhost = false;
+            bool spawnBat = false;
 
-            std::uniform_int_distribution<> yPositions(-availableSpace, availableSpace);
 
-            enemy->AddComponent<Game::GlidingEnemyComponent>();
-            enemy->AddComponent<Engine::TransformComponent>(enemyPosX, yPositions(rd), width, height);
-            enemy->AddComponent<Engine::CollisionComponent>(width, height);
-            enemy->AddComponent<Engine::SpriteComponent>().m_Image = t;
-            enemy->AddComponent<Engine::MoverComponent>();
+            if (level_->spawnGhosts && level_->spawnBats)
+            {
+                std::uniform_int_distribution<> flipCoin(0, 1);
+                flipCoin(rd) ? spawnGhost = true : spawnBat = true;
+            }
+            else if (level_->spawnGhosts)
+            {
+                spawnGhost = true;
+            }
+            else if (level_->spawnBats)
+            {
+                spawnBat = true;
+            }
+            else
+            {
+                return;
+            }
 
-            auto spriteComp = enemy->GetComponent<Engine::SpriteComponent>();
-            spriteComp->m_Animation = true;
-            spriteComp->m_AnimationFrames = 2;
-            spriteComp->m_AnimationCurrentFrame = 0;
-            spriteComp->m_Height = 48;
 
-            entityManager_->AddEntity(std::move(enemy));
+            Engine::Texture* texture;
+            if (spawnGhost)
+            {
+                texture = textureManager_->GetCommonTexture(Game::TEX_ENEMY, "ghost");
+                float width = GameConstants::PLAYER_WIDTH;
+                float height = GameConstants::PLAYER_HEIGHT;
+                
+                float availableSpace = ceil(GameConstants::SCREEN_HEIGHT / 2 - GameConstants::WALL_HEIGHT - height / 2);
+                std::uniform_int_distribution<> yPositions(-availableSpace, availableSpace);
+                float yPos = yPositions(rd);
+
+                CreateGhost(entityManager_, texture, enemyPosX, yPos, width, height);
+            }
+
+            if (spawnBat)
+            {
+                texture = textureManager_->GetCommonTexture(Game::TEX_ENEMY, "bat");
+                float width = GameConstants::BAT_WIDTH;
+                float height = GameConstants::BAT_HEIGHT;
+
+                float availableSpace = ceil(GameConstants::SCREEN_HEIGHT / 2 - GameConstants::WALL_HEIGHT - height / 2);
+                std::uniform_int_distribution<> yPositions(-availableSpace, availableSpace);
+                float yPos = yPositions(rd);
+
+                CreateGhost(entityManager_, texture, enemyPosX, yPos, width, height);
+            }
         }
 
     }
@@ -94,4 +123,43 @@ namespace Game
         }
     }
 
+    void EnemyController::CreateGhost(Engine::EntityManager* entityManager_, Engine::Texture* texture_,
+                                      float x_, float y_, float w_, float h_)
+    {
+
+        auto enemy = std::make_unique<Engine::Entity>();
+        enemy->AddComponent<Game::GlidingEnemyComponent>();
+        enemy->AddComponent<Engine::TransformComponent>(x_, y_, w_, h_);
+        enemy->AddComponent<Engine::CollisionComponent>(w_, h_);
+        enemy->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
+        enemy->AddComponent<Engine::MoverComponent>();
+
+        auto spriteComp = enemy->GetComponent<Engine::SpriteComponent>();
+        spriteComp->m_Animation = true;
+        spriteComp->m_AnimationFrames = 2;
+        spriteComp->m_AnimationCurrentFrame = 0;
+        spriteComp->m_Height = 48;
+
+        entityManager_->AddEntity(std::move(enemy));
+    }
+
+    void EnemyController::CreateBat(Engine::EntityManager* entityManager_, Engine::Texture* texture_,
+                                    float x_, float y_, float w_, float h_)
+    {
+
+        auto enemy = std::make_unique<Engine::Entity>();
+        enemy->AddComponent<Game::GlidingEnemyComponent>();
+        enemy->AddComponent<Engine::TransformComponent>(x_, y_, w_, h_);
+        enemy->AddComponent<Engine::CollisionComponent>(w_, h_);
+        enemy->AddComponent<Engine::SpriteComponent>().m_Image = texture_;
+        enemy->AddComponent<Engine::MoverComponent>();
+
+        auto spriteComp = enemy->GetComponent<Engine::SpriteComponent>();
+        spriteComp->m_Animation = true;
+        spriteComp->m_AnimationFrames = 2;
+        spriteComp->m_AnimationCurrentFrame = 0;
+        spriteComp->m_Height = 48;
+
+        entityManager_->AddEntity(std::move(enemy));
+    }
 }
