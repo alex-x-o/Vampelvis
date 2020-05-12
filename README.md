@@ -21,3 +21,11 @@ We chose a vampire theme and tried  to keep with it by creating custom textures,
 
 The game was developed in C++, and is based on [the engine](https://github.com/sobajic/MATFGame) developed for this course.
 The engine itself relies on [SDL2](https://www.libsdl.org/download-2.0.php).
+
+## Screenshots :video_game:
+
+![MainMenu](Screenshots/MainMenu.png)
+
+![Castle](Screenshots/CastleLevel.png)
+
+![Cave](Screenshots/Cave.png)
