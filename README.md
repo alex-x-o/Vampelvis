@@ -22,6 +22,10 @@ We chose a vampire theme and tried  to keep with it by creating custom textures,
 The game was developed in C++, and is based on [the engine](https://github.com/sobajic/MATFGame) developed for this course.
 The engine itself relies on [SDL2](https://www.libsdl.org/download-2.0.php).
 
+##Download
+
+The compiled game can be downloaded [here](http://alas.matf.bg.ac.rs/~ai16254/Vampelvis.zip). If you get any errors when executing Vampelvis.exe, make sure you have Visual C++ installed on your computer. You can download Visual C++ from the offical [Microsoft website](https://support.microsoft.com/en-gb/help/2977003/the-latest-supported-visual-c-downloads).
+
 ## Screenshots :video_game:
 
 ![MainMenu](Screenshots/MainMenu.png)
